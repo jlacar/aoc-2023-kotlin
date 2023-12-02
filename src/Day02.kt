@@ -4,8 +4,29 @@ fun main() {
 
     // PART 1
 
+    val configuration = mapOf("red" to 12, "green" to 13, "blue" to 14)
+
+    fun tooMany(cubes: String): Boolean {
+        return cubes.split(", ").sumOf { s ->
+            val (n, color) = s.trim().split(" ")
+            val drawn = n.trim().toInt()
+            if (configuration[color]!! < drawn) drawn else 0
+        } > 0
+    }
+
+    fun enoughCubes(draws: List<String>): Boolean {
+        return (draws.firstOrNull { cubes -> tooMany(cubes) } ?: "").isBlank()
+    }
+
+    fun possible(game: String): Int {
+        val (id, draws) = game.split(":")
+        return if (enoughCubes(draws.split(";"))) {
+            id.split(" ")[1].toInt()
+        } else 0
+    }
+
     fun part1(input: List<String>) : Int {
-        return input.size
+        return input.sumOf { game -> possible(game) }
     }
 
     // PART 2
@@ -14,6 +35,7 @@ fun main() {
         return input.size
     }
 
+    // Test Part 1
     val testInput1 = """
         Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
         Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
@@ -22,10 +44,15 @@ fun main() {
         Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green        
     """.trimIndent().lines()
 
-    check(part1(testInput1) == 8)
+    check(part1(testInput1).also { it.println() } == 8)
+
+    // Test Part 2
+    val testInput2 = """
+        
+    """.trimIndent().lines()
 
     // Day 2 solutions
     val input = readInput("Day02")
-    part1(input).println()
-    part2(input).println()
+    check(part1(input) == 2600)
+//    part2(input).println()
 }
