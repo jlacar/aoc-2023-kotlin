@@ -13,37 +13,39 @@ fun main() {
 
     // PART 2
 
+    data class NameOffset(val name: String, val offset: Int)
+
     val digitNames = listOf("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
 
-    fun locateFirst(digitName: String, s: String): Pair<String, Int> {
+    fun locateFirst(digitName: String, s: String): NameOffset {
         val pos = s.indexOf(digitName)
-        return Pair(digitName, if (pos < 0) s.length else pos)
+        return NameOffset(digitName, if (pos < 0) s.length else pos)
     }
 
-    fun firstDigitName(s: String): Pair<String, Int> =
-        if (s.length < 3) Pair("zero", s.length)
-        else digitNames.map { locateFirst(it, s) }.minBy { it.second }
+    fun firstDigitName(s: String): NameOffset =
+        if (s.length < 3) NameOffset("zero", s.length)
+        else digitNames.map { locateFirst(it, s) }.minBy { it.offset }
 
     fun firstDigitPart2(s: String): Int {
         val firstDigit = s.firstDigit()
         val firstName = firstDigitName(if (firstDigit == '0') s else s.substringBefore(firstDigit))
-        return if (firstDigit == '0' || firstName.second < s.indexOf(firstDigit)) digitNames.indexOf(firstName.first)
+        return if (firstDigit == '0' || firstName.offset < s.indexOf(firstDigit)) digitNames.indexOf(firstName.name)
                else firstDigit.digitToInt()
     }
 
-    fun lastDigitName(s: String): Pair<String, Int> {
-        if (s.length < 3) return Pair("zero", -1)
-        return digitNames.map { Pair(it, s.lastIndexOf(it)) }.maxBy { it.second }
+    fun lastDigitName(s: String): NameOffset {
+        if (s.length < 3) return NameOffset("zero", -1)
+        return digitNames.map { NameOffset(it, s.lastIndexOf(it)) }.maxBy { it.offset }
     }
 
-    fun secondDigitPart2(s: String): Int {
-        val lastDigit = s.lastDigit()
-        val lastName = lastDigitName(if (lastDigit == '0') s else s.substringAfterLast(lastDigit))
-        return if (lastName.second < 0) lastDigit.digitToInt() else digitNames.indexOf(lastName.first)
+    fun lastDigitPart2(s: String): Int {
+        val numeral = s.lastDigit()
+        val lastWord = lastDigitName(if (numeral == '0') s else s.substringAfterLast(numeral))
+        return if (lastWord.offset < 0) numeral.digitToInt() else digitNames.indexOf(lastWord.name)
     }
 
     fun part2(input: List<String>): Int {
-        return input.sumOf { firstDigitPart2(it) * 10 + secondDigitPart2(it) }
+        return input.sumOf { firstDigitPart2(it) * 10 + lastDigitPart2(it) }
     }
 
     // Part 1 test
