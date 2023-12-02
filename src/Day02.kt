@@ -23,15 +23,15 @@ fun main() {
     // PART 2
 
     fun power(drawSets: String) : Int {
-        val hist = mutableMapOf("red" to 0, "blue" to 0, "green" to 0)
+        val mostCubes = mutableMapOf("red" to 0, "blue" to 0, "green" to 0)
         drawSets.split("; ").map { draw ->
             draw.split(", ").map { cubes ->
                 cubes.split(" ").let { (n, color) -> color to n.toInt() }
             }
         }.flatten().forEach { (color, count) ->
-            if (hist[color]!! < count) hist[color] = count
+            if (mostCubes[color]!! < count) mostCubes[color] = count
         }
-        return hist.toList().fold(1) { acc, (_, count) -> acc * count }
+        return mostCubes.toList().fold(1) { acc, (_, count) -> acc * count }
     }
 
     fun part2(input: List<String>) : Int {
