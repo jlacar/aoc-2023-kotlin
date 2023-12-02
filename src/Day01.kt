@@ -7,10 +7,8 @@ fun main() {
 
     fun String.lastDigit(): Char = (this.lastOrNull { it.isDigit() } ?: '0')
 
-    fun calibration1(s: String) = s.firstDigit().digitToInt() * 10 + s.lastDigit().digitToInt()
-
     fun part1(input: List<String>): Int {
-        return input.sumOf { calibration1(it) }
+        return input.sumOf { it.firstDigit().digitToInt() * 10 + it.lastDigit().digitToInt() }
     }
 
     // PART 2
@@ -33,11 +31,9 @@ fun main() {
                else firstDigit.digitToInt()
     }
 
-    fun locateLast(digitName: String, s: String): Pair<String, Int> = Pair(digitName, s.lastIndexOf(digitName))
-
     fun lastDigitName(s: String): Pair<String, Int> {
         if (s.length < 3) return Pair("zero", -1)
-        return digitNames.map { locateLast(it, s) }.maxBy { it.second }
+        return digitNames.map { Pair(it, s.lastIndexOf(it)) }.maxBy { it.second }
     }
 
     fun secondDigitPart2(s: String): Int {
@@ -46,12 +42,8 @@ fun main() {
         return if (lastName.second < 0) lastDigit.digitToInt() else digitNames.indexOf(lastName.first)
     }
 
-    fun calibration2(s: String): Int {
-        return firstDigitPart2(s) * 10 + secondDigitPart2(s)
-    }
-
     fun part2(input: List<String>): Int {
-        return input.sumOf { calibration2(it) }
+        return input.sumOf { firstDigitPart2(it) * 10 + secondDigitPart2(it) }
     }
 
     // Part 1 test
