@@ -34,20 +34,18 @@ fun main() {
         return Pair(digitName, if (pos < 0) s.length else pos)
     }
 
-    fun firstDigitName(s: String): Pair<String, Int> {
-        if (s.length < 3) return Pair("zero", s.length)
-        return digitNames.map { locateFirst(it, s) }.minBy { it.second }
-    }
+    fun firstDigitName(s: String): Pair<String, Int> =
+        if (s.length < 3) Pair("zero", s.length)
+        else digitNames.map { locateFirst(it, s) }.minBy { it.second }
 
     fun firstDigitPart2(s: String): Int {
         val firstDigit = s.firstDigit()
         val firstName = firstDigitName(if (firstDigit == '0') s else s.substringBefore(firstDigit))
-        return if (firstDigit == '0' || firstName.second < s.indexOf(firstDigit)) digitNames.indexOf(firstName.first) else firstDigit.digitToInt()
+        return if (firstDigit == '0' || firstName.second < s.indexOf(firstDigit)) digitNames.indexOf(firstName.first)
+               else firstDigit.digitToInt()
     }
 
-    fun locateLast(digitName: String, s: String): Pair<String, Int> {
-        return Pair(digitName, s.lastIndexOf(digitName))
-    }
+    fun locateLast(digitName: String, s: String): Pair<String, Int> = Pair(digitName, s.lastIndexOf(digitName))
 
     fun lastDigitName(s: String): Pair<String, Int> {
         if (s.length < 3) return Pair("zero", -1)
