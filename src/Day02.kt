@@ -6,34 +6,29 @@ fun main() {
     val configuration = mapOf("red" to 12, "green" to 13, "blue" to 14)
 
     fun tooMany(cubes: String) = cubes.split(", ")
-        .sumOf { s ->
-            val (n, color) = s.split(" ")
+        .sumOf { it.split(" ").let { (n, color) ->
             val drawn = n.toInt()
             if (configuration[color]!! < drawn) drawn else 0
-        } > 0
+        }} > 0
 
     fun enoughCubes(draws: List<String>) = (draws.firstOrNull { cubes -> tooMany(cubes) } ?: "").isBlank()
 
-    fun possible(game: String): Int {
-        val (id, draws) = game.split(": ")
-        return if (enoughCubes(draws.split("; "))) {
-            id.split(" ")[1].toInt()
-        } else 0
-    }
+    fun possible(game: String) : Int =
+        game.split(": ").let { (id, draws) ->
+            if (enoughCubes(draws.split("; "))) { id.split(" ")[1].toInt() } else 0
+        }
 
     fun part1(input: List<String>) = input.sumOf { game -> possible(game) }
 
     // PART 2
 
     fun power(drawSets: String) : Int {
-        val draws = drawSets.split("; ").map { draw ->
-            draw.split(", ").map { cubes ->
-                val (n, color) = cubes.split(" ")
-                color to n.toInt()
-            }
-        }.flatten()
         val hist = mutableMapOf("red" to 0, "blue" to 0, "green" to 0)
-        draws.forEach { (color, count) ->
+        drawSets.split("; ").map { draw ->
+            draw.split(", ").map { cubes ->
+                cubes.split(" ").let { (n, color) -> color to n.toInt() }
+            }
+        }.flatten().forEach { (color, count) ->
             if (hist[color]!! < count) hist[color] = count
         }
         return hist.toList().fold(1) { acc, (_, count) -> acc * count }
