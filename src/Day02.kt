@@ -6,28 +6,23 @@ fun main() {
 
     val configuration = mapOf("red" to 12, "green" to 13, "blue" to 14)
 
-    fun tooMany(cubes: String): Boolean {
-        return cubes.split(", ").sumOf { s ->
-            val (n, color) = s.trim().split(" ")
-            val drawn = n.trim().toInt()
+    fun tooMany(cubes: String) = cubes.split(", ")
+        .sumOf { s ->
+            val (n, color) = s.split(" ")
+            val drawn = n.toInt()
             if (configuration[color]!! < drawn) drawn else 0
         } > 0
-    }
 
-    fun enoughCubes(draws: List<String>): Boolean {
-        return (draws.firstOrNull { cubes -> tooMany(cubes) } ?: "").isBlank()
-    }
+    fun enoughCubes(draws: List<String>) = (draws.firstOrNull { cubes -> tooMany(cubes) } ?: "").isBlank()
 
     fun possible(game: String): Int {
-        val (id, draws) = game.split(":")
-        return if (enoughCubes(draws.split(";"))) {
+        val (id, draws) = game.split(": ")
+        return if (enoughCubes(draws.split("; "))) {
             id.split(" ")[1].toInt()
         } else 0
     }
 
-    fun part1(input: List<String>) : Int {
-        return input.sumOf { game -> possible(game) }
-    }
+    fun part1(input: List<String>) = input.sumOf { game -> possible(game) }
 
     // PART 2
 
@@ -35,8 +30,8 @@ fun main() {
         return input.size
     }
 
-    // Test Part 1
-    val testInput1 = """
+    // Test Parts 1 & 2
+    val testInput = """
         Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
         Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
         Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
@@ -44,12 +39,8 @@ fun main() {
         Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green        
     """.trimIndent().lines()
 
-    check(part1(testInput1).also { it.println() } == 8)
-
-    // Test Part 2
-    val testInput2 = """
-        
-    """.trimIndent().lines()
+    check(part1(testInput) == 8)
+    check(part2(testInput) == 2286)
 
     // Day 2 solutions
     val input = readInput("Day02")
