@@ -1,8 +1,6 @@
 
 fun main() {
 
-    fun calibration(first: Int, second: Int): Int = first * 10 + second
-
     // PART 1
 
     fun String.firstDigit(): Char = (this.firstOrNull { it.isDigit() } ?: '0')
@@ -10,7 +8,7 @@ fun main() {
     fun String.lastDigit(): Char = (this.lastOrNull { it.isDigit() } ?: '0')
 
     fun part1(input: List<String>): Int {
-        return input.sumOf { calibration(it.firstDigit().digitToInt(), it.lastDigit().digitToInt()) }
+        return input.sumOf { it.firstDigit().digitToInt() * 10 + it.lastDigit().digitToInt() }
     }
 
     // PART 2
@@ -45,7 +43,7 @@ fun main() {
     }
 
     fun part2(input: List<String>): Int {
-        return input.sumOf { calibration(firstDigitPart2(it), secondDigitPart2(it)) }
+        return input.sumOf { firstDigitPart2(it) * 10 + secondDigitPart2(it) }
     }
 
     // Part 1 test
