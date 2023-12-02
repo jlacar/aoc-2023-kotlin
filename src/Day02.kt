@@ -1,5 +1,4 @@
-
-// Day 1 solutions
+// Day 2 solutions
 fun main() {
 
     // PART 1
@@ -26,8 +25,22 @@ fun main() {
 
     // PART 2
 
+    fun power(drawSets: String) : Int {
+        val draws = drawSets.split("; ").map { draw ->
+            draw.split(", ").map { cubes ->
+                val (n, color) = cubes.split(" ")
+                color to n.toInt()
+            }
+        }.flatten()
+        val hist = mutableMapOf("red" to 0, "blue" to 0, "green" to 0)
+        draws.forEach { (color, count) ->
+            if (hist[color]!! < count) hist[color] = count
+        }
+        return hist.toList().fold(1) { acc, (_, count) -> acc * count }
+    }
+
     fun part2(input: List<String>) : Int {
-        return input.size
+        return input.sumOf { game -> power(game.split(": ")[1]) }
     }
 
     // Test Parts 1 & 2
@@ -36,7 +49,7 @@ fun main() {
         Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
         Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
         Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
-        Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green        
+        Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
     """.trimIndent().lines()
 
     check(part1(testInput) == 8)
@@ -45,5 +58,5 @@ fun main() {
     // Day 2 solutions
     val input = readInput("Day02")
     check(part1(input) == 2600)
-//    part2(input).println()
+    check(part2(input) == 86036)
 }
