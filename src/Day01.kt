@@ -1,23 +1,7 @@
 
 fun main() {
-    val testInput1 = """
-        1abc2
-        pqr3stu8vwx
-        a1b2c3d4e5f
-        treb7uchet
-    """.trimIndent().lines()
 
-    val testInput2 = """
-        two1nine
-        eightwothree
-        abcone2threexyz
-        xtwone3four
-        4nineeightseven2
-        zoneight234
-        7pqrstsixteen
-    """.trimIndent().lines()
-
-    val digitNames = listOf("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
+    // PART 1
 
     fun String.firstDigit(): Char = (this.firstOrNull { it.isDigit() } ?: '0')
 
@@ -28,6 +12,10 @@ fun main() {
     fun part1(input: List<String>): Int {
         return input.sumOf { calibration1(it) }
     }
+
+    // PART 2
+
+    val digitNames = listOf("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
 
     fun locateFirst(digitName: String, s: String): Pair<String, Int> {
         val pos = s.indexOf(digitName)
@@ -66,9 +54,30 @@ fun main() {
         return input.sumOf { calibration2(it) }
     }
 
+    // Part 1 test
+    val testInput1 = """
+        1abc2
+        pqr3stu8vwx
+        a1b2c3d4e5f
+        treb7uchet
+    """.trimIndent().lines()
+
     check(part1(testInput1) == 142)
+
+    // Part 2 test
+    val testInput2 = """
+        two1nine
+        eightwothree
+        abcone2threexyz
+        xtwone3four
+        4nineeightseven2
+        zoneight234
+        7pqrstsixteen
+    """.trimIndent().lines()
+
     check(part2(testInput2) == 281)
 
+    // Day 1 solutions
     val input = readInput("Day01")
     check(part1(input) == 54644)
     check(part2(input) == 53348)
