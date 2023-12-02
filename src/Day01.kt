@@ -72,6 +72,6 @@ fun main() {
     check(part2(testInput2) == 281)
 
     val input = readInput("Day01")
-    part1(input).println()
-    part2(input).println()
+    check(part1(input) == 54644)
+    check(part2(input) == 53348)
 }
