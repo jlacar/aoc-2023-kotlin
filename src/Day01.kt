@@ -17,12 +17,12 @@ fun main() {
         7pqrstsixteen
     """.trimIndent().lines()
 
-    fun firstDigit(s: String) = (s.firstOrNull { it.isDigit() } ?: '0')
+    fun String.firstDigit(): Char = (this.firstOrNull { it.isDigit() } ?: '0')
 
-    fun lastDigit(s: String) = (s.lastOrNull { it.isDigit() } ?: '0')
+    fun String.lastDigit(): Char = (this.lastOrNull { it.isDigit() } ?: '0')
 
     fun part1(input: List<String>): Int {
-        return input.sumOf { firstDigit(it).digitToInt() * 10 + lastDigit(it).digitToInt() }
+        return input.sumOf { it.firstDigit().digitToInt() * 10 + it.lastDigit().digitToInt() }
     }
 
     fun part2(input: List<String>): Int {
