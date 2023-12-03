@@ -2,8 +2,8 @@ fun main() {
 
     // PART 1
 
-    fun part1(input: List<String>): Int {
-        return input.size
+    fun part1(schematic: List<String>): Int {
+        return schematic.size
     }
 
     // PART 2
