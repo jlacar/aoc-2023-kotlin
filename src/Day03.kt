@@ -2,9 +2,12 @@ fun main() {
 
     // PART 1
 
-    fun part1(schematic: List<String>): Int {
-        return schematic.size
+    fun partNumbers(chunk: List<String>) : Int {
+        val (above, line, below) = chunk
+        return 1
     }
+
+    fun part1(schematic: List<String>) = schematic.windowed(3).sumOf { partNumbers(it) }
 
     // PART 2
 
@@ -34,7 +37,6 @@ fun main() {
         .664.598..
     """.trimIndent().lines()
 
-    testInput.println()
     check(part1(bordered(testInput)) == 4361)
 
     // Day 3 Solution
