@@ -1,3 +1,5 @@
+import java.util.function.BiPredicate
+
 fun main() {
 
     fun calibrate(first: Char, last: Char) = first.digitToInt() * 10 + last.digitToInt()
@@ -14,8 +16,6 @@ fun main() {
 
     // PART 2
 
-    val digits = "123456789".map { it.toString() }
-
     val wordsToDigit = mapOf(
         "one" to '1',
         "two" to '2',
@@ -29,24 +29,22 @@ fun main() {
     )
 
     val words = wordsToDigit.keys.toList()
+    val digits = "123456789".map { it.toString() }
 
-    fun String.firstOfAny(strings: List<String>) = findAnyOf(strings) ?: Pair(length, "")
-    fun String.lastOfAny(strings: List<String>) = findLastAnyOf(strings) ?: Pair(-1, "")
-
-    fun String.firstDigitOrWord(): Char {
-        val (digitPos, digit) = firstOfAny(digits)
-        val (wordPos, word) = firstOfAny(words)
-        return if (digitPos < wordPos) digit[0] else wordsToDigit[word]!!
-    }
-
-    fun String.lastDigitOrWord(): Char {
-        val (digitPos, digit) = lastOfAny(digits)
-        val (wordPos, word) = lastOfAny(words)
-        return if (digitPos > wordPos) digit[0] else wordsToDigit[word]!!
+    fun digitOrWord(search: (List<String>) -> Pair<Int, String>, pick: BiPredicate<Int, Int>) : Char {
+        val (digitPos, digit) = search(digits)
+        val (wordPos, word) = search(words)
+        return if (pick.test(digitPos, wordPos)) digit[0] else wordsToDigit[word]!!
     }
 
     fun part2(input: List<String>) = input.sumOf {
-        calibrate(it.firstDigitOrWord(), it.lastDigitOrWord())
+        val first = digitOrWord({strings -> it.findAnyOf(strings) ?: Pair(it.length, "")},
+            { digitPos, wordPos -> digitPos < wordPos } )
+
+        val last = digitOrWord({strings -> it.findLastAnyOf(strings) ?: Pair(-1, "")},
+            { digitPos, wordPos -> digitPos > wordPos } )
+
+        calibrate(first, last)
     }
 
     // Part 1 test
