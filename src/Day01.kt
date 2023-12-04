@@ -28,19 +28,21 @@ fun main() {
         "nine" to '9',
     )
 
+    val words = wordsToDigit.keys.toList()
+
     fun String.firstOfAny(strings: List<String>) = findAnyOf(strings) ?: Pair(length, "")
     fun String.lastOfAny(strings: List<String>) = findLastAnyOf(strings) ?: Pair(-1, "")
 
     fun String.firstDigitOrWord(): Char {
-        val firstDigit = firstOfAny(digits)
-        val firstWord = firstOfAny(wordsToDigit.keys.toList())
-        return if (firstDigit.first < firstWord.first) firstDigit.second[0] else wordsToDigit[firstWord.second]!!
+        val (digitPos, digit) = firstOfAny(digits)
+        val (wordPos, word) = firstOfAny(words)
+        return if (digitPos < wordPos) digit[0] else wordsToDigit[word]!!
     }
 
     fun String.lastDigitOrWord(): Char {
-        val lastDigit = lastOfAny(digits)
-        val lastWord = lastOfAny(wordsToDigit.keys.toList())
-        return if (lastDigit.first > lastWord.first) lastDigit.second[0] else wordsToDigit[lastWord.second]!!
+        val (digitPos, digit) = lastOfAny(digits)
+        val (wordPos, word) = lastOfAny(words)
+        return if (digitPos > wordPos) digit[0] else wordsToDigit[word]!!
     }
 
     fun part2(input: List<String>) = input.sumOf {
