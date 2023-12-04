@@ -4,14 +4,10 @@ fun main() {
 
     fun calibrate(first: Char, last: Char) = first.digitToInt() * 10 + last.digitToInt()
 
-    fun String.firstDigit(): Char = this.firstOrNull { it.isDigit() } ?: '0'
-
-    fun String.lastDigit(): Char = this.lastOrNull { it.isDigit() } ?: '0'
-
     // PART 1
 
-    fun part1(input: List<String>) = input.sumOf {
-        calibrate(it.firstDigit(), it.lastDigit())
+    fun part1(input: List<String>) = input.sumOf { s ->
+        calibrate( s.first { it.isDigit() }, s.last { it.isDigit()} )
     }
 
     // PART 2
@@ -31,20 +27,23 @@ fun main() {
     val words = wordsToDigit.keys.toList()
     val digits = "123456789".map { it.toString() }
 
-    fun digitOrWord(search: (List<String>) -> Pair<Int, String>, pick: BiPredicate<Int, Int>) : Char {
-        val (digitPos, digit) = search(digits)
-        val (wordPos, word) = search(words)
-        return if (pick.test(digitPos, wordPos)) digit[0] else wordsToDigit[word]!!
+    fun String.firstOfAny(strings: List<String>) = findAnyOf(strings) ?: Pair(length, "")
+    fun String.lastOfAny(strings: List<String>) = findLastAnyOf(strings) ?: Pair(-1, "")
+
+    fun String.firstDigitOrWord(): Char {
+        val (digitPos, digit) = firstOfAny(digits)
+        val (wordPos, word) = firstOfAny(words)
+        return if (digitPos < wordPos) digit[0] else wordsToDigit[word]!!
+    }
+
+    fun String.lastDigitOrWord(): Char {
+        val (digitPos, digit) = lastOfAny(digits)
+        val (wordPos, word) = lastOfAny(words)
+        return if (digitPos > wordPos) digit[0] else wordsToDigit[word]!!
     }
 
     fun part2(input: List<String>) = input.sumOf {
-        val first = digitOrWord({strings -> it.findAnyOf(strings) ?: Pair(it.length, "")},
-            { digitPos, wordPos -> digitPos < wordPos } )
-
-        val last = digitOrWord({strings -> it.findLastAnyOf(strings) ?: Pair(-1, "")},
-            { digitPos, wordPos -> digitPos > wordPos } )
-
-        calibrate(first, last)
+        calibrate(it.firstDigitOrWord(), it.lastDigitOrWord())
     }
 
     // Part 1 test
