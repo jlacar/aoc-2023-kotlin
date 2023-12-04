@@ -1,46 +1,50 @@
-
 fun main() {
+
+    fun calibrate(first: Char, last: Char) = first.digitToInt() * 10 + last.digitToInt()
+
+    fun String.firstDigit(): Char = this.firstOrNull { it.isDigit() } ?: '0'
+
+    fun String.lastDigit(): Char = this.lastOrNull { it.isDigit() } ?: '0'
 
     // PART 1
 
-    fun String.firstDigit(): Char = (this.firstOrNull { it.isDigit() } ?: '0')
-
-    fun String.lastDigit(): Char = (this.lastOrNull { it.isDigit() } ?: '0')
-
-    fun part1(input: List<String>): Int {
-        return input.sumOf { it.firstDigit().digitToInt() * 10 + it.lastDigit().digitToInt() }
+    fun part1(input: List<String>) = input.sumOf {
+        calibrate(it.firstDigit(), it.lastDigit())
     }
 
     // PART 2
 
-    data class WordOffset(val name: String, val offset: Int)
+    val digits = "123456789".map { it.toString() }
 
-    val digitWords = listOf("zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
+    val wordsToDigit = mapOf(
+        "one" to '1',
+        "two" to '2',
+        "three" to '3',
+        "four" to '4',
+        "five" to '5',
+        "six" to '6',
+        "seven" to '7',
+        "eight" to '8',
+        "nine" to '9',
+    )
 
-    fun locateFirst(word: String, s: String): WordOffset =
-        s.indexOf(word).let { WordOffset(word, if (it < 0) s.length else it) }
+    fun String.firstOfAny(strings: List<String>) = findAnyOf(strings) ?: Pair(length, "")
+    fun String.lastOfAny(strings: List<String>) = findLastAnyOf(strings) ?: Pair(-1, "")
 
-    fun firstDigitWord(s: String): WordOffset =
-        if (s.length < 3) WordOffset(digitWords[0], s.length)
-        else digitWords.map { locateFirst(it, s) }.minBy { it.offset }
-
-    fun firstDigit2(s: String): Int = s.firstDigit().let { numeral ->
-        val firstWord = firstDigitWord(if (numeral == '0') s else s.substringBefore(numeral))
-        if (numeral == '0' || s.indexOf(numeral) > firstWord.offset) digitWords.indexOf(firstWord.name)
-        else numeral.digitToInt()
+    fun String.firstDigitOrWord(): Char {
+        val firstDigit = firstOfAny(digits)
+        val firstWord = firstOfAny(wordsToDigit.keys.toList())
+        return if (firstDigit.first < firstWord.first) firstDigit.second[0] else wordsToDigit[firstWord.second]!!
     }
 
-    fun lastDigitWord(s: String) =
-        if (s.length < 3) WordOffset(digitWords[0], -1)
-        else digitWords.map { word -> WordOffset(word, s.lastIndexOf(word)) }.maxBy { it.offset }
-
-    fun lastDigit2(s: String): Int = s.lastDigit().let { numeral ->
-        val lastWord = lastDigitWord(if (numeral == '0') s else s.substringAfterLast(numeral))
-        if (lastWord.offset < 0) numeral.digitToInt() else digitWords.indexOf(lastWord.name)
+    fun String.lastDigitOrWord(): Char {
+        val lastDigit = lastOfAny(digits)
+        val lastWord = lastOfAny(wordsToDigit.keys.toList())
+        return if (lastDigit.first > lastWord.first) lastDigit.second[0] else wordsToDigit[lastWord.second]!!
     }
 
-    fun part2(input: List<String>): Int {
-        return input.sumOf { firstDigit2(it) * 10 + lastDigit2(it) }
+    fun part2(input: List<String>) = input.sumOf {
+        calibrate(it.firstDigitOrWord(), it.lastDigitOrWord())
     }
 
     // Part 1 test
