@@ -16,7 +16,7 @@ data class Game(val id: Int, val red: Int, val green: Int, val blue: Int) {
             sets.split("; ").forEach { draw ->
                 draw.split(", ").forEach { cubes ->
                     val (n, color) = cubes.split(" ")
-                    atLeast[color] = n.toInt().let { maxOf(it, atLeast[color] ?: it)
+                    atLeast[color] = n.toInt().let { maxOf(it, atLeast[color] ?: it) }
                 }
             }
 
