@@ -2,13 +2,15 @@ import java.util.function.BiPredicate
 
 fun main() {
 
+    // DSL extensions
+    fun String.firstDigit() = this.firstOrNull { it.isDigit() } ?: '0'
+    fun String.lastDigit() = this.lastOrNull { it.isDigit() } ?: '0'
+
     fun calibrate(first: Char, last: Char) = first.digitToInt() * 10 + last.digitToInt()
 
     // PART 1
 
-    fun part1(input: List<String>) = input.sumOf { s ->
-        calibrate( s.first { it.isDigit() }, s.last { it.isDigit()} )
-    }
+    fun part1(input: List<String>) = input.sumOf { calibrate(it.firstDigit(), it.lastDigit()) }
 
     // PART 2
 
@@ -27,6 +29,7 @@ fun main() {
     val words = wordsToDigit.keys.toList()
     val digits = "123456789".map { it.toString() }
 
+    // DSL extensions
     fun String.firstOfAny(strings: List<String>) = findAnyOf(strings) ?: Pair(length, "")
     fun String.lastOfAny(strings: List<String>) = findLastAnyOf(strings) ?: Pair(-1, "")
 
@@ -51,6 +54,7 @@ fun main() {
         1abc2
         pqr3stu8vwx
         a1b2c3d4e5f
+        **badinput**
         treb7uchet
     """.trimIndent().lines()
 
@@ -64,6 +68,7 @@ fun main() {
         xtwone3four
         4nineeightseven2
         zoneight234
+        **badinput**
         7pqrstsixteen
     """.trimIndent().lines()
 
