@@ -33,13 +33,13 @@ fun main() {
     fun String.firstDigitOrWord(): Char {
         val (digitPos, digit) = firstOfAny(digits)
         val (wordPos, word) = firstOfAny(words)
-        return if (digitPos < wordPos) digit[0] else wordsToDigit[word]!!
+        return if (digitPos < wordPos) digit[0] else wordsToDigit[word] ?: '0'
     }
 
     fun String.lastDigitOrWord(): Char {
         val (digitPos, digit) = lastOfAny(digits)
         val (wordPos, word) = lastOfAny(words)
-        return if (digitPos > wordPos) digit[0] else wordsToDigit[word]!!
+        return if (digitPos > wordPos) digit[0] else wordsToDigit[word] ?: '0'
     }
 
     fun part2(input: List<String>) = input.sumOf {
