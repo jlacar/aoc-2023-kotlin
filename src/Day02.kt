@@ -41,6 +41,9 @@ fun main() {
     // PART 2
     fun part2(games: List<Game>) = games.sumOf { it.power() }
 
+    // DSL extension
+    fun List<String>.toGames() = this.map { Game.of(it) }
+
     // Test Parts 1 & 2
     val testInput = """
         Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
@@ -48,13 +51,13 @@ fun main() {
         Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
         Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
         Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
-    """.trimIndent().lines().map { Game.of(it) }
+    """.trimIndent().lines().toGames()
 
     check(part1(testInput) == 8)
     check(part2(testInput) == 2286)
 
     // Day 2 solutions
-    val games = readInput("Day02").map { Game.of(it) }
+    val games = readInput("Day02").toGames()
     check(part1(games) == 2600)
     check(part2(games) == 86036)
 }
