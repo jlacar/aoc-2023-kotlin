@@ -1,9 +1,21 @@
 fun main() {
 
+    // DSL Extensions
+    fun Char.isSymbol() = !(this.isDigit() || this == '.')
+
     // PART 1
 
     fun partNumbers(chunk: List<String>) : Int {
         val (above, line, below) = chunk
+        val symbolIndices = mutableSetOf<Int>()
+
+        chunk.forEach { it.forEachIndexed() { idx, c ->
+            if (c.isSymbol()) symbolIndices.add(idx)
+        }}
+
+        symbolIndices.println()
+        symbolIndices.forEach{ "${above[it]} ${line[it]} ${below[it]}".println() }
+
         return 1
     }
 
