@@ -30,10 +30,7 @@ fun main() {
 
     // PART 1
 
-    fun part1(input: List<String>): Int {
-        val cards = input.asCards()
-        return cards.sumOf { it.points() }
-    }
+    fun part1(input: List<String>) = input.asCards().sumOf { it.points() }
 
     // PART 2
 
