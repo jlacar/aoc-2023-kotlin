@@ -114,16 +114,16 @@ fun main() {
         ...*......
         ..35..633.
     """.trimIndent().lines()
-    check(part1(testSmallSchematic1) == 467 + 35)
-    check(part2(testSmallSchematic1) == 467 * 35)
+    check(part1(testSmallSchematic1) == 467 + 35) // plus
+    check(part2(testSmallSchematic1) == 467 * 35) // times
 
     val testSmallSchematic2 = """
         ......755.
         ...${'$'}.*....
         .664.598..
     """.trimIndent().lines()
-
-    check(part2(testSmallSchematic2) == 755 * 598)
+    check(part1(testSmallSchematic2) == 755 + 664 + 598) // plus
+    check(part2(testSmallSchematic2) == 755 * 598) // times
 
     val testSchematic = """
         467..114..
@@ -137,7 +137,7 @@ fun main() {
         ...${'$'}.*....
         .664.598..
     """.trimIndent().lines()
-
+    check(part1(testSchematic) == 4_361)
     check(part2(testSchematic) == 467_835)
 
     // Day 3 Solution
