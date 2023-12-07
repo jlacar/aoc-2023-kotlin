@@ -10,10 +10,8 @@ data class ScratchCard(val winning: Set<Int>, val cardNumbers: Set<Int>) {
     }
     companion object {
         fun of(line: String): ScratchCard {
-            val (_, ws, cns) = line.split(": ", " | ")
-            val winning = ws.asSetOfInt(" ")
-            val cardNumbers = cns.asSetOfInt(" ")
-            return ScratchCard(winning, cardNumbers)
+            val (_, winning, cardNumbers) = line.split(": ", " | ")
+            return ScratchCard(winning.asSetOfInt(" "), cardNumbers.asSetOfInt(" "))
         }
     }
 }
