@@ -4,19 +4,24 @@ data class SchematicNumber(val value: Int, val neighborIndices: Set<Int>) {
     }
 
     companion object {
-        fun on(line: String, indices: List<Int>): SchematicNumber {
+        fun of(line: String, indices: List<Int>): SchematicNumber {
             val start = indices.first()
             val end = indices.last() + 1
             val value = line.substring(start, end).toInt()
-            return SchematicNumber(value, listOf(start-1) union indices union listOf(end))
+            return SchematicNumber(value, listOf(start-1, end) union indices)
         }
     }
 }
+
+data class Gear(val ratio: Int) {}
 
 fun main() {
 
     // DSL Extensions
     fun Char.isSymbol() = this != '.' && !isDigit()
+    fun Char.isGearSymbol() = this == '*'
+
+    fun List<String>.sections() = windowed(3)
 
     // PART 1
 
@@ -45,27 +50,37 @@ fun main() {
             digitIndices
         }
 
-    fun partNumbersIn(section: List<String>) : List<SchematicNumber> {
-        val symbolIndices = symbolIndices(section)
-        val line = section[1]
-        return digitIndicesOn(line).fold(mutableListOf<SchematicNumber>()) { numbers, indices ->
-            numbers.add(SchematicNumber.on(line, indices))
+    fun numbersOn(line: String) =
+        digitIndicesOn(line).fold(mutableListOf<SchematicNumber>()) { numbers, indices ->
+            numbers.add(SchematicNumber.of(line, indices))
             numbers
-        }.filter {
+        }
+
+    fun partNumbersInSecondLineOf(section: List<String>) : List<SchematicNumber> {
+        val symbolIndices = symbolIndices(section)
+        return numbersOn(section[1]).filter {
             it.isNearAny(symbolIndices)
         }
     }
 
-    fun part1(schematic: List<String>) = schematic.windowed(3)
+    fun part1(schematic: List<String>) = schematic.sections()
         .sumOf { section ->
-            partNumbersIn(section).sumOf { it.value }
+            partNumbersInSecondLineOf(section).sumOf { it.value }
         }
 
     // PART 2
 
-    fun part2(input: List<String>): Int {
-        return input.size
+    fun gearsIn(section: List<String>): List<Gear> {
+        val starIndices = section[1].withIndex()
+            .filter { it.value.isGearSymbol() }
+            .map { it.index }
+        return listOf()
     }
+
+    fun part2(schematic: List<String>) = schematic.sections()
+        .sumOf { section ->
+            gearsIn(section).sumOf { it.ratio }
+        }
 
     // Util
 
@@ -76,7 +91,7 @@ fun main() {
 
     // Tests
 
-    val testInput = """
+    val testSchematic = """
         467..114..
         ...*......
         ..35..633.
@@ -89,7 +104,8 @@ fun main() {
         .664.598..
     """.trimIndent().lines()
 
-    check(part1(bordered(testInput)) == 4361)
+    check(part1(bordered(testSchematic)) == 4361)
+//    check(part2(testSchematic) == 437_835)
 
     // Day 3 Solution
     val schematic = bordered(readInput("Day03"))
