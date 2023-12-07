@@ -1,14 +1,16 @@
 // --- Day 4: Scratchcards ---
 
 // Having a data class can help organize code and logic
-// data class DomainConcept(val prop1, val prop2) {
-//
-//      companion object {
-//          fun of(..) {
-//              return DomainConcept(..)
-//          }
-//      }
-// }
+data class ScratchCard(val winning: List<Int>, val cardNumbers: List<Int>) {
+
+  companion object {
+      fun of(line: String): ScratchCard {
+          val winning = listOf<Int>()
+          val cardNumbers = listOf<Int>()
+          return ScratchCard(winning, cardNumbers)
+      }
+  }
+}
 
 fun main() {
 
