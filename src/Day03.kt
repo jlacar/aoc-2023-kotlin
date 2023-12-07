@@ -1,7 +1,7 @@
-data class SchematicNumber(val value: Int, val neighborIndices: Set<Int>) {
-    fun isNearAny(symbolIndices: List<Int>) = (symbolIndices intersect neighborIndices).isNotEmpty()
+data class SchematicNumber(val value: Int, val nearbyIndices: Set<Int>) {
+    fun isNearAny(symbolIndices: List<Int>) = (symbolIndices intersect nearbyIndices).isNotEmpty()
 
-    fun isNear(index: Int): Boolean = (listOf(index) intersect neighborIndices).isNotEmpty()
+    fun isNear(index: Int): Boolean = isNearAny(listOf(index))
 
     companion object {
         fun of(line: String, indices: List<Int>): SchematicNumber {
@@ -21,6 +21,7 @@ fun main() {
     fun Char.isSymbol() = this != '.' && !isDigit()
     fun Char.isGearSymbol() = this == '*'
 
+    // schematic is processed in 3-line sections
     fun List<String>.sections() = windowed(3)
 
     // PART 1
@@ -68,12 +69,11 @@ fun main() {
      * data.
      *
      * This is a utility function to aid the windowing logic for
-     * Part 1. Adding the lines of '.'s at the beginning and
-     * end of the schematic doesn't change the result but makes
-     * it easier to deal with the edge case when windowing over
-     * the lines.
+     * Part 1. Adding the lines of '.'s at the start and end of
+     * the schematic doesn't change the result but makes it easier
+     * to deal with the edge case when windowing over the lines.
      *
-     * This is only need for Part 1. Part 2 can use the data as-is.
+     * Only needed for Part 1; Part 2 can use the data as-is.
      */
     fun bordered(raw: List<String>): List<String> {
         val border = ".".repeat(raw[0].length)
