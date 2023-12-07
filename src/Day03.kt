@@ -1,25 +1,65 @@
+data class SchematicNumber(val value: Int, val neighborIndices: Set<Int>) {
+    fun isNearAny(symbolIndices: List<Int>): Boolean {
+        return (symbolIndices intersect neighborIndices).isNotEmpty();
+    }
+
+    companion object {
+        fun on(line: String, indices: List<Int>): SchematicNumber {
+            val start = indices.first()
+            val end = indices.last() + 1
+            val value = line.substring(start, end).toInt()
+            return SchematicNumber(value, listOf(start-1) union indices union listOf(end))
+        }
+    }
+}
+
 fun main() {
 
     // DSL Extensions
-    fun Char.isSymbol() = !(this.isDigit() || this == '.')
+    fun Char.isSymbol() = this != '.' && !isDigit()
 
     // PART 1
 
-    fun partNumbers(chunk: List<String>) : Int {
-        val (above, line, below) = chunk
-        val symbolIndices = mutableSetOf<Int>()
+    fun symbolIndices(section: List<String>): List<Int> =
+        section.fold(mutableSetOf<Int>()) { locations, line ->
+            line.forEachIndexed { index, ch -> if (ch.isSymbol()) locations.add(index) }
+            locations
+        }.toList()
 
-        chunk.forEach { it.forEachIndexed() { idx, c ->
-            if (c.isSymbol()) symbolIndices.add(idx)
-        }}
+    fun isNewGroup(index: Int, groups: MutableList<MutableList<Int>>) =
+        groups.isEmpty() || groups.last().last() != index - 1
 
-        symbolIndices.println()
-        symbolIndices.forEach{ "${above[it]} ${line[it]} ${below[it]}".println() }
-
-        return 1
+    fun addDigitIndex(index: Int, groups: MutableList<MutableList<Int>>) {
+        if (isNewGroup(index, groups)) {
+            groups.add(mutableListOf(index))
+        } else {
+            groups.last().add(index)
+        }
     }
 
-    fun part1(schematic: List<String>) = schematic.windowed(3).sumOf { partNumbers(it) }
+    fun digitIndicesOn(line: String): List<MutableList<Int>> =
+        line.foldIndexed(mutableListOf()) { i, digitIndices, ch ->
+            if (ch.isDigit()) {
+                addDigitIndex(i, digitIndices)
+            }
+            digitIndices
+        }
+
+    fun partNumbersIn(section: List<String>) : List<SchematicNumber> {
+        val symbolIndices = symbolIndices(section)
+        val line = section[1]
+        return digitIndicesOn(line).fold(mutableListOf<SchematicNumber>()) { numbers, indices ->
+            numbers.add(SchematicNumber.on(line, indices))
+            numbers
+        }.filter {
+            it.isNearAny(symbolIndices)
+        }
+    }
+
+    fun part1(schematic: List<String>) = schematic.windowed(3)
+        .sumOf { section ->
+            partNumbersIn(section).sumOf { it.value }
+        }
 
     // PART 2
 
@@ -52,7 +92,7 @@ fun main() {
     check(part1(bordered(testInput)) == 4361)
 
     // Day 3 Solution
-//    val input = bordered(readInput("Day03"))
-//    println(part1(input))
+    val schematic = bordered(readInput("Day03"))
+    check(part1(schematic) == 528_799)
 //    println(part2(input))
 }
