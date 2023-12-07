@@ -65,15 +65,14 @@ fun main() {
     """.trimIndent().lines()
     check(part2(testSampleFromAoC2) == 1)
 
-    // Problem Solution
+    // SOLUTION
 
     val input = readInput("Day04")
+    check(22_193 == part1(input).also { "Part 1 --> $it".println() })
 
-//    "Part 1 --> ${part1(input)}".println()
-    check(part1(input) == 22_193)
-
-    "Part 2 --> ${part2(input)}".println()
-//    check(part2(input) == ???).also { it.println() }
+//    check(expected? ==
+    part2(input).also { "Part 2 --> $it".println() }
+//    )
 
     "That's it!".println()
 }
