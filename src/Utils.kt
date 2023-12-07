@@ -19,3 +19,9 @@ fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteA
  * The cleaner shorthand for printing output.
  */
 fun Any?.println() = println(this)
+
+/**
+ * To assist parsing lines of input
+ */
+fun String.asSetOfInt(vararg delimiters: String): Set<Int> =
+    this.split(*delimiters).filter { it.isNotBlank() }.map { it.toInt() }.toSet()

@@ -16,15 +16,10 @@ data class ScratchCard(val winning: Set<Int>, val cardNumbers: Set<Int>) {
     }
 }
 
-fun String.asSetOfInt(vararg delimiters: String): Set<Int> =
-    this.split(*delimiters).filter { it.isNotBlank() }.map { it.toInt() }.toSet()
-
 fun main() {
 
     // DSL Extensions
-    fun List<String>.asCards(): List<ScratchCard> {
-        return map { ScratchCard.of(it) }
-    }
+    fun List<String>.asCards(): List<ScratchCard> = map { ScratchCard.of(it) }
 
     // PART 1
 
@@ -70,14 +65,15 @@ fun main() {
     """.trimIndent().lines()
     check(part2(testSampleFromAoC2) == 1)
 
-    // Day X Solution
+    // Problem Solution
+
     val input = readInput("Day04")
 
-    check(part1(input) == 22_193)
 //    "Part 1 --> ${part1(input)}".println()
+    check(part1(input) == 22_193)
 
-//    check(part2(input) == ???).also { it.println() }
     "Part 2 --> ${part2(input)}".println()
+//    check(part2(input) == ???).also { it.println() }
 
     "That's it!".println()
 }
