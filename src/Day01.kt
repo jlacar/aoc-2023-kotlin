@@ -8,24 +8,15 @@ fun main() {
 
     // PART 1
 
-    fun part1(input: List<String>) = input.sumOf { calibrate(it.firstDigit(), it.lastDigit()) }
+    fun part1(input: List<String>) = input.sumOf {
+        calibrate(it.firstDigit(), it.lastDigit())
+    }
 
     // PART 2
 
-    val wordsToDigit = mapOf(
-        "one" to '1',
-        "two" to '2',
-        "three" to '3',
-        "four" to '4',
-        "five" to '5',
-        "six" to '6',
-        "seven" to '7',
-        "eight" to '8',
-        "nine" to '9',
-    )
-
-    val words = wordsToDigit.keys.toList()
+    val words = "one two three four five six seven eight nine".split(" ")
     val digits = "123456789".map { it.toString() }
+    val wordsToDigit = words.zip(digits.map { it.first() }).toMap()
 
     // DSL extensions
     fun String.firstOfAny(strings: List<String>) = findAnyOf(strings) ?: Pair(length, "")
@@ -74,8 +65,14 @@ fun main() {
 
     // Day 1 solutions
     val input = readInput("Day01")
-    check(part1(input) == 54644)
-    check(part2(input) == 53348)
+
+    check( 54_644 ==
+        part1(input).also { "Part 1 -> $it".println() }
+    )
+
+    check( 53_348 ==
+        part2(input).also { "Part 2 -> $it".println() }
+    )
 
     "Solved it!".println()
 }
