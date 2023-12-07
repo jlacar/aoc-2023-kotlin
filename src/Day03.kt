@@ -63,7 +63,18 @@ fun main() {
         }
     }
 
-    // Util
+    /**
+     * Adds 'empty' lines at the beginning and end of the schematic
+     * data.
+     *
+     * This is a utility function to aid the windowing logic for
+     * Part 1. Adding the lines of '.'s at the beginning and
+     * end of the schematic doesn't change the result but makes
+     * it easier to deal with the edge case when windowing over
+     * the lines.
+     *
+     * This is only need for Part 1. Part 2 can use the data as-is.
+     */
     fun bordered(raw: List<String>): List<String> {
         val border = ".".repeat(raw[0].length)
         return listOf(border) + raw + border
