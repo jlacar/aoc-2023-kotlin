@@ -80,7 +80,6 @@ fun main() {
             .map { it.index }
 
         val numbersInSection = numbersIn(section)
-            .also { it.println() }
 
         return starIndices.fold(mutableListOf<Gear>()) { gears, i ->
             val adjacentNumbers = numbersInSection.filter { it.isNear(i) }
@@ -110,7 +109,7 @@ fun main() {
         ..35..633.
     """.trimIndent().lines()
     check(part1(bordered(testSmallSchematic1)) == 467 + 35)
-    check(part2(testSmallSchematic1) == 16345)
+    check(part2(testSmallSchematic1) == 467 * 35)
 
     val testSmallSchematic2 = """
         ......755.
@@ -118,7 +117,7 @@ fun main() {
         .664.598..
     """.trimIndent().lines()
 
-    check(part2(testSmallSchematic2) == 451490)
+    check(part2(testSmallSchematic2) == 755 * 598)
 
     val testSchematic = """
         467..114..
