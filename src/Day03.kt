@@ -87,10 +87,12 @@ fun main() {
         .filter { it.value.isGearSymbol() }
         .map { it.index }
 
+    fun qualifiesAsGear(adjacentNumbers: List<SchematicNumber>) = adjacentNumbers.size == 2
+
     fun listOfGears(starIndices: List<Int>, numbersInSection: List<SchematicNumber>) =
         starIndices.fold(mutableListOf<Gear>()) { gears, i ->
             val adjacentNumbers = numbersInSection.filter { it.isNear(i) }
-            if (adjacentNumbers.size == 2) {
+            if (qualifiesAsGear(adjacentNumbers)) {
                 gears.add(Gear(ratioOf(adjacentNumbers)))
             }
             gears
