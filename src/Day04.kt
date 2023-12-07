@@ -15,10 +15,14 @@ data class ScratchCard(val winning: List<Int>, val cardNumbers: List<Int>) {
 fun main() {
 
     // DSL Extensions
+    fun List<String>.asCards(): List<ScratchCard> {
+        return emptyList()
+    }
 
     // PART 1
 
     fun part1(input: List<String>): Int {
+        val cards = input.asCards()
         return input.size
     }
 
