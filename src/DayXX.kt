@@ -2,7 +2,7 @@
 // data class DomainConcept(val prop1, val prop2) {
 //
 //      companion object {
-//          fun of(..) {
+//          fun of(input: String): DomainConcept {
 //              return DomainConcept(..)
 //          }
 //      }
@@ -49,14 +49,17 @@ fun main() {
     """.trimIndent().lines()
     check(part2(testSampleFromAoC2) == 1)
 
-    // Day X Solution
+    // SOLUTION
+
     val input = readInput("DayXX")
 
-//    check(part1(input) == ???).also { it.println() }
-    "Part 1 --> ${part1(input)}".println()
+//    check(expected? ==
+    part1(input).also { "Part 1 --> $it".println() }
+//    )
 
-//    check(part2(input) == ???).also { it.println() }
-    "Part 2 --> ${part2(input)}".println()
+//    check(expected? ==
+    part2(input).also { "Part 2 --> $it".println() }
+//    )
 
     "That's it!".println()
 }
