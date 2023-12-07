@@ -74,6 +74,9 @@ fun main() {
         return section.flatMap { line -> numbersOn(line) }
     }
 
+    fun ratioOf(adjacentNumbers: List<SchematicNumber>) =
+        adjacentNumbers.map { it.value }.reduce { acc, n -> acc * n }
+
     fun gearsIn(section: List<String>): List<Gear> {
         val starIndices = section[1].withIndex()
             .filter { it.value.isGearSymbol() }
@@ -84,7 +87,7 @@ fun main() {
         return starIndices.fold(mutableListOf<Gear>()) { gears, i ->
             val adjacentNumbers = numbersInSection.filter { it.isNear(i) }
             if (adjacentNumbers.size == 2) {
-                gears.add(Gear(adjacentNumbers.map { it.value }.reduce { acc, n -> acc * n }))
+                gears.add(Gear(ratioOf(adjacentNumbers)))
             }
             gears
         }
