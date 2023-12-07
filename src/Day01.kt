@@ -1,5 +1,3 @@
-import java.util.function.BiPredicate
-
 fun main() {
 
     // DSL extensions
@@ -78,4 +76,6 @@ fun main() {
     val input = readInput("Day01")
     check(part1(input) == 54644)
     check(part2(input) == 53348)
+
+    "Solved it!".println()
 }

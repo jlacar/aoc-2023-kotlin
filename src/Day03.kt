@@ -157,4 +157,6 @@ fun main() {
     val schematic = readInput("Day03")
     check(part1(schematic) == 528_799)
     check(part2(schematic) == 84_907_174)
+
+    "Solved it!".println()
 }

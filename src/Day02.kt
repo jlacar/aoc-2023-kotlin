@@ -60,4 +60,6 @@ fun main() {
     val games = readInput("Day02").toGames()
     check(part1(games) == 2600)
     check(part2(games) == 86036)
+
+    "Solved it!".println()
 }
