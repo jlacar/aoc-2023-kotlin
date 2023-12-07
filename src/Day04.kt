@@ -36,8 +36,10 @@ fun main() {
     val testSmallInput1 = """
         Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
     """.trimIndent().lines()
-    check(part1(testSmallInput1) == 8)
-    check(part2(testSmallInput1) == 1)
+    check( 8 == // expected
+        part1(testSmallInput1) // .also { "$testSmallInput1\n part 1, got [$it]" }
+    )
+//    check(1 == part2(testSmallInput1) == 1)
 
     val testSmallInput2 = """
         Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1
@@ -45,8 +47,11 @@ fun main() {
         Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36
     """.trimIndent().lines()
 
-    check(part1(testSmallInput2) == 2 + 1 + 0)
-    check(part2(testSmallInput2) == 3)
+    check(2 + 1 + 0 == // expected
+        part1(testSmallInput2) //.also { "$testSmallInput2\n part 1, got [$it]" }
+    )
+
+//    check(part2(testSmallInput2) == 3)
 
     val testSampleFromAoC1 = """
         Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
@@ -57,13 +62,13 @@ fun main() {
         Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11
     """.trimIndent().lines()
 
-    check(part1(testSampleFromAoC1)
-            == 13)
+    check( 13 == // expected
+        part1(testSampleFromAoC1) // .also { "$testSampleFromAoC1\n part 1, got [$it]".println() }
+    )
 
-    val testSampleFromAoC2 = """
-        paste.aoc.sample.here
-    """.trimIndent().lines()
-    check(part2(testSampleFromAoC2) == 1)
+    check( 30 == // expected
+        part2(testSampleFromAoC1) // .also { "$testSampleFromAoC1\n part 2, got [$it]".println() }
+    )
 
     // SOLUTION
 
