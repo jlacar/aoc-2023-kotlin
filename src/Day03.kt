@@ -1,7 +1,7 @@
 data class SchematicNumber(val value: Int, val neighborIndices: Set<Int>) {
-    fun isNearAny(symbolIndices: List<Int>): Boolean {
-        return (symbolIndices intersect neighborIndices).isNotEmpty();
-    }
+    fun isNearAny(symbolIndices: List<Int>) = (symbolIndices intersect neighborIndices).isNotEmpty()
+
+    fun isNear(index: Int): Boolean = (listOf(index) intersect neighborIndices).isNotEmpty()
 
     companion object {
         fun of(line: String, indices: List<Int>): SchematicNumber {
@@ -70,11 +70,25 @@ fun main() {
 
     // PART 2
 
+    fun numbersIn(section: List<String>): List<SchematicNumber> {
+        return section.flatMap { line -> numbersOn(line) }
+    }
+
     fun gearsIn(section: List<String>): List<Gear> {
         val starIndices = section[1].withIndex()
             .filter { it.value.isGearSymbol() }
             .map { it.index }
-        return listOf()
+
+        val numbersInSection = numbersIn(section)
+            .also { it.println() }
+
+        return starIndices.fold(mutableListOf<Gear>()) { gears, i ->
+            val adjacentNumbers = numbersInSection.filter { it.isNear(i) }
+            if (adjacentNumbers.size == 2) {
+                gears.add(Gear(adjacentNumbers.map { it.value }.reduce { acc, n -> acc * n }))
+            }
+            gears
+        }
     }
 
     fun part2(schematic: List<String>) = schematic.sections()
@@ -83,13 +97,28 @@ fun main() {
         }
 
     // Util
-
     fun bordered(raw: List<String>): List<String> {
         val border = ".".repeat(raw[0].length)
         return listOf(border) + raw + border
     }
 
     // Tests
+
+    val testSmallSchematic1 = """
+        467..114..
+        ...*......
+        ..35..633.
+    """.trimIndent().lines()
+    check(part1(bordered(testSmallSchematic1)) == 467 + 35)
+    check(part2(testSmallSchematic1) == 16345)
+
+    val testSmallSchematic2 = """
+        ......755.
+        ...${'$'}.*....
+        .664.598..
+    """.trimIndent().lines()
+
+    check(part2(testSmallSchematic2) == 451490)
 
     val testSchematic = """
         467..114..
@@ -104,11 +133,10 @@ fun main() {
         .664.598..
     """.trimIndent().lines()
 
-    check(part1(bordered(testSchematic)) == 4361)
-//    check(part2(testSchematic) == 437_835)
+    check(part2(testSchematic) == 467_835)
 
     // Day 3 Solution
     val schematic = bordered(readInput("Day03"))
     check(part1(schematic) == 528_799)
-//    println(part2(input))
+    check(part2(schematic) == 84_907_174)
 }
