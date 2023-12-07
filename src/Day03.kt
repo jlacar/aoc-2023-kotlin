@@ -63,7 +63,13 @@ fun main() {
         }
     }
 
-    fun part1(schematic: List<String>) = schematic.sections()
+    // Util
+    fun bordered(raw: List<String>): List<String> {
+        val border = ".".repeat(raw[0].length)
+        return listOf(border) + raw + border
+    }
+
+    fun part1(schematic: List<String>) = bordered(schematic).sections()
         .sumOf { section ->
             partNumbersInSecondLineOf(section).sumOf { it.value }
         }
@@ -101,12 +107,6 @@ fun main() {
             gearsIn(section).sumOf { it.ratio }
         }
 
-    // Util
-    fun bordered(raw: List<String>): List<String> {
-        val border = ".".repeat(raw[0].length)
-        return listOf(border) + raw + border
-    }
-
     // Tests
 
     val testSmallSchematic1 = """
@@ -114,7 +114,7 @@ fun main() {
         ...*......
         ..35..633.
     """.trimIndent().lines()
-    check(part1(bordered(testSmallSchematic1)) == 467 + 35)
+    check(part1(testSmallSchematic1) == 467 + 35)
     check(part2(testSmallSchematic1) == 467 * 35)
 
     val testSmallSchematic2 = """
@@ -141,7 +141,7 @@ fun main() {
     check(part2(testSchematic) == 467_835)
 
     // Day 3 Solution
-    val schematic = bordered(readInput("Day03"))
+    val schematic = readInput("Day03")
     check(part1(schematic) == 528_799)
     check(part2(schematic) == 84_907_174)
 }
