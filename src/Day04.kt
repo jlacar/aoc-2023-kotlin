@@ -34,9 +34,14 @@ fun main() {
 
     // PART 2
 
-    fun part2(input: List<String>): Int {
-        return 30
+    fun List<ScratchCard>.processWins(): List<Int> {
+        return List<Int>(6) { it }
     }
+
+    fun part2(input: List<String>): Int = input.also { "input -> $it".println() }
+        .asCards().also { "asCards() -> $it".println()}
+        .processWins().also { "processWins() -> $it".println() }
+        .size
 
     // Tests
 
@@ -74,7 +79,7 @@ fun main() {
     )
 
     check( 30 == // expected
-        part2(testSampleFromAoC1) // .also { "$testSampleFromAoC1\n part 2, got [$it]".println() }
+        part2(testSampleFromAoC1).also { "Part 2 (test AoC sample), got [$it]".println() }
     )
 
     // SOLUTION
@@ -88,3 +93,4 @@ fun main() {
 
     "That's it!".println()
 }
+
