@@ -7,7 +7,7 @@ data class ScratchCard(val id: Int, val winning: Set<Int>, val picks: Set<Int>) 
     fun matchingPicks(): Set<Int> = winning intersect picks
 
     fun points(): Int = matchingPicks().size.let { n ->
-        if (n == 0) 0 else 2.0.pow(n - 1).toInt()
+        if (n > 0) 2.0.pow(n - 1).toInt() else 0
     }
 
     companion object {
