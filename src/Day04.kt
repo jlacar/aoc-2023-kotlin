@@ -4,8 +4,12 @@ import kotlin.math.pow
 
 // Logical representation of one line in the input
 data class ScratchCard(val id: Int, val winning: Set<Int>, val picks: Set<Int>) {
-    fun points(): Int = (winning intersect picks).size
-        .let { n -> if (n == 0) 0 else 2.0.pow(n - 1).toInt() }
+    /** Counts how many picks match winning numbers */
+    fun matching(): Int = (winning intersect picks).size
+
+    fun points(): Int = matching().let { n ->
+        if (n == 0) 0 else 2.0.pow(n - 1).toInt()
+    }
 
     companion object {
         fun of(line: String): ScratchCard {
