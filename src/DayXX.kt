@@ -42,12 +42,26 @@ fun main() {
     val testSampleFromAoC1 = """
         paste.aoc.sample.here
     """.trimIndent().lines()
-    check(part1(testSampleFromAoC1) == 1)
+
+    // Debug
+    val expected = 2
+    val actual = part1(testSampleFromAoC1)
+    check(expected == actual) {
+        """
+            FAILED Part 1 
+            input -> $testSampleFromAoC1
+            expected [$expected]
+            got [$actual]
+        """.trimIndent()
+    }
 
     val testSampleFromAoC2 = """
         paste.aoc.sample.here
     """.trimIndent().lines()
     check(part2(testSampleFromAoC2) == 1)
+
+    // If you get to this point, you're ready for a solution run
+    check(false) { "All tests PASSED! Disable all debug .also before solution run!"}
 
     // SOLUTION
 
