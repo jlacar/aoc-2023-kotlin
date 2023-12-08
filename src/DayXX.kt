@@ -51,7 +51,7 @@ fun main() {
             FAILED Part 1 
             input -> $testSampleFromAoC1
             expected [$expected]
-            got [$actual]
+            but got  [$actual]
         """.trimIndent()
     }
 
