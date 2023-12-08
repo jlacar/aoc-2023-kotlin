@@ -3,21 +3,21 @@ import kotlin.math.pow
 // --- Day 4: Scratchcards ---
 
 // Logical representation of one line in the input
-data class ScratchCard(val id: Int, val winning: Set<Int>, val picks: Set<Int>) {
-    fun matchingPicks(): Set<Int> = winning intersect picks
+data class ScratchCard(val id: Int, val winners: Set<Int>, val numbers: Set<Int>) {
+    fun matchingNumbers(): Set<Int> = winners intersect numbers
 
-    fun points(): Int = matchingPicks().size.let { n ->
+    fun points(): Int = matchingNumbers().size.let { n ->
         if (n > 0) 2.0.pow(n - 1).toInt() else 0
     }
 
     companion object {
         fun of(line: String): ScratchCard {
-            val (label, winning, picks) = line.split(": ", " | ")
+            val (label, winners, numbers) = line.split(": ", " | ")
             val id = label.substringAfterLast(" ").toInt()
             return ScratchCard(
                 id,
-                winning.asSetOfInt(" "),
-                picks.asSetOfInt(" ")
+                winners.asSetOfInt(" "),
+                numbers.asSetOfInt(" ")
             )
         }
     }
