@@ -3,21 +3,19 @@ import kotlin.math.pow
 // --- Day 4: Scratchcards ---
 
 // Logical representation of one line in the input
-data class ScratchCard(val id: Int, val winners: Set<Int>, val numbers: Set<Int>) {
-    fun matchingNumbers(): Set<Int> = winners intersect numbers
-
-    fun points(): Int = matchingNumbers().size.let { n ->
-        if (n > 0) 2.0.pow(n - 1).toInt() else 0
-    }
-
+data class ScratchCard(val id: Int, val points: Int, val matchingNumbers: Int) {
     companion object {
-        fun of(line: String): ScratchCard {
+        fun parse(line: String): ScratchCard {
             val (label, winners, numbers) = line.split(": ", " | ")
             val id = label.substringAfterLast(" ").toInt()
+            val matchingNumbers = (
+                    winners.asSetOfInt(" ") intersect numbers.asSetOfInt(" ")
+                ).size
+
             return ScratchCard(
                 id,
-                winners.asSetOfInt(" "),
-                numbers.asSetOfInt(" ")
+                points = if (matchingNumbers > 0) 2.0.pow(matchingNumbers - 1).toInt() else 0,
+                matchingNumbers
             )
         }
     }
@@ -26,11 +24,11 @@ data class ScratchCard(val id: Int, val winners: Set<Int>, val numbers: Set<Int>
 fun main() {
 
     // DSL Extensions
-    fun List<String>.asCards(): List<ScratchCard> = map { ScratchCard.of(it) }
+    fun List<String>.asCards(): List<ScratchCard> = map { ScratchCard.parse(it) }
 
     // PART 1
 
-    fun part1(input: List<String>) = input.asCards().sumOf { it.points() }
+    fun part1(input: List<String>) = input.asCards().sumOf { it.points }
 
     // PART 2
 
@@ -39,20 +37,23 @@ fun main() {
             for (i in 1..originalStackSize) {
                 put(i, 1)
             }
-        }
+        }.toMutableMap()
 
     fun List<ScratchCard>.processWins(): List<Int> {
         val cardCounts = initializeCardCounts(size)
-//        forEach { card ->
-//
-//        }
+        forEach { card ->
+            val additionalCards = cardCounts[card.id] ?: 0
+            for (i in card.id + 1..minOf(size, card.id + card.matchingNumbers)) {
+                cardCounts[i] = cardCounts[i]!!.plus(additionalCards)
+            }
+        }
         return cardCounts.values.toList()
     }
 
     fun part2(input: List<String>): Int =
-        input               .also { "input         -> $it".println() }
-          .asCards()        .also { "asCards()     -> $it".println() }
-          .processWins()    .also { "processWins() -> $it".println() }
+        input               //.also { "input         -> $it".println() }
+          .asCards()        //.also { "asCards()     -> $it".println() }
+          .processWins()    //.also { "processWins() -> $it".println() }
           .sum()
 
     // Tests
@@ -88,8 +89,24 @@ fun main() {
         part1(testSampleFromAoC1)
     ) { "You broke it!" }
 
-    val expected = 30
-    val actual = part2(testSampleFromAoC1)
+    val testPart2SmallSample1 = """
+        Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
+        Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
+    """.trimIndent().lines()
+
+    var expected = 3
+    var actual = part2(testPart2SmallSample1)
+    check(expected == actual) {
+        """
+            FAILED Part 2 
+            input -> $testPart2SmallSample1
+            expected [$expected]
+            but got  [$actual]
+        """.trimIndent()
+    }
+
+    expected = 30
+    actual = part2(testSampleFromAoC1)
     check(expected == actual) {
         """
             FAILED Part 2 
@@ -99,17 +116,20 @@ fun main() {
         """.trimIndent()
     }
 
-    // If you get to this point, you're ready for a solution run
-    check(false) { "All tests PASSED! Disable all debug .also before solution run!"}
+    // If you get to this point, you're ready for a solution run;
+    // change to false if debugging or refactoring
+    check(true) { "All tests PASSED! Disable all debug .also before solution run!"}
 
     // SOLUTION
 
     val input = readInput("Day04")
-    check(22_193 == part1(input).also { "Part 1 --> $it".println() })
+    check(22_193 ==
+        part1(input).also { "Part 1 --> $it".println() }
+    ) { "You broke it!" }
 
-//    check(expected? ==
-    part2(input).also { "Part 2 --> $it".println() }
-//    )
+    check(5_625_994 ==
+        part2(input).also { "Part 2 --> $it".println() }
+    ) { "You broke it!" }
 
     "That's it!".println()
 }
