@@ -34,24 +34,36 @@ fun main() {
 
     // PART 2
 
+    fun initializeCardCounts(originalStackSize: Int) =
+        buildMap {
+            for (i in 1..originalStackSize) {
+                put(i, 1)
+            }
+        }
+
     fun List<ScratchCard>.processWins(): List<Int> {
-        return List<Int>(6) { 5 }
+        val cardCounts = initializeCardCounts(size)
+//        forEach { card ->
+//
+//        }
+        return cardCounts.values.toList()
     }
 
-    fun part2(input: List<String>): Int = input.also { "input -> $it".println() }
-        .asCards().also { "asCards() -> $it".println()}
-        .processWins().also { "processWins() -> $it".println() }
-        .sum()
+    fun part2(input: List<String>): Int =
+        input               .also { "input         -> $it".println() }
+          .asCards()        .also { "asCards()     -> $it".println() }
+          .processWins()    .also { "processWins() -> $it".println() }
+          .sum()
 
     // Tests
 
     val testSmallInput1 = """
         Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
     """.trimIndent().lines()
-    check( 8 == // expected
-        part1(testSmallInput1) // .also { "$testSmallInput1\n part 1, got [$it]" }
-    )
-//    check(1 == part2(testSmallInput1) == 1)
+
+    check(8 ==
+        part1(testSmallInput1)
+    ) { "You broke it!" }
 
     val testSmallInput2 = """
         Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1
@@ -59,11 +71,9 @@ fun main() {
         Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36
     """.trimIndent().lines()
 
-    check(2 + 1 + 0 == // expected
-        part1(testSmallInput2) //.also { "$testSmallInput2\n part 1, got [$it]" }
-    )
-
-//    check(part2(testSmallInput2) == 3)
+    check(2 + 1 + 0 ==
+        part1(testSmallInput2)
+    ) { "You broke it!" }
 
     val testSampleFromAoC1 = """
         Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
@@ -74,16 +84,23 @@ fun main() {
         Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11
     """.trimIndent().lines()
 
-    check( 13 == // expected
-        part1(testSampleFromAoC1) // .also { "$testSampleFromAoC1\n part 1, got [$it]".println() }
-    )
+    check(13 ==
+        part1(testSampleFromAoC1)
+    ) { "You broke it!" }
 
-    check( 30 == // expected
-        part2(testSampleFromAoC1).also { "Part 2 (test AoC sample), got [$it]".println() }
-    )
+    val expected = 30
+    val actual = part2(testSampleFromAoC1)
+    check(expected == actual) {
+        """
+            FAILED Part 2 
+            input -> $testSampleFromAoC1
+            expected [$expected]
+            but got  [$actual]
+        """.trimIndent()
+    }
 
-    val areDebugStatementsDisabled = false
-    check( areDebugStatementsDisabled.also { "Ready for part 2 solution run: Disable debug statements first!".println() } )
+    // If you get to this point, you're ready for a solution run
+    check(false) { "All tests PASSED! Disable all debug .also before solution run!"}
 
     // SOLUTION
 
