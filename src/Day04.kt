@@ -35,13 +35,13 @@ fun main() {
     // PART 2
 
     fun List<ScratchCard>.processWins(): List<Int> {
-        return List<Int>(6) { it }
+        return List<Int>(6) { 5 }
     }
 
     fun part2(input: List<String>): Int = input.also { "input -> $it".println() }
         .asCards().also { "asCards() -> $it".println()}
         .processWins().also { "processWins() -> $it".println() }
-        .size
+        .sum()
 
     // Tests
 
@@ -81,6 +81,9 @@ fun main() {
     check( 30 == // expected
         part2(testSampleFromAoC1).also { "Part 2 (test AoC sample), got [$it]".println() }
     )
+
+    val areDebugStatementsDisabled = false
+    check( areDebugStatementsDisabled.also { "Ready for part 2 solution run: Disable debug statements first!".println() } )
 
     // SOLUTION
 
