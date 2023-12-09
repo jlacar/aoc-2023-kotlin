@@ -56,12 +56,14 @@ class Day05(val seeds: List<Long>, val almanac: List<AlmanacMapping>) {
 
         private fun almanacFrom(input: List<String>): List<AlmanacMapping> {
             val mappings = mutableListOf<AlmanacMapping>()
-            var nextMapIndex = 2
-            while (nextMapIndex < input.lastIndex ) {
-                val nextMapInput = input.subList(nextMapIndex, input.size).takeWhile { it.isNotBlank() }
-                nextMapIndex += (nextMapInput.size + 1)
-
-                mappings.add(AlmanacMapping.parse(nextMapInput))
+            var nextMapStartIndex = 2
+            while (nextMapStartIndex < input.lastIndex) {
+                mappings.add(AlmanacMapping.parse(
+                    input.subList(nextMapStartIndex, input.size)
+                        .takeWhile { it.isNotBlank() }
+                        .also { nextMapStartIndex += (it.size + 1) }
+                    )
+                )
             }
             return mappings.toList()
         }
