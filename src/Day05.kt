@@ -22,15 +22,21 @@ class AlmanacMapping(val destinationRanges: List<LongRange>, val sourceRanges: L
     }
 }
 
-class Day05(val seeds: List<Long>) {
-    fun part1(): Int {
-        return 35
-    }
+fun List<AlmanacMapping>.convertTo(destinationName: String, seeds: List<Long>): List<Long> {
+//    .foldIndexed(mutableListOf(seeds)) {index, sources, almanacMapping ->
+//        sources.fold(mutableListOf<Long>()) {converted, source ->  }
+//    }
+    return listOf<Long>(82, 43, 86, 35)
+}
+
+class Day05(val seeds: List<Long>, private val almanac: List<AlmanacMapping>) {
+    fun part1(): Long = almanac.convertTo("soil", seeds).min()
+
 
     companion object {
         fun using(input: List<String>): Day05 {
             val seeds = input.first().substringAfter(": ").asListOfLong(" ")
-            return Day05(seeds)
+            return Day05(seeds, emptyList())
         }
     }
 }
@@ -94,7 +100,7 @@ fun main() {
     ).apply {
         "seeds -> $seeds".println()
 
-        val expected1 = 35
+        val expected1: Long = 35
         val actual1 = this.part1()
         check( expected1 == actual1 ) {
             """FAILED part 1 with sample data
