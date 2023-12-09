@@ -1,16 +1,59 @@
-class Day05 {
+class AlmanacMapping(val destinationRanges: List<LongRange>, val sourceRanges: List<LongRange>) {
+    fun convert(source: Long): Long = sourceRanges.indexOfFirst { it.contains(source) }
+        .let { rangeIndex ->
+            if (rangeIndex == -1) {
+                source
+            } else {
+                destinationRanges[rangeIndex].first() + source - sourceRanges[rangeIndex].first()
+            }
+        }
+
+    companion object {
+        fun parse(input: List<String>): AlmanacMapping {
+            val destinationRanges = mutableListOf<LongRange>()
+            val sourceRanges = mutableListOf<LongRange>()
+            input.forEach { line ->
+                val (destinationStart, sourceStart, rangeLength) = line.asListOfLong(" ")
+                destinationRanges.add(LongRange(destinationStart, destinationStart + rangeLength - 1))
+                sourceRanges.add(LongRange(sourceStart, sourceStart + rangeLength - 1))
+            }
+            return AlmanacMapping(destinationRanges, sourceRanges)
+        }
+    }
+}
+
+class Day05(val seeds: List<Long>) {
     fun part1(): Int {
         return 35
     }
 
     companion object {
         fun using(input: List<String>): Day05 {
-            return Day05()
+            val seeds = input.first().substringAfter(": ").asListOfLong(" ")
+            return Day05(seeds)
         }
     }
 }
 
 fun main() {
+
+    check(LongRange(0, -1).isEmpty()) { "Range is NOT empty!" }
+
+    AlmanacMapping.parse(
+        """
+        50 98 2
+        52 50 48            
+        """.trimIndent().lines()
+    ).apply {
+        this.destinationRanges.println()
+        this.sourceRanges.println()
+
+        val expected = listOf<Long>(81, 14, 57, 13)
+        listOf<Long>(79, 14, 55, 13).forEachIndexed() {  i, source ->
+            val actual = convert(source)
+            check(expected[i] == actual) {"expected ${expected[i]} but got [$actual]"}
+        }
+    }
 
     Day05.using(
         """
@@ -49,6 +92,8 @@ fun main() {
         56 93 4        
         """.trimIndent().lines()
     ).apply {
+        "seeds -> $seeds".println()
+
         val expected1 = 35
         val actual1 = this.part1()
         check( expected1 == actual1 ) {
