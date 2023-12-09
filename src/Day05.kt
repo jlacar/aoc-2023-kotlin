@@ -38,30 +38,13 @@ data class AlmanacMapping(val destination: String,
     }
 }
 
-private fun List<AlmanacMapping>.convert(values: List<Long>, source: String, destination: String): List<Long> {
-    "Converting $values from $source to $destination".println()
-    val sourceValues = values.toMutableList()
-    forEach { mapping ->
-        val converted = sourceValues.map { mapping.convert(it) }
-                .also { "converting ${mapping.source}-to-${mapping.destination} -> $it".println() }
-        sourceValues.clear()
-        sourceValues.addAll(converted)
+private fun List<AlmanacMapping>.convert(values: List<Long>): List<Long> =
+    fold(values.toMutableList()) { sourceValues, mapping ->
+        sourceValues.map { mapping.convert(it) }.toMutableList()
     }
-    return sourceValues
-}
-
-//    return foldIndexed(values.toMutableList()) { _, sources, almanacMapping ->
-//        almanacMapping.fold(sources) { destinationValues, sourceValue ->
-//            destinationValues.add(almanacMapping.convert(sourceValue))
-//            destinationValues
-//        }
-//    }
-//}
 
 class Day05(val seeds: List<Long>, val almanac: List<AlmanacMapping>) {
-    fun part1(): Long = almanac
-        .convert(seeds, "seeds", "location")              // .also { "converted to $it".println() }
-        .min()
+    fun part1(): Long = almanac.convert(seeds).min()
 
     companion object {
         fun using(input: List<String>) = Day05(
@@ -73,14 +56,9 @@ class Day05(val seeds: List<Long>, val almanac: List<AlmanacMapping>) {
 
         private fun almanacFrom(input: List<String>): List<AlmanacMapping> {
             val mappings = mutableListOf<AlmanacMapping>()
-            val lines = mutableListOf<String>()
             var nextMapIndex = 2
             while (nextMapIndex < input.lastIndex ) {
                 val nextMapInput = input.subList(nextMapIndex, input.size).takeWhile { it.isNotBlank() }
-
-                        // TODO
-                        "nextMapInput -> $nextMapInput".println()
-
                 nextMapIndex += (nextMapInput.size + 1)
 
                 mappings.add(AlmanacMapping.parse(nextMapInput))
@@ -101,8 +79,6 @@ fun main() {
         52 50 48            
         """.trimIndent().lines()
     ).apply {
-//        this.println()
-
         val expected = listOf<Long>(81, 14, 57, 13)
         listOf<Long>(79, 14, 55, 13).forEachIndexed() {  i, source ->
             val actual = convert(source)
@@ -119,9 +95,6 @@ fun main() {
             52 50 48
         """.trimIndent().lines()
     ).apply {
-//        "seeds: $seeds".println()
-//        "almanac: $almanac".println()
-
         val expected: Long = 50
         val actual = part1()
         check(expected == actual) { "FAILED Part 1\n\texpected [$expected] but got [$actual]" }
@@ -164,10 +137,8 @@ fun main() {
         56 93 4        
         """.trimIndent().lines()
     ).apply {
-        "seeds -> $seeds".println()
-
         val expected1: Long = 35
-        val actual1 = part1()                 // .also { "part1(sample) -> $it".println() }
+        val actual1 = part1()
         check( expected1 == actual1 ) {
             """FAILED part 1 with sample data
                 | expected   [$expected1]
@@ -185,16 +156,13 @@ fun main() {
         """.trimMargin()
     }
 
+    "SOLUTION".println()
+
     Day05.using(readInput("Day05")).apply {
-        part1().also { "Part 1 -> $it".println() }
-        check(false) {
-            """
-            seeds: $seeds
-            
-            real almanac:
-            $almanac
-            """
-        }
+        val correctAnswer: Long = 600279879
+        val actual = part1().also { "Part 1 -> $it".println() }
+
+        check(correctAnswer == actual) { "You broke it!" }
     }
 
     "That's it!".println()
