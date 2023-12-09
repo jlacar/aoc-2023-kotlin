@@ -72,8 +72,7 @@ class Day05(val seeds: List<Long>, val almanac: List<AlmanacMapping>) {
 
 fun main() {
 
-    check(LongRange(0, -1).isEmpty()) { "Range is NOT empty!" }
-
+    // Test parsing to an AlmanacMapping
     AlmanacMapping.parse(
         """
         seed-to-soil map:
@@ -88,6 +87,7 @@ fun main() {
         }
     }
 
+    // Test one small mapping conversion
     Day05.using(
         """
             seeds: 98 65 68 99
@@ -102,6 +102,7 @@ fun main() {
         check(expected == actual) { "FAILED Part 1\n\texpected [$expected] but got [$actual]" }
     }
 
+    // Test conversion of sample data from problem
     Day05.using(
         """
         seeds: 79 14 55 13
@@ -164,7 +165,12 @@ fun main() {
         val correctAnswer: Long = 600279879
         val actual = part1().also { "Part 1 -> $it".println() }
 
-        check(correctAnswer == actual) { "You broke it!" }
+        check(actual == correctAnswer) {
+            """
+            You broke it! 
+            Answer should be $correctAnswer
+            """.trimIndent()
+        }
     }
 
     "That's it!".println()
