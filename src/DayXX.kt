@@ -25,6 +25,7 @@ fun main() {
     }
 
     // Tests
+    "Long.MAX_VALUE = ${Long.MAX_VALUE}".println()
 
     val testSmallInput1 = """
         small.input.sample

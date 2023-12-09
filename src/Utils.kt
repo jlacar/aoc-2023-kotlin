@@ -20,8 +20,14 @@ fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteA
  */
 fun Any?.println() = println(this)
 
-/**
- * To assist parsing lines of input
- */
+fun String.asListOfInt(vararg delimiters: String): List<Int> =
+    split(*delimiters).filter { it.isNotBlank() }.map { it.toInt() }
+
 fun String.asSetOfInt(vararg delimiters: String): Set<Int> =
-    this.split(*delimiters).filter { it.isNotBlank() }.map { it.toInt() }.toSet()
+    asListOfInt(*delimiters).toSet()
+
+fun String.asListOfLong(vararg delimiters: String): List<Long> =
+    split(*delimiters).filter { it.isNotBlank() }.map { it.toLong() }
+
+fun String.asSetOfLong(vararg delimiters: String): Set<Long> =
+    asListOfLong(*delimiters).toSet()
