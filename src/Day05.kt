@@ -13,6 +13,18 @@ data class AlmanacMapping(val destination: String,
 
     companion object {
         fun parse(input: List<String>): AlmanacMapping {
+            val (destination, source) = parseNames(input.first())
+            val (destinationRanges, sourceRanges) = parseRanges(input)
+
+            return AlmanacMapping( destination, destinationRanges, source, sourceRanges)
+        }
+
+        private fun parseNames(input: String) = Pair(
+            input.substringAfter("-to-").substringBefore(" map:"),
+            input.substringBefore("-to-")
+        )
+
+        private fun parseRanges(input: List<String>): Pair<MutableList<LongRange>, MutableList<LongRange>> {
             val destinationRanges = mutableListOf<LongRange>()
             val sourceRanges = mutableListOf<LongRange>()
             input.subList(1, input.size).forEach { line ->
@@ -20,12 +32,7 @@ data class AlmanacMapping(val destination: String,
                 destinationRanges.add(LongRange(destinationStart, destinationStart + rangeLength - 1))
                 sourceRanges.add(LongRange(sourceStart, sourceStart + rangeLength - 1))
             }
-            return AlmanacMapping(
-                destination = input.first().substringAfter("-to-").substringBefore(" map:"),
-                destinationRanges,
-                source = input.first().substringBefore("-to-"),
-                sourceRanges
-            )
+            return Pair(destinationRanges, sourceRanges)
         }
     }
 }
