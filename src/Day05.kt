@@ -62,6 +62,7 @@ class Day05(val seeds: List<Long>, val almanac: List<AlmanacMapping>) {
         private fun seedsFrom(line: String) = line.substringAfter(": ").asListOfLong(" ")
 
         private fun almanacFrom(input: List<String>): List<AlmanacMapping> {
+            // TODO -- realize this faked implementation
             return listOf(
                 AlmanacMapping(
                     "soil",
@@ -106,7 +107,7 @@ fun main() {
         "seeds: $seeds".println()
         "almanac: $almanac".println()
 
-        val actual = part1()
+        val actual = part1()                                // TODO still faking this part out
         check(false) { "Got part1() == $actual" }
     }
 
