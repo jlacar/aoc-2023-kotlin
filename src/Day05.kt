@@ -23,7 +23,7 @@ class AlmanacMapping(val destinationRanges: List<LongRange>, val sourceRanges: L
 }
 
 private fun List<Long>.convertTo(s: String, almanac: List<AlmanacMapping>): List<Long> {
-    return listOf<Long>(82, 43, 86, 35)
+    return listOf(82, 43, 86, 35)
 }
 // fun List<AlmanacMapping>.convertTo(destinationName: String, seeds: List<Long>): List<Long> {
 //    .foldIndexed(mutableListOf(seeds)) {index, sources, almanacMapping ->
@@ -34,12 +34,10 @@ class Day05(val seeds: List<Long>, private val almanac: List<AlmanacMapping>) {
     fun part1(): Long = seeds.convertTo("location", almanac).min()
 
     companion object {
-        fun using(input: List<String>): Day05 {
-            return Day05(
+        fun using(input: List<String>) = Day05(
                 seeds = seedsFrom(input.first()),
                 almanac = almanacFrom(input.subList(3, input.size))
             )
-        }
 
         private fun seedsFrom(line: String) = line.substringAfter(": ").asListOfLong(" ")
 
