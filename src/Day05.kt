@@ -30,8 +30,7 @@ fun List<AlmanacMapping>.convertTo(destinationName: String, seeds: List<Long>): 
 }
 
 class Day05(val seeds: List<Long>, private val almanac: List<AlmanacMapping>) {
-    fun part1(): Long = almanac.convertTo("soil", seeds).min()
-
+    fun part1(): Long = almanac.convertTo("location", seeds).min()
 
     companion object {
         fun using(input: List<String>): Day05 {
