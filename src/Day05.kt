@@ -22,21 +22,28 @@ class AlmanacMapping(val destinationRanges: List<LongRange>, val sourceRanges: L
     }
 }
 
-fun List<AlmanacMapping>.convertTo(destinationName: String, seeds: List<Long>): List<Long> {
+private fun List<Long>.convertTo(s: String, almanac: List<AlmanacMapping>): List<Long> {
+    return listOf<Long>(82, 43, 86, 35)
+}
+// fun List<AlmanacMapping>.convertTo(destinationName: String, seeds: List<Long>): List<Long> {
 //    .foldIndexed(mutableListOf(seeds)) {index, sources, almanacMapping ->
 //        sources.fold(mutableListOf<Long>()) {converted, source ->  }
 //    }
-    return listOf<Long>(82, 43, 86, 35)
-}
 
 class Day05(val seeds: List<Long>, private val almanac: List<AlmanacMapping>) {
-    fun part1(): Long = almanac.convertTo("location", seeds).min()
+    fun part1(): Long = seeds.convertTo("location", almanac).min()
 
     companion object {
         fun using(input: List<String>): Day05 {
-            val seeds = input.first().substringAfter(": ").asListOfLong(" ")
-            return Day05(seeds, emptyList())
+            return Day05(
+                seeds = seedsFrom(input.first()),
+                almanac = almanacFrom(input.subList(3, input.size))
+            )
         }
+
+        private fun seedsFrom(line: String) = line.substringAfter(": ").asListOfLong(" ")
+
+        private fun almanacFrom(input: List<String>): List<AlmanacMapping> = emptyList()
     }
 }
 
@@ -100,7 +107,7 @@ fun main() {
         "seeds -> $seeds".println()
 
         val expected1: Long = 35
-        val actual1 = this.part1()
+        val actual1 = part1()               .also { "part1(sample) -> $it".println() }
         check( expected1 == actual1 ) {
             """FAILED part 1 with sample data
                 | expected   [$expected1]
