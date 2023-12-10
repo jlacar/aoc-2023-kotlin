@@ -16,17 +16,20 @@ fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteA
     .padStart(32, '0')
 
 /**
- *
+ * Create a lazyMessage for check failures
  */
 fun lazyMessage(description: String, expected: Any?, actual: Any?): String =
     """FAILED $description
         |  expected   [$expected]
         |  but got    [$actual]
     """.trimMargin()
+
 /**
  * The cleaner shorthand for printing output.
  */
 fun Any?.println() = println(this)
+
+fun productOfAll(values: Iterable<Int>) = values.fold(1) { prod: Int, n: Int -> prod * n }
 
 fun String.asListOfInt(vararg delimiters: String): List<Int> =
     split(*delimiters).filter { it.isNotBlank() }.map { it.toInt() }

@@ -43,13 +43,27 @@ private fun List<AlmanacMapping>.convert(values: List<Long>): List<Long> =
         sourceValues.map { mapping.convert(it) }.toMutableList()
     }
 
-class Day05(val seeds: List<Long>, val almanac: List<AlmanacMapping>) {
+class Day05(val seeds: List<Long>, val almanac: List<AlmanacMapping>, private val seedsAsRange: Boolean) {
+    val seedRanges: List<LongRange> = if (seedsAsRange) {
+        seeds.chunked(2) { (start, length) ->
+            LongRange(start, start + length - 1)
+        }
+    } else {
+        emptyList<LongRange>()
+    }
+
     fun part1(): Long = almanac.convert(seeds).min()
 
+    fun part2(): Long {
+        return 0
+    }
+
     companion object {
-        fun using(input: List<String>) = Day05(
+
+        fun using(input: List<String>, seedsAsRange: Boolean = false) = Day05(
                 seeds = seedsFrom(input.first()),
-                almanac = almanacFrom(input)
+                almanac = almanacFrom(input),
+                seedsAsRange
             )
 
         private fun seedsFrom(line: String) = line.substringAfter(": ").asListOfLong(" ")
@@ -83,7 +97,9 @@ fun main() {
         val expected = listOf<Long>(81, 14, 57, 13)
         listOf<Long>(79, 14, 55, 13).forEachIndexed() {  i, source ->
             val actual = convert(source)
-            check(expected[i] == actual) {"expected ${expected[i]} but got [$actual]"}
+            check(expected[i] == actual) {
+                lazyMessage("Almanac test", expected[i], actual)
+            }
         }
     }
 
@@ -99,7 +115,9 @@ fun main() {
     ).apply {
         val expected: Long = 50
         val actual = part1()
-        check(expected == actual) { "FAILED Part 1\n\texpected [$expected] but got [$actual]" }
+        check(expected == actual) {
+            lazyMessage("Part 1 (simple)", expected, actual)
+        }
     }
 
     // Test conversion of sample data from problem
@@ -143,10 +161,7 @@ fun main() {
         val expected1: Long = 35
         val actual1 = part1()
         check( expected1 == actual1 ) {
-            """FAILED part 1 with sample data
-                | expected   [$expected1]
-                | but got    [$actual1]
-            """.trimMargin()
+            lazyMessage("Part 1 sample data", expected1, actual1)
         }
     }
 
@@ -161,15 +176,24 @@ fun main() {
 
     "SOLUTION".println()
 
+    // Part 1
     Day05.using(readInput("Day05")).apply {
         val correctAnswer: Long = 600279879
         val actual = part1().also { "Part 1 -> $it".println() }
 
         check(actual == correctAnswer) {
-            """
-            You broke it! 
-            Answer should be $correctAnswer
-            """.trimIndent()
+            lazyMessage("Broke Part 1!!!", correctAnswer, actual)
+        }
+    }
+
+    // Part 2
+    Day05.using(readInput("Day05"), seedsAsRange = true).apply {
+        seedRanges.println()
+        seedRanges.map { it.count() }.println()
+
+        val actual = part2()
+        check(false) {
+            lazyMessage("Part 2 (final answer)", "?", actual)
         }
     }
 

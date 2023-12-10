@@ -2,7 +2,10 @@
  * Template for Advent of Code solutions using objects/classes
  */
 
+// TODO change this name
 data class CandidatePalindrome(val value: String) {
+
+    // TODO delete or replace these functions
     fun isPalindrome(perfect: Boolean = false): Boolean =
         if (perfect) isPerfect(value) else isBasic()
 
@@ -12,6 +15,7 @@ data class CandidatePalindrome(val value: String) {
     private fun isBasic() = isPerfect(value.filter { it.isLetter() }.lowercase())
 
     companion object {
+        // TODO change how it's parsed
         fun of(input: String): CandidatePalindrome {
             return CandidatePalindrome(input)
         }
@@ -22,20 +26,26 @@ data class CandidatePalindrome(val value: String) {
     }
 }
 
+// TODO Change Day name and signature
 class Day0(val values: List<CandidatePalindrome>) {
     companion object {
+
+        // TODO update this
         fun using(input: List<String>) = Day0(
                 CandidatePalindrome.parseToList(input)
             )
     }
 
+    // TODO update this
     fun part1(): Int = values.count { it.isPalindrome() }
 
+    // TODO update this
     fun part2(): Int = values.count { it.isPalindrome(perfect = true) }
 }
 
 fun main() {
 
+    // TODO change this data
     // Small tests (for TDD)
     Day0.using("""
         not a palindrome
@@ -44,21 +54,24 @@ fun main() {
         Madam I'm Adam
     """.trimIndent().lines()).apply {
 
-        val expected1 = 3                        // uncomment to see the actual value
-        val actual1 = part1()                    // .also { "Part 1 (simplest) -> $it".println() }
-
-        check(expected1 == actual1) {
-            lazyMessage("Part 1 (simplest)", expected1, actual1)
+        with(part1()) {
+            // TODO update this
+            val expected = 3
+            check(this == expected) {
+                lazyMessage("Part 1 (simplest)", expected, this)
+            }
         }
 
-        val expected2 = 2
-        val actual2 = part2()
-
-        check(expected2 == actual2) {
-            lazyMessage("Part 2 (simplest)", expected2, actual2)
+        with(part2()) {
+            // TODO update this
+            val expected = 2
+            check(this == expected) {
+                lazyMessage("Part 2 (simplest)", expected, this)
+            }
         }
     }
 
+    // TODO copy-paste sample from problem
     val testInputFromAoC = """
         Madam I'm Adam 
         Too bad—I hid a boot
@@ -66,26 +79,31 @@ fun main() {
         not a palindrome
     """.trimIndent().lines()
 
+    // TODO update the class
     Day0.using(testInputFromAoC).apply {
-        val expected1 = 3
-        val actual1 = part1()
-
-        check( expected1 == actual1 ) {
-            lazyMessage("Part 1 (example)", expected1, actual1)
+        with (part1()) {
+            // TODO update this
+            val expected = 3
+            check(this == expected) {
+                lazyMessage("Part 1 (example)", expected, this)
+            }
         }
 
-        val expected2 = 1
-        val actual2 = part2()
-
-        check( expected2 == actual2 ) {
-            lazyMessage("Part 2 (example)", expected2, actual2)
+        with (part2()) {
+            // TODO update this
+            val expected = 1
+            check(this == expected) {
+                lazyMessage("Part 2 (example)", expected, this)
+            }
         }
     }
 
+    // TODO uncomment this to TDD
 //    check(false) { "All tests above PASS so far" }
 
     // Gate to solution:
 
+    // TODO toggle this
     check(true) {
         """
         |
@@ -97,6 +115,7 @@ fun main() {
 
     "SOLUTION".println()
 
+    // TODO update this
     val inputDayXX = readInput("DayXX")
 
     // Part 1
