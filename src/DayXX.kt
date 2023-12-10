@@ -61,10 +61,17 @@ fun main() {
     """.trimIndent().lines()
     check(part2(testSampleFromAoC2) == 1)
 
-    // If you get to this point, you're ready for a solution run
-    check(false) { "All tests PASSED! Disable all debug .also before solution run!"}
+    // Toggle this check to enable/disable running the solution
+    check(false) {
+        """
+        |
+        | All tests PASS! To see problem solution:
+        | - Set the flag in this check to true
+        | - Remove or disable .also() debugs calls
+        """.trimMargin()
+    }
 
-    // SOLUTION
+    "SOLUTION".println()
 
     val input = readInput("DayXX")
 
