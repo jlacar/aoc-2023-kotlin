@@ -2,7 +2,6 @@
  * Template for Advent of Code solutions using objects/classes
  */
 
-
 data class CandidatePalindrome(val value: String) {
     fun isPalindrome(perfect: Boolean = false): Boolean =
         if (perfect) isPerfect(value) else isBasic()
@@ -128,5 +127,3 @@ fun main() {
 
     "That's it!".println()
 }
-
-
