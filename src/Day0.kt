@@ -34,12 +34,6 @@ class Day0(val values: List<CandidatePalindrome>) {
     fun part2(): Int = values.count { it.isPalindrome(perfect = true) }
 }
 
-fun testFailed(description: String, expected: Any?, actual: Any?): String =
-    """FAILED $description
-        |  expected   [$expected]
-        |  but got    [$actual]
-    """.trimMargin()
-
 fun main() {
 
     // Small tests (for TDD)
@@ -54,14 +48,14 @@ fun main() {
         val actual1 = part1()                    // .also { "Part 1 (simplest) -> $it".println() }
 
         check(expected1 == actual1) {
-            testFailed("Part 1 (simplest)", expected1, actual1)
+            lazyMessage("Part 1 (simplest)", expected1, actual1)
         }
 
         val expected2 = 2
         val actual2 = part2()
 
         check(expected2 == actual2) {
-            testFailed("Part 2 (simplest)", expected2, actual2)
+            lazyMessage("Part 2 (simplest)", expected2, actual2)
         }
     }
 
@@ -77,14 +71,14 @@ fun main() {
         val actual1 = part1()
 
         check( expected1 == actual1 ) {
-            testFailed("Part 1 (example)", expected1, actual1)
+            lazyMessage("Part 1 (example)", expected1, actual1)
         }
 
         val expected2 = 1
         val actual2 = part2()
 
         check( expected2 == actual2 ) {
-            testFailed("Part 2 (example)", expected2, actual2)
+            lazyMessage("Part 2 (example)", expected2, actual2)
         }
     }
 
@@ -111,7 +105,7 @@ fun main() {
         val actual = part1().also { "Part 1 -> $it".println() }
 
         check(actual == correctAnswer) {
-            testFailed("You broke Part 1!", correctAnswer, actual)
+            lazyMessage("You broke Part 1!", correctAnswer, actual)
         }
     }
 
@@ -121,7 +115,7 @@ fun main() {
         val actual = part2().also { "Part 2 -> $it".println() }
 
         check(actual == correctAnswer) {
-            testFailed("You broke Part 2!", correctAnswer, actual)
+            lazyMessage("You broke Part 2!", correctAnswer, actual)
         }
     }
 

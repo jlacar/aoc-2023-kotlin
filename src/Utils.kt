@@ -16,6 +16,14 @@ fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteA
     .padStart(32, '0')
 
 /**
+ *
+ */
+fun lazyMessage(description: String, expected: Any?, actual: Any?): String =
+    """FAILED $description
+        |  expected   [$expected]
+        |  but got    [$actual]
+    """.trimMargin()
+/**
  * The cleaner shorthand for printing output.
  */
 fun Any?.println() = println(this)
