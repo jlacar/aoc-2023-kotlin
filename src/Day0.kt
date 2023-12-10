@@ -98,12 +98,10 @@ fun main() {
         }
     }
 
-    // TODO uncomment this to TDD
-//    check(false) { "All tests above PASS so far" }
+    // TODO uncomment and move this to TDD
+//    check(false) { "All tests above PASS" }
 
-    // Gate to solution:
-
-    // TODO toggle this
+    // TODO toggle this to true to see answers, false to stop here
     check(true) {
         """
         |
@@ -115,26 +113,33 @@ fun main() {
 
     "SOLUTION".println()
 
-    // TODO update this
-    val inputDayXX = readInput("DayXX")
+    val puzzleInput = readInput("DayXX") // TODO update this
 
     // Part 1
-    Day0.using(inputDayXX).apply {
-        val correctAnswer = 3
-        val actual = part1().also { "Part 1 -> $it".println() }
+    // TODO update which day this is
+    Day0.using(puzzleInput).apply {
+        with (part1()) {
+            // TODO set to bogus value, then update with correct answer
+            val correctAnswer = 3
 
-        check(actual == correctAnswer) {
-            lazyMessage("You broke Part 1!", correctAnswer, actual)
+            "Part 1 -> $this".println()
+            check(this == correctAnswer) {
+                lazyMessage("You broke Part 1!", correctAnswer, this)
+            }
         }
     }
 
     // Part 2
-    Day0.using(inputDayXX).apply {
-        val correctAnswer = 1
-        val actual = part2().also { "Part 2 -> $it".println() }
+    // TODO update which day this is
+    Day0.using(puzzleInput).apply {
+        with (part2()) {
+            // TODO set to bogus value, then update with correct answer
+            val correctAnswer = 1
 
-        check(actual == correctAnswer) {
-            lazyMessage("You broke Part 2!", correctAnswer, actual)
+            "Part 2 -> $this".println()
+            check(this == correctAnswer) {
+                lazyMessage("You broke Part 2!", correctAnswer, this)
+            }
         }
     }
 
