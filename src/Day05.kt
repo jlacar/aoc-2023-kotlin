@@ -1,3 +1,17 @@
+fun combine(ranges: List<LongRange>): List<LongRange> =
+    ranges
+        .sortedBy { it.first }
+        .fold(mutableListOf<LongRange>()) { combined, thisRange ->
+            if (combined.isEmpty() || thisRange.first > combined.last().last + 1) {
+                combined.add(thisRange)
+            } else {
+                val newLast = LongRange(combined.last().first, thisRange.last)
+                combined.removeLast()
+                combined.add(newLast)
+            }
+            combined
+        }
+
 data class AlmanacMapping(val destination: String,
                           val destinationRanges: List<LongRange>,
                           val source: String,
@@ -92,14 +106,15 @@ private fun List<AlmanacMapping>.convertRanges(values: List<LongRange>): List<Lo
     fold(values.toMutableList()) { sourceValues, mapping ->
         println("mapping ${mapping.source} to ${mapping.destination}")
         println("values  $sourceValues")
-        sourceValues.map { mapping.convertRange(it) }.flatten().toMutableList()
+        combine(sourceValues.map { mapping.convertRange(it) }.flatten()).toMutableList()
     }
 
-
 class Day05(val seeds: List<Long>, val almanac: List<AlmanacMapping>) {
-    val seedRanges: List<LongRange> = seeds.chunked(2) { (start, length) ->
+    private val seedRanges: List<LongRange> = combine(
+        seeds.chunked(2) { (start, length) ->
             LongRange(start, start + length - 1)
         }
+    )
 
     fun part1(): Long = almanac.convert(seeds).min()
 
