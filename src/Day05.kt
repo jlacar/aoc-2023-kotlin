@@ -1,16 +1,15 @@
-fun combine(ranges: List<LongRange>): List<LongRange> =
-    ranges
-        .sortedBy { it.first }
-        .fold(mutableListOf<LongRange>()) { combined, thisRange ->
-            if (combined.isEmpty() || thisRange.first > combined.last().last + 1) {
-                combined.add(thisRange)
-            } else {
-                val newLast = LongRange(combined.last().first, thisRange.last)
-                combined.removeLast()
-                combined.add(newLast)
-            }
-            combined
+fun mergeContiguous(ranges: List<LongRange>): List<LongRange> = ranges
+    .sortedBy { it.first }
+    .fold(mutableListOf()) { merged, thisRange ->
+        if (merged.isEmpty() || thisRange.first > merged.last().last + 1) {
+            merged.add(thisRange)
+        } else {
+            val contiguous = LongRange(merged.last().first, thisRange.last)
+            merged.removeLast()
+            merged.add(contiguous)
         }
+        merged
+    }
 
 data class AlmanacMapping(val destination: String,
                           val destinationRanges: List<LongRange>,
@@ -27,13 +26,11 @@ data class AlmanacMapping(val destination: String,
 
     fun convertRange(valuesToConvert: LongRange): List<LongRange> {
         val unconverted = mutableListOf(valuesToConvert)
-//        println("start -> unconverted.size() -> ${unconverted.size}")
         val converted: MutableList<LongRange> = mutableListOf()
         allConverted@ for (source in sourceRanges.withIndex()) {
             applesauce(source, unconverted, converted)
             if (unconverted.isEmpty()) break@allConverted
         }
-//        println("  end -> unconverted.size() -> ${unconverted.size}")
         if (unconverted.isNotEmpty()) converted.addAll(unconverted)
         return converted
     }
@@ -106,15 +103,13 @@ private fun List<AlmanacMapping>.convertRanges(values: List<LongRange>): List<Lo
     fold(values.toMutableList()) { sourceValues, mapping ->
         println("mapping ${mapping.source} to ${mapping.destination}")
         println("values  $sourceValues")
-        combine(sourceValues.map { mapping.convertRange(it) }.flatten()).toMutableList()
+        mergeContiguous(sourceValues.map { mapping.convertRange(it) }.flatten()).toMutableList()
     }
 
 class Day05(val seeds: List<Long>, val almanac: List<AlmanacMapping>) {
-    private val seedRanges: List<LongRange> = combine(
-        seeds.chunked(2) { (start, length) ->
+    private val seedRanges: List<LongRange> = seeds.chunked(2) { (start, length) ->
             LongRange(start, start + length - 1)
         }
-    )
 
     fun part1(): Long = almanac.convert(seeds).min()
 
@@ -122,7 +117,7 @@ class Day05(val seeds: List<Long>, val almanac: List<AlmanacMapping>) {
 
     companion object {
 
-        fun using(input: List<String>, seedsAsRange: Boolean = false) = Day05(
+        fun using(input: List<String>) = Day05(
                 seeds = seedsFrom(input.first()),
                 almanac = almanacFrom(input)
             )
@@ -251,7 +246,7 @@ fun main() {
         }
     }
 
-    check(true) {
+    check(false) {
         """
         |
         | All tests PASS! To see problem solution:
@@ -273,7 +268,7 @@ fun main() {
     }
 
     // Part 2
-    Day05.using(readInput("Day05"), seedsAsRange = true).apply {
+    Day05.using(readInput("Day05")).apply {
         val correctAnswer: Long = 20191102
         val actual = part2().also { "Part 2 -> $it".println() }
 
