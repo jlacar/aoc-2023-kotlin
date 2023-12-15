@@ -18,10 +18,11 @@ fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteA
 /**
  * Create a lazyMessage for check failures
  */
-fun lazyMessage(description: String, expected: Any?, actual: Any?): String =
+fun lazyMessage(description: String, expected: Any?, actual: Any?, extra: Any? = "-"): String =
     """FAILED $description
         |  expected   [$expected]
         |  but got    [$actual]
+        |  $extra
     """.trimMargin()
 
 /**

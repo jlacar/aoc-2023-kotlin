@@ -11,6 +11,51 @@ data class AlmanacMapping(val destination: String,
             }
         }
 
+    fun convertRange(valuesToConvert: LongRange): List<LongRange> {
+        val unconverted = mutableListOf(valuesToConvert)
+//        println("start -> unconverted.size() -> ${unconverted.size}")
+        val converted: MutableList<LongRange> = mutableListOf()
+        allConverted@ for (source in sourceRanges.withIndex()) {
+            applesauce(source, unconverted, converted)
+            if (unconverted.isEmpty()) break@allConverted
+        }
+//        println("  end -> unconverted.size() -> ${unconverted.size}")
+        if (unconverted.isNotEmpty()) converted.addAll(unconverted)
+        return converted
+    }
+
+    private fun applesauce(
+        source: IndexedValue<LongRange>,
+        unconverted: MutableList<LongRange>,
+        converted: MutableList<LongRange>
+    ) {
+        val (index, sourceRange) = source
+        val convertible = unconverted.firstOrNull { canConvert(sourceRange, it) }
+        if (convertible != null) {
+            val firstConvertibleValue = Math.max(sourceRange.first, convertible.first)
+            val lastConvertibleValue = Math.min(sourceRange.last, convertible.last)
+            val firstDestination = destinationRanges[index].elementAt(sourceRange.indexOf(firstConvertibleValue))
+            val lastDestination = destinationRanges[index].elementAt(sourceRange.indexOf(lastConvertibleValue))
+            converted.add(LongRange(firstDestination, lastDestination))
+            if (convertible.first < firstConvertibleValue) unconverted.add(
+                LongRange(
+                    convertible.first,
+                    firstConvertibleValue - 1
+                )
+            )
+            if (convertible.last > lastConvertibleValue) unconverted.add(
+                LongRange(
+                    lastConvertibleValue + 1,
+                    convertible.last
+                )
+            )
+            unconverted.remove(convertible)
+        }
+    }
+
+    private fun canConvert(sourceRange: LongRange, values: LongRange) =
+        values.first <= sourceRange.last && values.last >= sourceRange.first
+
     companion object {
         fun parse(input: List<String>): AlmanacMapping {
             val (destination, source) = parseNames(input.first())
@@ -43,27 +88,28 @@ private fun List<AlmanacMapping>.convert(values: List<Long>): List<Long> =
         sourceValues.map { mapping.convert(it) }.toMutableList()
     }
 
-class Day05(val seeds: List<Long>, val almanac: List<AlmanacMapping>, private val seedsAsRange: Boolean) {
-    val seedRanges: List<LongRange> = if (seedsAsRange) {
-        seeds.chunked(2) { (start, length) ->
+private fun List<AlmanacMapping>.convertRanges(values: List<LongRange>): List<LongRange> =
+    fold(values.toMutableList()) { sourceValues, mapping ->
+        println("mapping ${mapping.source} to ${mapping.destination}")
+        println("values  $sourceValues")
+        sourceValues.map { mapping.convertRange(it) }.flatten().toMutableList()
+    }
+
+
+class Day05(val seeds: List<Long>, val almanac: List<AlmanacMapping>) {
+    val seedRanges: List<LongRange> = seeds.chunked(2) { (start, length) ->
             LongRange(start, start + length - 1)
         }
-    } else {
-        emptyList<LongRange>()
-    }
 
     fun part1(): Long = almanac.convert(seeds).min()
 
-    fun part2(): Long {
-        return 0
-    }
+    fun part2(): Long = almanac.convertRanges(seedRanges).minOf { it.first }
 
     companion object {
 
         fun using(input: List<String>, seedsAsRange: Boolean = false) = Day05(
                 seeds = seedsFrom(input.first()),
-                almanac = almanacFrom(input),
-                seedsAsRange
+                almanac = almanacFrom(input)
             )
 
         private fun seedsFrom(line: String) = line.substringAfter(": ").asListOfLong(" ")
@@ -85,6 +131,17 @@ class Day05(val seeds: List<Long>, val almanac: List<AlmanacMapping>, private va
 }
 
 fun main() {
+
+//    AlmanacMapping.parse(
+//        """
+//        seed-to-soil map:
+//        3788621315 24578909 268976974
+//        0 24569000 5000
+//        """.trimIndent().lines()
+//    ).apply {
+//        convertRange(LongRange(24568909, 24568909 + 5000000)).println()
+//    }
+//
 
     // Test parsing to an AlmanacMapping
     AlmanacMapping.parse(
@@ -118,7 +175,15 @@ fun main() {
         check(expected == actual) {
             lazyMessage("Part 1 (simple)", expected, actual)
         }
+
+        val expected2: Long = 50
+        val actual2 = part2()
+        check(expected2 == actual2) {
+            lazyMessage("Part 2 (simple)", expected2, actual2, this.almanac)
+        }
     }
+
+//    check(false) { "Temp break!!!" }
 
     // Test conversion of sample data from problem
     Day05.using(
@@ -163,6 +228,12 @@ fun main() {
         check( expected1 == actual1 ) {
             lazyMessage("Part 1 sample data", expected1, actual1)
         }
+
+        val expected2: Long = 46
+        val actual2 = part2()
+        check(expected2 == actual2) {
+            lazyMessage("Part 2 sample data", expected2, actual2)
+        }
     }
 
     check(true) {
@@ -188,12 +259,11 @@ fun main() {
 
     // Part 2
     Day05.using(readInput("Day05"), seedsAsRange = true).apply {
-        seedRanges.println()
-        seedRanges.map { it.count() }.println()
+        val correctAnswer: Long = 20191102
+        val actual = part2().also { "Part 2 -> $it".println() }
 
-        val actual = part2()
-        check(false) {
-            lazyMessage("Part 2 (final answer)", "?", actual)
+        check(actual == correctAnswer) {
+            lazyMessage("Broke Part 2!!!", correctAnswer, actual)
         }
     }
 
