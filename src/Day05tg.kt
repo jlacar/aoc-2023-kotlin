@@ -72,7 +72,7 @@ data class Conversion(val destination: LongRange, val source: LongRange) {
 }
 
 fun main() {
-    // Test using sample data from the problem
+    // Test using sample data from the
     Day05tg.using(
         """
         seeds: 79 14 55 13
@@ -134,8 +134,10 @@ fun main() {
 
     "SOLUTION".println()
 
+    val myPuzzleInput = readInput("Day05")
+
     // Part 1
-    Day05tg.using(readInput("Day05")).apply {
+    Day05tg.using(myPuzzleInput).apply {
         val actual = part1().also { "Part 1 -> $it".println() }
         val correctAnswer: Long = 600279879
 
@@ -145,7 +147,7 @@ fun main() {
     }
 
     // Part 2
-    Day05tg.using(readInput("Day05")).apply {
+    Day05tg.using(myPuzzleInput).apply {
         val actual = part2().also { "Part 2 -> $it".println() }
         val correctAnswer: Long = 20191102
 
