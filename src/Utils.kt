@@ -35,11 +35,12 @@ fun productOfAll(values: Iterable<Int>) = values.fold(1) { prod: Int, n: Int -> 
 fun String.asListOfInt(vararg delimiters: String): List<Int> =
     split(*delimiters).filter { it.isNotBlank() }.map { it.toInt() }
 
+fun String.toInts(): List<Int> = this.asListOfInt(" ")
+
 fun String.asSetOfInt(vararg delimiters: String): Set<Int> =
     asListOfInt(*delimiters).toSet()
 
 fun String.asListOfLong(vararg delimiters: String): List<Long> =
     split(*delimiters).filter { it.isNotBlank() }.map { it.toLong() }
 
-fun String.asSetOfLong(vararg delimiters: String): Set<Long> =
-    asListOfLong(*delimiters).toSet()
+fun String.toLongs(): List<Long> = this.asListOfLong(" ")
