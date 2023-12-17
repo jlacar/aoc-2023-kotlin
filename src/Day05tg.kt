@@ -2,21 +2,21 @@
 
 class Day05tg(val seeds: List<Long>, private val conversionTables: List<ConversionTable>) {
 
-    val seedRanges: List<LongRange> = seeds.chunked(2) { (first, length) ->
+    private val seedRanges: List<LongRange> = seeds.chunked(2) { (first, length) ->
         first..<(first + length)
     }
 
     fun part1(): Long = seeds.minOf { convert(it) }
 
     fun part2(): Long {
-        val reverseLookup = reversedConversionTable()
+        val reverseLookup = reversedConversions()
         return generateSequence(0, Long::inc).first { location ->
             val seed = convert(location, reverseLookup)
             seedRanges.any { it.contains(seed) }
         }
     }
 
-    private fun reversedConversionTable(): List<ConversionTable> = conversionTables.reversed()
+    private fun reversedConversions(): List<ConversionTable> = conversionTables.reversed()
         .map { it.reversed() }
 
     private fun convert(seed: Long, conversions: List<ConversionTable> = conversionTables): Long =
