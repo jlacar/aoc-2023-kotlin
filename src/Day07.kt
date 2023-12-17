@@ -16,6 +16,10 @@ class Day07(val bets: List<CamelCardsBet>) {
         return bets;
     }
 
+    fun listHandTypes() {
+        bets.forEach { "${it.hand} -> ${HandType.of(it.hand)}".println() }
+    }
+
     fun part2(): Int = 0
 
     companion object {
@@ -34,9 +38,22 @@ enum class HandType {
 
     companion object {
         fun of(hand: String): HandType {
-            return HIGH_CARD
+            val cardCounts = hand.charFrequencies()
+            return when (cardCounts.count { it.value != 0 }) {
+                1 -> FIVE_KIND
+                2 -> if (cardCounts.any { it.value == 4 }) FOUR_KIND else FULL_HOUSE
+                3 -> if (cardCounts.any { it.value == 3 }) THREE_KIND else TWO_PAIRS
+                4 -> ONE_PAIR
+                else -> HIGH_CARD
+            }
         }
     }
+}
+
+fun String.charFrequencies(): Map<Char, Int> {
+    val charCounts = mutableMapOf<Char, Int>()
+    forEach { charCounts[it] = charCounts.getOrDefault(it, 0) + 1 }
+    return charCounts
 }
 
 data class CamelCardsBet(val hand: String, val bid: Int) {
@@ -44,6 +61,25 @@ data class CamelCardsBet(val hand: String, val bid: Int) {
 }
 
 fun main() {
+
+    val tddInput = """
+        AAAAA 6
+        TAAAA 5
+        AATAA 5
+        AATTT 7
+        ATATA 7
+        TTTAA 8
+        A456A 8
+        KKKQT 9
+        32A23 9
+        TKA23 10
+    """.trimIndent().lines()
+
+    Day07.using(tddInput).apply {
+        listHandTypes()
+
+        check(false) {"Temp BREAKPOINT"}
+    }
 
     val tempInput =
         """
@@ -55,6 +91,8 @@ fun main() {
         """.trimIndent().lines()
 
     Day07.using(tempInput).apply {
+
+
         val actual = part1()
         val expected = 6440
 
@@ -62,7 +100,6 @@ fun main() {
             lazyMessage("Temp BREAKPOINT", expected, actual)
         }
     }
-    check(false) {"Temp BREAKPOINT"}
 
     val sampleInput =
         """
@@ -75,6 +112,8 @@ fun main() {
 
     // TODO update the class
     Day07.using(sampleInput).apply {
+
+
         with (part1()) {
             "Part 1 (sample) -> $this".println()
 
