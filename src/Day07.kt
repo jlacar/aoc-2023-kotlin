@@ -6,6 +6,12 @@ class Day07(val bets: List<CamelCardsBet>) {
 
     fun part1(): Int = rankedBets().mapIndexed { i, bet -> (i + 1) * bet.bid }.sum()
 
+    // bets.sortedWith(part1Comparator).mapIndexed { ... }
+
+//    val part1Comparator: Comparator<CamelCardsBet> = compareBy(
+//        { it. }
+//    )
+
     private fun rankedBets(): List<CamelCardsBet> {
         return bets;
     }
@@ -23,7 +29,19 @@ class Day07(val bets: List<CamelCardsBet>) {
     }
 }
 
-data class CamelCardsBet(val hand: String, val bid: Int)
+enum class HandType {
+    HIGH_CARD, ONE_PAIR, TWO_PAIRS, THREE_KIND, FULL_HOUSE, FOUR_KIND, FIVE_KIND;
+
+    companion object {
+        fun of(hand: String): HandType {
+            return HIGH_CARD
+        }
+    }
+}
+
+data class CamelCardsBet(val hand: String, val bid: Int) {
+    val type: HandType = HandType.of(hand)
+}
 
 fun main() {
 
