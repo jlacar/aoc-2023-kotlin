@@ -2,96 +2,82 @@
  * --- Day 7: Camel Cards ---
  */
 
-// TODO change this name
-data class CamelCardHand(val value: String, val bid: Int) {
-    fun winnings(): Int {
-        return bid
+class Day07(val bets: List<CamelCardsBet>) {
+
+    fun part1(): Int = rankedBets().mapIndexed { i, bet -> (i + 1) * bet.bid }.sum()
+
+    private fun rankedBets(): List<CamelCardsBet> {
+        return bets;
     }
 
-    // Helper functions
+    fun part2(): Int = 0
 
     companion object {
-        fun parseToList(input: List<String>): List<CamelCardHand> =
-            input.map { line ->
-                val (hand, bid) = line.split(" ")
-                CamelCardHand(hand, bid.toInt())
+        fun using(input: List<String>): Day07 {
+            val bets = input.map {
+                val (hand, bets) = it.split(" ")
+                CamelCardsBet(hand, bets.toInt())
             }
+            return Day07(bets)
+        }
     }
 }
 
-// TODO Change Day name and signature
-class Day7(val hands: List<CamelCardHand>) {
-    companion object {
-        fun using(input: List<String>) = Day7(CamelCardHand.parseToList(input))
-    }
-
-    // TODO update this
-    fun part1(): Int = hands.sumOf { it.winnings() }
-
-    // TODO update this
-    fun part2(): Int = hands.count()
-}
+data class CamelCardsBet(val hand: String, val bid: Int)
 
 fun main() {
 
-    // TODO change this data
-    // Small tests (for TDD)
-    Day0.using("""
-        not a palindrome
-        a
-        aba
-        Madam I'm Adam
-    """.trimIndent().lines()).apply {
+    val tempInput =
+        """
+        32T3K 765
+        KTJJT 220
+        KK677 28
+        T55J5 684
+        QQQJA 483
+        """.trimIndent().lines()
 
-        with(part1()) {
-            // TODO update this
-            val expected = 3
-            check(this == expected) {
-                lazyMessage("Part 1 (simplest)", expected, this)
-            }
-        }
+    Day07.using(tempInput).apply {
+        val actual = part1()
+        val expected = 6440
 
-        with(part2()) {
-            // TODO update this
-            val expected = 2
-            check(this == expected) {
-                lazyMessage("Part 2 (simplest)", expected, this)
-            }
+        check(expected == actual) {
+            lazyMessage("Temp BREAKPOINT", expected, actual)
         }
     }
+    check(false) {"Temp BREAKPOINT"}
 
-    // TODO copy-paste sample from problem
-    val testInputFromAoC = """
-        Madam I'm Adam 
-        Too bad—I hid a boot
-        too bad dab oot
-        not a palindrome
-    """.trimIndent().lines()
+    val sampleInput =
+        """
+        32T3K 765
+        T55J5 684
+        KK677 28
+        KTJJT 220
+        QQQJA 483
+        """.trimIndent().lines()
 
     // TODO update the class
-    Day0.using(testInputFromAoC).apply {
+    Day07.using(sampleInput).apply {
         with (part1()) {
-            // TODO update this
-            val expected = 3
+            "Part 1 (sample) -> $this".println()
+
+            val expected = 6440
             check(this == expected) {
                 lazyMessage("Part 1 (example)", expected, this)
             }
         }
 
         with (part2()) {
+            "Part 2 (sample) -> $this".println()
             // TODO update this
-            val expected = 1
+            val expected = -1
             check(this == expected) {
                 lazyMessage("Part 2 (example)", expected, this)
             }
         }
     }
 
-    // TODO uncomment and move this to TDD
-//    check(false) { "All tests above PASS" }
-
     // TODO toggle this to true to see answers, false to stop here
-    check(true) {
+    check(false) {
         """
         |
         | All tests PASS! To see the answers:
@@ -102,30 +88,23 @@ fun main() {
 
     "SOLUTION".println()
 
-    val puzzleInput = readInput("DayXX") // TODO update this
+    val myPuzzleInput = readInput("Day07")
 
     // Part 1
-    // TODO update which day this is
-    Day0.using(puzzleInput).apply {
+    Day07.using(myPuzzleInput).apply {
         with (part1()) {
-            // TODO set to bogus value, then update with correct answer
-            val correctAnswer = 3
-
             "Part 1 -> $this".println()
+            val correctAnswer = 0  // TODO update this
+
             check(this == correctAnswer) {
                 lazyMessage("You broke Part 1!", correctAnswer, this)
             }
         }
-    }
 
-    // Part 2
-    // TODO update which day this is
-    Day0.using(puzzleInput).apply {
         with (part2()) {
-            // TODO set to bogus value, then update with correct answer
-            val correctAnswer = 1
-
             "Part 2 -> $this".println()
+            val correctAnswer = 0  // TODO update this
+
             check(this == correctAnswer) {
                 lazyMessage("You broke Part 2!", correctAnswer, this)
             }
