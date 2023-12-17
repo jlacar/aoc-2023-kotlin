@@ -6,7 +6,7 @@ class Day05tg(val seeds: List<Long>, private val conversionTables: List<Conversi
         first..<(first + length)
     }
 
-    private val reverseLookup = reversedConversions()
+    private val reverseLookup = conversionTables.reversed().map { it.reversed() }
 
     fun part1(): Long = seeds.minOf { convert(it) }
 
@@ -17,16 +17,13 @@ class Day05tg(val seeds: List<Long>, private val conversionTables: List<Conversi
         }
     }
 
-    private fun reversedConversions(): List<ConversionTable> = conversionTables.reversed()
-        .map { it.reversed() }
-
     private fun convert(seed: Long, conversions: List<ConversionTable> = conversionTables): Long =
         conversions.fold(seed) { source: Long, lookupTable: ConversionTable ->
             lookupTable.convert(source)
         }
 
     companion object {
-        fun using(input: List<String>) = Day05tg (
+        fun using(input: List<String>) = Day05tg(
             parseSeeds(input),
             parseConversionTables(input)
         )
