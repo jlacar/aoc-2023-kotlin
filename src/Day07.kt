@@ -6,14 +6,14 @@ class Day07(val bets: List<CamelCardsBet>) {
 
     fun part1(): Int = rankedBets().mapIndexed { i, bet -> (i + 1) * bet.bid }.sum()
 
-    // bets.sortedWith(part1Comparator).mapIndexed { ... }
-
-//    val part1Comparator: Comparator<CamelCardsBet> = compareBy(
-//        { it. }
-//    )
-
     private fun rankedBets(): List<CamelCardsBet> {
-        return bets;
+        return bets.sortedWith( compareBy { it.strength } );
+    }
+
+    fun winner(hand1: String, hand2: String): CamelCardsBet {
+        val bet1 = CamelCardsBet(hand1, 0)
+        val bet2 = CamelCardsBet(hand2, 0)
+        return if (bet1.strength > bet2.strength) bet1 else bet2
     }
 
     fun listHandTypes() {
@@ -50,57 +50,75 @@ enum class HandType {
     }
 }
 
+enum class CamelCard {
+    TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE;
+
+    companion object {
+        fun of(ch: Char): CamelCard =
+            entries.getOrNull("23456789TJQKA".indexOf(ch)) ?: error("Invalid card")
+    }
+}
+
 fun String.charFrequencies(): Map<Char, Int> {
     val charCounts = mutableMapOf<Char, Int>()
-    forEach { charCounts[it] = charCounts.getOrDefault(it, 0) + 1 }
+    forEach { ch -> charCounts[ch] = charCounts.getOrDefault(ch, 0) + 1 }
     return charCounts
 }
 
 data class CamelCardsBet(val hand: String, val bid: Int) {
-    val type: HandType = HandType.of(hand)
+    private val type: HandType = HandType.of(hand)
+    val strength: String = encode()
+
+    private fun encode(): String {
+        val cardValues = "23456789TJQKA"
+        val codes      = "ABCDEFGHIJKLM"
+        return hand.fold(codes[type.ordinal].toString()) {acc: String, ch: Char ->
+            acc + codes[cardValues.indexOf(ch)]
+        }
+    }
 }
 
 fun main() {
 
-    val tddInput = """
-        AAAAA 6
-        TAAAA 5
-        AATAA 5
-        AATTT 7
-        ATATA 7
-        TTTAA 8
-        A456A 8
-        KKKQT 9
-        32A23 9
-        TKA23 10
-    """.trimIndent().lines()
-
-    Day07.using(tddInput).apply {
-        listHandTypes()
-
-        check(false) {"Temp BREAKPOINT"}
-    }
-
-    val tempInput =
-        """
-        32T3K 765
-        KTJJT 220
-        KK677 28
-        T55J5 684
-        QQQJA 483
-        """.trimIndent().lines()
-
-    Day07.using(tempInput).apply {
-
-
-        val actual = part1()
-        val expected = 6440
-
-        check(expected == actual) {
-            lazyMessage("Temp BREAKPOINT", expected, actual)
-        }
-    }
-
+//    val tddInput = """
+//        AAAAA 6
+//        TAAAA 5
+//        AATAA 5
+//        AATTT 7
+//        ATATA 7
+//        TTTAA 8
+//        A456A 8
+//        KKKQT 9
+//        32A23 9
+//        TKA23 10
+//    """.trimIndent().lines()
+//
+//    Day07.using(tddInput).apply {
+//        val card1 = CamelCardsBet("22222", 0)
+//        val card2 = CamelCardsBet("AAAAK", 0)
+//        val winner = if (card1.strength > card2.strength) card1 else card2
+//        check(winner == card1) { "WRONG: $card1 (${card1.strength}) should be greater than $card2 (${card2.strength})" }
+//        check(false) {"Temp BREAKPOINT"}
+//    }
+//
+//    val tempInput =
+//        """
+//        32T3K 765
+//        KTJJT 220
+//        KK677 28
+//        T55J5 684
+//        QQQJA 483
+//        """.trimIndent().lines()
+//
+//    Day07.using(tempInput).apply {
+//        val actual = part1()
+//        val expected = 6440
+//
+//        check(expected == actual) {
+//            lazyMessage("Temp BREAKPOINT", expected, actual)
+//        }
+//    }
+//
     val sampleInput =
         """
         32T3K 765
@@ -113,7 +131,6 @@ fun main() {
     // TODO update the class
     Day07.using(sampleInput).apply {
 
-
         with (part1()) {
             "Part 1 (sample) -> $this".println()
 
@@ -123,18 +140,18 @@ fun main() {
             }
         }
 
-        with (part2()) {
-            "Part 2 (sample) -> $this".println()
-            // TODO update this
-            val expected = -1
-            check(this == expected) {
-                lazyMessage("Part 2 (example)", expected, this)
-            }
-        }
+//        with (part2()) {
+//            "Part 2 (sample) -> $this".println()
+//            // TODO update this
+//            val expected = -1
+//            check(this == expected) {
+//                lazyMessage("Part 2 (example)", expected, this)
+//            }
+//        }
     }
 
     // TODO toggle this to true to see answers, false to stop here
-    check(false) {
+    check(true) {
         """
         |
         | All tests PASS! To see the answers:
@@ -151,7 +168,7 @@ fun main() {
     Day07.using(myPuzzleInput).apply {
         with (part1()) {
             "Part 1 -> $this".println()
-            val correctAnswer = 0  // TODO update this
+            val correctAnswer = 251216224
 
             check(this == correctAnswer) {
                 lazyMessage("You broke Part 1!", correctAnswer, this)
