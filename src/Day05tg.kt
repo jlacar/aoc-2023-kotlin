@@ -10,6 +10,14 @@ class Day05tg(val seeds: List<Long>, private val conversionTables: List<Conversi
 
     fun part1(): Long = seeds.minOf { convert(it) }
 
+    /* Developer Note:
+       Profiling shows this function completing in ~5 to 6s.
+
+       It's important to note that the 'seed' explaining variable
+       needs to be used to keep the code performant. Inlining it
+       in the call to .any { it.contains() } will dramatically
+       degrade performance.
+     */
     fun part2(): Long = generateSequence(0, Long::inc).first { location ->
             val seed = convert(location, reverseConversionTables)
             seedRanges.any { it.contains(seed) }
