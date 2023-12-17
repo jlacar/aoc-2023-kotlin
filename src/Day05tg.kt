@@ -6,16 +6,14 @@ class Day05tg(val seeds: List<Long>, private val conversionTables: List<Conversi
         first..<(first + length)
     }
 
-    private val reverseLookup = conversionTables.reversed().map { it.reversed() }
+    private val reverseConversionTables = conversionTables.reversed().map { it.reversed() }
 
     fun part1(): Long = seeds.minOf { convert(it) }
 
-    fun part2(): Long {
-        return generateSequence(0, Long::inc).first { location ->
-            val seed = convert(location, reverseLookup)
+    fun part2(): Long = generateSequence(0, Long::inc).first { location ->
+            val seed = convert(location, reverseConversionTables)
             seedRanges.any { it.contains(seed) }
         }
-    }
 
     private fun convert(seed: Long, conversions: List<ConversionTable> = conversionTables): Long =
         conversions.fold(seed) { source: Long, lookupTable: ConversionTable ->
