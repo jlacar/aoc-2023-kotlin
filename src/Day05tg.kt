@@ -66,13 +66,13 @@ data class Conversion(val destination: LongRange, val source: LongRange) {
     fun contains(value: Long) = source.contains(value)
 
     companion object {
-        fun parse(input: String): Conversion {
-            val (destStart, sourceStart, length) = input.asListOfLong(" ")
-            return Conversion(
-                destStart..<(destStart + length),
-                sourceStart..<(sourceStart + length)
-            )
-        }
+        fun parse(input: String): Conversion = input.asListOfLong(" ")
+            .let { (destStart, sourceStart, length) ->
+                Conversion(
+                    destination = destStart..<(destStart + length),
+                    source = sourceStart..<(sourceStart + length)
+                )
+            }
     }
 }
 
@@ -141,23 +141,21 @@ fun main() {
 
     val myPuzzleInput = readInput("Day05")
 
-    // Part 1
     Day05tg.using(myPuzzleInput).apply {
-        val actual = part1().also { "Part 1 -> $it".println() }
-        val correctAnswer: Long = 600279879
+        // Part 1
+        val actual1 = part1().also { "Part 1 -> $it".println() }
+        val correctAnswer1: Long = 600279879
 
-        check(actual == correctAnswer) {
-            lazyMessage("Broke Part 1!!!", correctAnswer, actual)
+        check(actual1 == correctAnswer1) {
+            lazyMessage("Broke Part 1!!!", correctAnswer1, actual1)
         }
-    }
 
-    // Part 2
-    Day05tg.using(myPuzzleInput).apply {
-        val actual = part2().also { "Part 2 -> $it".println() }
-        val correctAnswer: Long = 20191102
+        // Part 2
+        val actual2 = part2().also { "Part 2 -> $it".println() }
+        val correctAnswer2: Long = 20191102
 
-        check(actual == correctAnswer) {
-            lazyMessage("Broke Part 2!!!", correctAnswer, actual)
+        check(actual2 == correctAnswer2) {
+            lazyMessage("Broke Part 2!!!", correctAnswer2, actual2)
         }
     }
 }
