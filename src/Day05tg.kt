@@ -23,9 +23,9 @@ class Day05tg(val seeds: List<Long>, private val conversionTables: List<Conversi
             seedRanges.any { it.contains(seed) }
         }
 
-    private fun convert(seed: Long, conversions: List<ConversionTable> = conversionTables): Long =
-        conversions.fold(seed) { source: Long, lookupTable: ConversionTable ->
-            lookupTable.convert(source)
+    private fun convert(firstValue: Long, conversions: List<ConversionTable> = conversionTables): Long =
+        conversions.fold(firstValue) { nextValue: Long, lookupTable: ConversionTable ->
+            lookupTable.convert(nextValue)
         }
 
     companion object {
@@ -45,7 +45,9 @@ class Day05tg(val seeds: List<Long>, private val conversionTables: List<Conversi
 }
 
 data class ConversionTable(val description: String, val conversions: List<Conversion>) {
-    fun convert(value: Long): Long = conversions.firstOrNull { it.contains(value) } ?.convert(value) ?: value
+    fun convert(value: Long): Long = conversions
+        .firstOrNull { it.contains(value) } ?.convert(value) ?: value
+
     fun reversed() = ConversionTable("reversed", conversions.map { it.reversed() })
 
     companion object {
@@ -57,12 +59,11 @@ data class ConversionTable(val description: String, val conversions: List<Conver
 }
 
 data class Conversion(val destination: LongRange, val source: LongRange) {
-    fun convert(sourceValue: Long): Long =
-        if (sourceValue in source) destination.first + sourceValue - source.first else sourceValue
-
-    fun contains(value: Long) = source.contains(value)
+    fun convert(sourceValue: Long): Long = destination.first + sourceValue - source.first
 
     fun reversed() = Conversion(source, destination)
+
+    fun contains(value: Long) = source.contains(value)
 
     companion object {
         fun parse(input: String): Conversion {
