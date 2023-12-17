@@ -10,16 +10,6 @@ class Day07(val bets: List<CamelCardsBet>) {
         return bets.sortedWith( compareBy { it.strength } );
     }
 
-    fun winner(hand1: String, hand2: String): CamelCardsBet {
-        val bet1 = CamelCardsBet(hand1, 0)
-        val bet2 = CamelCardsBet(hand2, 0)
-        return if (bet1.strength > bet2.strength) bet1 else bet2
-    }
-
-    fun listHandTypes() {
-        bets.forEach { "${it.hand} -> ${HandType.of(it.hand)}".println() }
-    }
-
     fun part2(): Int = 0
 
     companion object {
@@ -80,45 +70,6 @@ data class CamelCardsBet(val hand: String, val bid: Int) {
 
 fun main() {
 
-//    val tddInput = """
-//        AAAAA 6
-//        TAAAA 5
-//        AATAA 5
-//        AATTT 7
-//        ATATA 7
-//        TTTAA 8
-//        A456A 8
-//        KKKQT 9
-//        32A23 9
-//        TKA23 10
-//    """.trimIndent().lines()
-//
-//    Day07.using(tddInput).apply {
-//        val card1 = CamelCardsBet("22222", 0)
-//        val card2 = CamelCardsBet("AAAAK", 0)
-//        val winner = if (card1.strength > card2.strength) card1 else card2
-//        check(winner == card1) { "WRONG: $card1 (${card1.strength}) should be greater than $card2 (${card2.strength})" }
-//        check(false) {"Temp BREAKPOINT"}
-//    }
-//
-//    val tempInput =
-//        """
-//        32T3K 765
-//        KTJJT 220
-//        KK677 28
-//        T55J5 684
-//        QQQJA 483
-//        """.trimIndent().lines()
-//
-//    Day07.using(tempInput).apply {
-//        val actual = part1()
-//        val expected = 6440
-//
-//        check(expected == actual) {
-//            lazyMessage("Temp BREAKPOINT", expected, actual)
-//        }
-//    }
-//
     val sampleInput =
         """
         32T3K 765
@@ -128,7 +79,6 @@ fun main() {
         QQQJA 483
         """.trimIndent().lines()
 
-    // TODO update the class
     Day07.using(sampleInput).apply {
 
         with (part1()) {
@@ -140,17 +90,16 @@ fun main() {
             }
         }
 
-//        with (part2()) {
-//            "Part 2 (sample) -> $this".println()
-//            // TODO update this
-//            val expected = -1
-//            check(this == expected) {
-//                lazyMessage("Part 2 (example)", expected, this)
-//            }
-//        }
+        with (part2()) {
+            "Part 2 (sample) -> $this".println()
+
+            val expected = 5905
+            check(this == expected) {
+                lazyMessage("Part 2 (example)", expected, this)
+            }
+        }
     }
 
-    // TODO toggle this to true to see answers, false to stop here
     check(true) {
         """
         |
