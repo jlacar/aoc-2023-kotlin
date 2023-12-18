@@ -4,9 +4,9 @@
 
 class Day07(private val plays: List<CamelCardPlay>) {
 
-    fun part1(): Int = totalWinnings(plays.sortedWith( compareBy { it.normalStrength() } ))
+    fun part1(): Int = totalWinnings(plays.sortedWith( compareBy { it.normalStrength } ))
 
-    fun part2(): Int = totalWinnings(plays.sortedWith( compareBy { it.jokerStrength() } ))
+    fun part2(): Int = totalWinnings(plays.sortedWith( compareBy { it.jokerStrength } ))
 
     private fun totalWinnings(rankedPlays: List<CamelCardPlay>): Int =
         rankedPlays.mapIndexed { rank, play -> (rank + 1) * play.bid }.sum()
@@ -48,9 +48,8 @@ data class CamelCardPlay(val hand: String, val bid: Int) {
 
     private fun mostNotJ() = countOf.filter { it.key != 'J' }.maxByOrNull { it.value }?.key ?: 'A'
 
-    fun normalStrength() = strength(HandType.of(hand).strength, hand, "23456789TJQKA")
-
-    fun jokerStrength() = strength(HandType.of(jokerHand).strength, hand, "J23456789TQKA")
+    val normalStrength = strength(HandType.of(hand).strength, hand, "23456789TJQKA")
+    val jokerStrength = strength(HandType.of(jokerHand).strength, hand, "J23456789TQKA")
 
     private fun strength(typeStrength: Char, hand: String, rankOrder: String): String {
         val strengthOf = mutableMapOf<Char, Char>()
