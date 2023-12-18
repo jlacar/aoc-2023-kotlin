@@ -52,17 +52,16 @@ data class CamelCardPlay(val hand: String, val bid: Int) {
     val jokerStrength = strength(HandType.of(jokerHand).strength, hand, jokerRules)
 
     companion object {
-        val jokerRules = strengthLookup("J23456789TQKA")
-        val normalRules = strengthLookup("23456789TJQKA")
-        private fun strengthLookup(rankOrder: String): Map<Char, Char> {
-            val strengthOf = mutableMapOf<Char, Char>()
-            rankOrder.zip("ABCDEFGHIJKLM") { ch, strength -> strengthOf[ch] = strength }
-            return strengthOf
-        }
+        val normalRules = strengthOrder("23456789TJQKA")
+        val jokerRules = strengthOrder("J23456789TQKA")
 
-        fun strength(typeStrength: Char, hand: String, strengthOf: Map<Char, Char>): String {
-            return hand.fold(typeStrength.toString()) { acc, ch -> acc + strengthOf[ch] }
-        }
+        private fun strengthOrder(rankOrder: String): Map<Char, Char> =
+            mutableMapOf<Char, Char>().apply {
+                rankOrder.zip("ABCDEFGHIJKLM") { ch, strength -> this[ch] = strength }
+            }
+
+        fun strength(typeStrength: Char, hand: String, strengthOf: Map<Char, Char>) =
+            hand.fold(typeStrength.toString()) { acc, ch -> acc + strengthOf[ch] }
     }
 }
 
