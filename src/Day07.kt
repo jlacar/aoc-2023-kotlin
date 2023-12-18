@@ -12,13 +12,12 @@ class Day07(private val plays: List<CamelCardPlay>) {
         rankedPlays.mapIndexed { rank, play -> (rank + 1) * play.bid }.sum()
 
     companion object {
-        fun using(input: List<String>): Day07 {
-            val plays = input.map {
+        fun using(input: List<String>) = Day07(
+            plays = input.map {
                 val (hand, bid) = it.split(" ")
                 CamelCardPlay(hand, bid.toInt())
             }
-            return Day07(plays)
-        }
+        )
     }
 }
 
