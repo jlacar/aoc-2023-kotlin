@@ -2,31 +2,22 @@
  * --- Day 7: Camel Cards ---
  */
 
-class Day07(private val bets: List<CamelCardsBet>) {
+class Day07(val plays: List<CamelCardPlay>) {
 
-    fun part1(): Int = totalWinnings(bets.sortedWith( compareBy { it.normalStrength() } ))
+    fun part1(): Int = totalWinnings(plays.sortedWith( compareBy { it.normalStrength() } ))
 
-    fun part2(): Int = totalWinnings(bets.sortedWith( compareBy { it.jokerStrength() } ))
+    fun part2(): Int = totalWinnings(plays.sortedWith( compareBy { it.jokerStrength() } ))
 
-    private fun totalWinnings(rankedBets: List<CamelCardsBet>): Int =
-        rankedBets.mapIndexed { i, bet -> (i + 1) * bet.bid }.sum()
-
-    private fun rankedBets2(): List<CamelCardsBet> =
-        listOf(
-            CamelCardsBet("32T3K", 765),
-            CamelCardsBet("KK677", 28),
-            CamelCardsBet("T55J5", 684),
-            CamelCardsBet("QQQJA", 483),
-            CamelCardsBet("KTJJT", 220)
-        )
+    private fun totalWinnings(rankedPlays: List<CamelCardPlay>): Int =
+        rankedPlays.mapIndexed { rank, play -> (rank + 1) * play.bid }.sum()
 
     companion object {
         fun using(input: List<String>): Day07 {
-            val bets = input.map {
+            val plays = input.map {
                 val (hand, bid) = it.split(" ")
-                CamelCardsBet(hand, bid.toInt())
+                CamelCardPlay(hand, bid.toInt())
             }
-            return Day07(bets)
+            return Day07(plays)
         }
     }
 }
@@ -50,17 +41,28 @@ enum class HandType {
     }
 }
 
-data class CamelCardsBet(val hand: String, val bid: Int) {
-    fun normalStrength(): String {
-        val strengthOf = mutableMapOf<Char, Char>().apply {
-            "23456789TJQKA".zip("ABCDEFGHIJKLM") { ch, strength -> this[ch] = strength }
+data class CamelCardPlay(val hand: String, val bid: Int) {
+
+    private val rankCounts = hand.charFrequencies()
+    private val jokerHand = let {
+        val countOfJs = rankCounts['J'] ?: 0
+        when (countOfJs) {
+            0 -> hand
+            5 -> "AAAAA"
+            else -> {
+                val mostChar = rankCounts.filter { it.key != 'J' }.maxByOrNull { it.value }?.key
+                hand.map { if (it == 'J') mostChar else it }.joinToString("")
+            }
         }
-        val type: HandType = HandType.of(hand)
-        return hand.fold(type.strength.toString()) {acc, ch -> acc + strengthOf[ch] }
     }
 
-    fun jokerStrength(): String {
-        return normalStrength()
+    fun normalStrength() = strength(HandType.of(hand).strength, hand, "23456789TJQKA")
+    fun jokerStrength() = strength(HandType.of(jokerHand).strength, hand, "J23456789TQKA")
+
+    private fun strength(typeStrength: Char, hand: String, rankOrder: String): String {
+        val strengthOf = mutableMapOf<Char, Char>()
+        rankOrder.zip("ABCDEFGHIJKLM") { ch, strength -> strengthOf[ch] = strength }
+        return hand.fold(typeStrength.toString()) { acc, ch -> acc + strengthOf[ch] }
     }
 }
 
@@ -86,14 +88,14 @@ fun main() {
             }
         }
 
-//        with (part2()) {
-//            "Part 2 (sample) -> $this".println()
-//
-//            val expected = 5905
-//            check(this == expected) {
-//                lazyMessage("Part 2 (example)", expected, this)
-//            }
-//        }
+        with (part2()) {
+            "Part 2 (sample) -> $this".println()
+
+            val expected = 5905
+            check(this == expected) {
+                lazyMessage("Part 2 (example)", expected, this)
+            }
+        }
     }
 
     check(true) {
@@ -122,7 +124,7 @@ fun main() {
 
         with (part2()) {
             "Part 2 -> $this".println()
-            val correctAnswer = 0  // TODO update this
+            val correctAnswer = 250825971
 
             check(this == correctAnswer) {
                 lazyMessage("You broke Part 2!", correctAnswer, this)
