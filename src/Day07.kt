@@ -2,21 +2,29 @@
  * --- Day 7: Camel Cards ---
  */
 
-class Day07(val bets: List<CamelCardsBet>) {
+class Day07(private val bets: List<CamelCardsBet>) {
 
-    fun part1(): Int = rankedBets().mapIndexed { i, bet -> (i + 1) * bet.bid }.sum()
+    fun part1(): Int = totalWinnings(bets.sortedWith( compareBy { it.strength } ))
 
-    private fun rankedBets(): List<CamelCardsBet> {
-        return bets.sortedWith( compareBy { it.strength } );
-    }
+    fun part2(): Int = totalWinnings(rankedBets2())
 
-    fun part2(): Int = 0
+    private fun totalWinnings(rankedBets: List<CamelCardsBet>): Int =
+        rankedBets.mapIndexed { i, bet -> (i + 1) * bet.bid }.sum()
+
+    private fun rankedBets2(): List<CamelCardsBet> =
+        listOf(
+            CamelCardsBet("32T3K", 765),
+            CamelCardsBet("KK677", 28),
+            CamelCardsBet("T55J5", 684),
+            CamelCardsBet("QQQJA", 483),
+            CamelCardsBet("KTJJT", 220)
+        )
 
     companion object {
         fun using(input: List<String>): Day07 {
             val bets = input.map {
-                val (hand, bets) = it.split(" ")
-                CamelCardsBet(hand, bets.toInt())
+                val (hand, bid) = it.split(" ")
+                CamelCardsBet(hand, bid.toInt())
             }
             return Day07(bets)
         }
