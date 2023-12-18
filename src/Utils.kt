@@ -46,7 +46,7 @@ fun String.asListOfLong(vararg delimiters: String): List<Long> =
 fun String.toLongs(): List<Long> = this.asListOfLong(" ")
 
 fun String.charFrequencies(): Map<Char, Int> = mutableMapOf<Char, Int>()
-    .let { charCounts ->
-        forEach { ch -> charCounts[ch] = charCounts.getOrDefault(ch, 0) + 1 }
-        charCounts
+    .let { frequencyOf ->
+        forEach { ch -> frequencyOf[ch] = frequencyOf.getOrDefault(ch, 0) + 1 }
+        frequencyOf
     }
