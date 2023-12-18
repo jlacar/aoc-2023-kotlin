@@ -104,7 +104,6 @@ fun main() {
 
     val myPuzzleInput = readInput("Day07")
 
-    // Part 1
     Day07.using(myPuzzleInput).apply {
         with (part1()) {
             "Part 1 -> $this".println()
