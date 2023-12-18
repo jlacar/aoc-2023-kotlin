@@ -2,7 +2,7 @@
  * --- Day 7: Camel Cards ---
  */
 
-class Day07(val plays: List<CamelCardPlay>) {
+class Day07(private val plays: List<CamelCardPlay>) {
 
     fun part1(): Int = totalWinnings(plays.sortedWith( compareBy { it.normalStrength() } ))
 
@@ -43,20 +43,14 @@ enum class HandType {
 
 data class CamelCardPlay(val hand: String, val bid: Int) {
 
-    private val rankCounts = hand.charFrequencies()
-    private val jokerHand = let {
-        val countOfJs = rankCounts['J'] ?: 0
-        when (countOfJs) {
-            0 -> hand
-            5 -> "AAAAA"
-            else -> {
-                val mostChar = rankCounts.filter { it.key != 'J' }.maxByOrNull { it.value }?.key
-                hand.map { if (it == 'J') mostChar else it }.joinToString("")
-            }
-        }
-    }
+    private val countOf = hand.charFrequencies()
+
+    private val jokerHand = if ((countOf['J'] ?: 0) == 0) hand else hand.replace('J', mostNotJ())
+
+    private fun mostNotJ() = countOf.filter { it.key != 'J' }.maxByOrNull { it.value }?.key ?: 'A'
 
     fun normalStrength() = strength(HandType.of(hand).strength, hand, "23456789TJQKA")
+
     fun jokerStrength() = strength(HandType.of(jokerHand).strength, hand, "J23456789TQKA")
 
     private fun strength(typeStrength: Char, hand: String, rankOrder: String): String {
