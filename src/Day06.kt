@@ -3,22 +3,30 @@
  */
 
 class Day6(val times: List<Int>, val recordDistances: List<Long>) {
-    fun part1(): Int = part1Races.fold(1) { product, race -> product * race.waysToWin() }
+    private data class Race(val timeAllowed: Int, val recordDistance: Long) {
+        fun waysToWin(): Int = (1..<timeAllowed).count { time ->
+            time.toLong() * (timeAllowed - time) > recordDistance
+        }
+    }
 
-    fun part2(): Int = part2Race.waysToWin()
+    // PART 1
+
+    fun part1(): Int = part1Races.productOfAllWaysToWin()
+
+    private fun List<Race>.productOfAllWaysToWin(): Int = fold(1) { product, race -> product * race.waysToWin() }
 
     private val part1Races: List<Race> = times.zip(recordDistances) { t: Int, d: Long ->
         Race(timeAllowed = t, recordDistance = d)
     }
 
+    // PART 2
+
+    fun part2(): Int = part2Race.waysToWin()
+
     private val part2Race = Race(
         timeAllowed = times.joinToString("").toInt(),
         recordDistance = recordDistances.joinToString("").toLong()
     )
-
-    private data class Race(val timeAllowed: Int, val recordDistance: Long) {
-        fun waysToWin(): Int = (1..<timeAllowed).count { time -> time.toLong() * (timeAllowed - time) > recordDistance }
-    }
 
     companion object {
         fun using(input: List<String>) = Day6 (
