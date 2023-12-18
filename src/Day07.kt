@@ -29,7 +29,7 @@ enum class HandType {
     companion object {
         fun of(hand: String): HandType {
             val distinctRanks = hand.charFrequencies()
-            return when (distinctRanks.count { it.value != 0 }) {
+            return when (distinctRanks.count { it.value > 0 }) {
                 1 -> FIVE_OF_A_KIND
                 2 -> if (distinctRanks.any { it.value == 4 }) FOUR_OF_A_KIND else FULL_HOUSE
                 3 -> if (distinctRanks.any { it.value == 3 }) THREE_OF_A_KIND else TWO_PAIRS
@@ -46,7 +46,7 @@ data class CamelCardPlay(val hand: String, val bid: Int) {
 
     private val jokerHand = if ((countOf['J'] ?: 0) == 0) hand else hand.replace('J', mostNotJ())
 
-    private fun mostNotJ() = countOf.filter { it.key != 'J' }.maxByOrNull { it.value }?.key ?: 'A'
+    private fun mostNotJ() = countOf.filterNot { it.key == 'J' }.maxByOrNull { it.value }?.key ?: 'A'
 
     val normalStrength = strength(HandType.of(hand).strength, hand, normalRules)
     val jokerStrength = strength(HandType.of(jokerHand).strength, hand, jokerRules)
