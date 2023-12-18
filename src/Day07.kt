@@ -48,13 +48,21 @@ data class CamelCardPlay(val hand: String, val bid: Int) {
 
     private fun mostNotJ() = countOf.filter { it.key != 'J' }.maxByOrNull { it.value }?.key ?: 'A'
 
-    val normalStrength = strength(HandType.of(hand).strength, hand, "23456789TJQKA")
-    val jokerStrength = strength(HandType.of(jokerHand).strength, hand, "J23456789TQKA")
+    val normalStrength = strength(HandType.of(hand).strength, hand, normalRules)
+    val jokerStrength = strength(HandType.of(jokerHand).strength, hand, jokerRules)
 
-    private fun strength(typeStrength: Char, hand: String, rankOrder: String): String {
-        val strengthOf = mutableMapOf<Char, Char>()
-        rankOrder.zip("ABCDEFGHIJKLM") { ch, strength -> strengthOf[ch] = strength }
-        return hand.fold(typeStrength.toString()) { acc, ch -> acc + strengthOf[ch] }
+    companion object {
+        val jokerRules = strengthLookup("J23456789TQKA")
+        val normalRules = strengthLookup("23456789TJQKA")
+        private fun strengthLookup(rankOrder: String): Map<Char, Char> {
+            val strengthOf = mutableMapOf<Char, Char>()
+            rankOrder.zip("ABCDEFGHIJKLM") { ch, strength -> strengthOf[ch] = strength }
+            return strengthOf
+        }
+
+        fun strength(typeStrength: Char, hand: String, strengthOf: Map<Char, Char>): String {
+            return hand.fold(typeStrength.toString()) { acc, ch -> acc + strengthOf[ch] }
+        }
     }
 }
 
