@@ -44,3 +44,9 @@ fun String.asListOfLong(vararg delimiters: String): List<Long> =
     split(*delimiters).filter { it.isNotBlank() }.map { it.toLong() }
 
 fun String.toLongs(): List<Long> = this.asListOfLong(" ")
+
+fun String.charFrequencies(): Map<Char, Int> {
+    val charCounts = mutableMapOf<Char, Int>()
+    forEach { ch -> charCounts[ch] = charCounts.getOrDefault(ch, 0) + 1 }
+    return charCounts
+}

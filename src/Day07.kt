@@ -24,15 +24,17 @@ class Day07(val bets: List<CamelCardsBet>) {
 }
 
 enum class HandType {
-    HIGH_CARD, ONE_PAIR, TWO_PAIRS, THREE_KIND, FULL_HOUSE, FOUR_KIND, FIVE_KIND;
+    HIGH_CARD, ONE_PAIR, TWO_PAIRS, THREE_OF_A_KIND, FULL_HOUSE, FOUR_OF_A_KIND, FIVE_OF_A_KIND;
+
+    val strength: Char = 'A' + this.ordinal
 
     companion object {
         fun of(hand: String): HandType {
             val cardCounts = hand.charFrequencies()
             return when (cardCounts.count { it.value != 0 }) {
-                1 -> FIVE_KIND
-                2 -> if (cardCounts.any { it.value == 4 }) FOUR_KIND else FULL_HOUSE
-                3 -> if (cardCounts.any { it.value == 3 }) THREE_KIND else TWO_PAIRS
+                1 -> FIVE_OF_A_KIND
+                2 -> if (cardCounts.any { it.value == 4 }) FOUR_OF_A_KIND else FULL_HOUSE
+                3 -> if (cardCounts.any { it.value == 3 }) THREE_OF_A_KIND else TWO_PAIRS
                 4 -> ONE_PAIR
                 else -> HIGH_CARD
             }
@@ -40,32 +42,13 @@ enum class HandType {
     }
 }
 
-enum class CamelCard {
-    TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE;
-
-    companion object {
-        fun of(ch: Char): CamelCard =
-            entries.getOrNull("23456789TJQKA".indexOf(ch)) ?: error("Invalid card")
-    }
-}
-
-fun String.charFrequencies(): Map<Char, Int> {
-    val charCounts = mutableMapOf<Char, Int>()
-    forEach { ch -> charCounts[ch] = charCounts.getOrDefault(ch, 0) + 1 }
-    return charCounts
-}
-
 data class CamelCardsBet(val hand: String, val bid: Int) {
-    private val type: HandType = HandType.of(hand)
-    val strength: String = encode()
-
-    private fun encode(): String {
-        val cardValues = "23456789TJQKA"
-        val codes      = "ABCDEFGHIJKLM"
-        return hand.fold(codes[type.ordinal].toString()) {acc: String, ch: Char ->
-            acc + codes[cardValues.indexOf(ch)]
-        }
+    private val strengthOf = mutableMapOf<Char, Char>().apply {
+        "23456789TJQKA".zip("ABCDEFGHIJKLM") { ch, strength -> this[ch] = strength }
     }
+
+    private val type: HandType = HandType.of(hand)
+    val strength = hand.fold(type.strength.toString()) {acc, ch -> acc + strengthOf[ch] }
 }
 
 fun main() {
