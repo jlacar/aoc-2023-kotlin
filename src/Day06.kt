@@ -13,11 +13,17 @@ class Day6(val times: List<Int>, val recordDistances: List<Long>) {
 
     fun part1(): Int = part1Races.productOfAllWaysToWin()
 
-    private fun List<Race>.productOfAllWaysToWin(): Int = fold(1) { product, race -> product * race.waysToWin() }
-
     private val part1Races: List<Race> = times.zip(recordDistances) { t: Int, d: Long ->
         Race(timeAllowed = t, recordDistance = d)
     }
+
+    private fun List<Race>.productOfAllWaysToWin(): Int =
+        fold(1) { product, race -> product * race.waysToWin() }
+
+    // Could also be (but I like the above better: I think it's easier to read
+//    fun part1(): Int = times.zip(recordDistances) { t: Int, d: Long ->
+//            Race(timeAllowed = t, recordDistance = d)
+//        }.fold(1) { product, race -> product * race.waysToWin() }
 
     // PART 2
 
@@ -43,18 +49,22 @@ fun main() {
             """.trimIndent().lines()
 
     Day6.using(testInputFromAoC).apply {
-        val expected1 = 288
-        val actual1 = part1()
+        with (part1()) {
+            "Part 1 (example) --> $this".println()
 
-        check(expected1 == actual1) {
-            lazyMessage("Part 1 (example)", expected1, actual1)
+            val expected = 288
+            check(this == expected) {
+                lazyMessage("Part 1 (example)", expected, this)
+            }
         }
 
-        val expected2 = 71503
-        val actual2 = part2()
+        with (part2()) {
+            "Part 2 (example) --> $this".println()
 
-        check(expected2 == actual2) {
-            lazyMessage("Part 2 (example)", expected2, actual2)
+            val expected = 71503
+            check(this == expected) {
+                lazyMessage("Part 2 (example)", expected, this)
+            }
         }
     }
 
@@ -72,18 +82,22 @@ fun main() {
     val myPuzzleInput = readInput("Day06")
 
     Day6.using(myPuzzleInput).apply {
-        val actual1 = part1().also { "Part 1 --> $it".println() }
-        val correctAnswer1 = 316_800
+        with (part1()) {
+            "Part 1 --> $this".println()
 
-        check(actual1 == correctAnswer1) {
-            lazyMessage("You broke Part 1!", correctAnswer1, actual1)
+            val correctAnswer = 316_800
+            check(this == correctAnswer) {
+                lazyMessage("You broke Part 1!", correctAnswer, this)
+            }
         }
 
-        val actual2 = part2().also { "Part 2 --> $it".println() }
-        val correctAnswer2 = 45647654
+        with (part2()) {
+            "Part 2 --> $this".println()
 
-        check(actual2 == correctAnswer2) {
-            lazyMessage("You broke Part 2!", correctAnswer2, actual2)
+            val correctAnswer = 45647654
+            check(this == correctAnswer) {
+                lazyMessage("You broke Part 2!", correctAnswer, this)
+            }
         }
     }
 
