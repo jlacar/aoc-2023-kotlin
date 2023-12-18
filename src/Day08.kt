@@ -2,13 +2,35 @@
  * --- Day 8: Haunted Wasteland ---
  */
 
-class Day08() {
-    fun part1(): Int = 0
+class Day08(val instructions: String, val nodes: Map<String, Pair<String, String>>) {
+    fun part1(): Int {
+        val wrapLength = instructions.length
+        var lastVisited = "AAA"
+        val steps = generateSequence(0, Int::inc).indexOfFirst { i: Int ->
+            val nextNode = nodes[lastVisited] ?: error("Node [$lastVisited] not found!")
+            val next = nextNode.pick(instructions[i % wrapLength])
+            lastVisited = next
+            next == "ZZZ"
+        }
+        return steps + 1
+    }
+
+    private fun Pair<String, String>.pick(side: Char) = if (side == 'L') first else second
 
     fun part2(): Int = 0
 
     companion object {
         fun using(input: List<String>) = Day08(
+            instructions = input.first(),
+            nodes = mutableMapOf<String, Pair<String, String>>().apply {
+                input.drop(2).forEach {
+                    val (label, lr) = it.split(" = ")
+                    val (left, right) = lr
+                        .substringAfter("(").substringBefore(")")
+                        .split(", ")
+                    this[label] = Pair(left, right)
+                }
+            }
         )
     }
 }
@@ -49,6 +71,7 @@ fun main() {
 //        }
     }
 
+
     val sampleInput2 =
         """
         LLR
@@ -79,7 +102,9 @@ fun main() {
 //        }
     }
 
-    check(false) {
+//    check(false) {"Temp breakpoint"}
+
+    check(true) {
         """
         |
         | All tests PASS! To see the answers:
@@ -96,7 +121,7 @@ fun main() {
         with (part1()) {
             "Part 1 -> $this".println()
 
-            val correctAnswer = 0
+            val correctAnswer = 19241
             check(this == correctAnswer) {
                 lazyMessage("You broke Part 1!", correctAnswer, this)
             }
