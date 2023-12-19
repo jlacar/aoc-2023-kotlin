@@ -2,20 +2,22 @@
  * --- Day 9: Mirage Maintenance ---
  */
 
-class Day09() {
+typealias Histories = List<List<Int>>
+
+class Day09(val histories: Histories) {
 
     fun part1(): Int = -1
 
     fun part2(): Int = -1
 
     companion object {
-        fun using(input: List<String>) = Day09()
+        fun using(input: List<String>) = Day09(input.map { it.toInts() })
     }
 }
 
 fun main() {
 
-    val runAllTests  = true    // TODO toggle this as needed
+    val runAllTests  = false    // TODO toggle this as needed
     val runSolutions = false   // TODO toggle this as needed
 
     val history1 =
@@ -24,6 +26,12 @@ fun main() {
         """.trimIndent().lines()
 
     Day09.using(history1).apply {
+
+    // TODO temporary breakpoint to aid testing; edit and move around as needed
+    check(runAllTests) {
+        lazyMessage("RED - ", "somevalue", "anothervalue", "Debug: $histories")
+    }
+
         with (part1()) {
             "Part 1 (history 1) -> $this".println()
 
@@ -34,10 +42,6 @@ fun main() {
         }
     }
 
-    // TODO temporary breakpoint to aid testing; edit and move around as needed
-    check(runAllTests) {
-        lazyMessage("Scenario: ", -1, -1, "Extra info")
-    }
 
     val history2 =
         """
