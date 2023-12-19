@@ -16,7 +16,7 @@ class Day09() {
 fun main() {
 
     val runAllTests  = true    // TODO toggle this as needed
-    val runSolutions = true    // TODO toggle this as needed
+    val runSolutions = false   // TODO toggle this as needed
 
     val history1 =
         """
