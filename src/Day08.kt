@@ -9,6 +9,7 @@ class Day08(val instructions: String, val nodes: Map<String, Node>) {
 
     fun part1(): Int = stepsFrom("AAA") { it == "ZZZ" }
 
+    /* approach adapted from Todd Ginsberg (tginsberg) */
     fun part2(): Long = nodes.keys
         .filter { it.endsWith('A') }
         .map { stepsFrom(it) { it.endsWith('Z') } .toLong() }
@@ -19,7 +20,8 @@ class Day08(val instructions: String, val nodes: Map<String, Node>) {
         var steps = 0
         var current = start
         while (!endLabelFound(current)) {
-            current = nodes[current]?.pick(instructions[steps++ % instructions.length]) ?: error("key [$current] not found!")
+            current = nodes[current]?.pick(instructions[steps++ % instructions.length])
+                        ?: error("Map entry with key=[$current] not found!")
         }
         return steps
     }
@@ -29,14 +31,8 @@ class Day08(val instructions: String, val nodes: Map<String, Node>) {
     companion object {
         fun using(input: List<String>) = Day08(
             instructions = input.first(),
-            nodes = mutableMapOf<String, Pair<String, String>>().apply {
-                input.drop(2).forEach {
-                    val (label, lr) = it.split(" = ")
-                    val (left, right) = lr
-                        .substringAfter("(").substringBefore(")")
-                        .split(", ")
-                    this[label] = Pair(left, right)
-                }
+            nodes = input.drop(2).associate {
+                it.substring(0..2) to (it.substring(7..9) to it.substring(12..14))
             }
         )
     }
