@@ -29,10 +29,14 @@ class Day08(val instructions: String, val nodes: Map<String, Node>) {
     private fun Node.pick(side: Char) = if (side == 'L') first else second
 
     companion object {
+        private val label = 0..2
+        private val left = 7..9
+        private val rightq = 12..14
+
         fun using(input: List<String>) = Day08(
             instructions = input.first(),
             nodes = input.drop(2).associate {
-                it.substring(0..2) to (it.substring(7..9) to it.substring(12..14))
+                it.substring(label) to (it.substring(left) to it.substring(right))
             }
         )
     }
