@@ -18,20 +18,9 @@ class Day08(val instructions: String, val nodes: Map<String, Node>) {
     private fun nodesEndingWithA() = nodes.filter { it.key.endsWith('A') }
 
     private fun leastCommonMultiple(steps: List<Int>): Long {
-        return steps.fold(1L) { prod: Long, n: Int -> lcm(prod, n.toLong()) }
-    }
-
-    private fun lcm(num1: Long, num2: Long): Long {
-        val larger = if (num1 > num2) num1 else num2
-        val maxLcm = num1 * num2
-        var lcm = larger
-        while (lcm <= maxLcm) {
-            if (lcm % num1 == 0L && lcm % num2 == 0L) {
-                return lcm
-            }
-            lcm += larger
+        return steps.fold(1L) { prod: Long, n: Int ->
+            lcm(prod, n.toLong())
         }
-        return maxLcm
     }
 
     private fun Node.pick(side: Char) = if (side == 'L') first else second
@@ -135,7 +124,6 @@ fun main() {
                 lazyMessage("Part 2 (example)", expected, this)
             }
         }
-
     }
 
     check(true) {
@@ -146,7 +134,6 @@ fun main() {
         | - Remove or disable .also() debugs calls
         """.trimMargin()
     }
-
 
     "SOLUTION".println()
 

@@ -1,6 +1,10 @@
 
 fun main() {
-    val fiveToOne = arrayOf(5, 4, 3, 2, 1)
+    with (gcd(48, 18)) {
+        check(this == 6) { lazyMessage("GCD", 6, this) }
+    }
 
-    for (i in fiveToOne.indices) { "myArray[$i] == ${fiveToOne[i]}".println() }
+    with (lcm(5, 3)) {
+        check(this == 15L)
+    }
 }
