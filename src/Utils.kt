@@ -52,21 +52,37 @@ fun String.charFrequencies(): Map<Char, Int> = mutableMapOf<Char, Int>()
     }
 
 /** Math stuff */
+//
+//fun gcd(a: Long, b: Long): Long {
+//    var n1 = a
+//    var n2 = b
+//    while (n2 != 0L) {
+//        val temp = n2
+//        n2 = n1 % n2
+//        n1 = temp
+//    }
+//    return n1
+//}
+//
+//fun gcd(a: Int, b: Int): Int = gcd(a.toLong(), b.toLong()).toInt()
+//
+//fun lcm(n1: Long, n2: Long) = n1 * n2 / gcd(n1, n2)
 
-fun gcd(a: Long, b: Long): Long {
-    var n1 = a
-    var n2 = b
-    while (n2 != 0L) {
-        val temp = n2
-        n2 = n1 % n2
-        n1 = temp
-    }
-    return n1
-}
+/* from Todd Ginsberg */
 
-fun gcd(a: Int, b: Int): Int = gcd(a.toLong(), b.toLong()).toInt()
+tailrec infix fun Long.gcd(other: Long): Long =
+    if (other == 0L) this
+    else other.gcd(this % other)
 
-fun lcm(n1: Long, n2: Long) = n1 * n2 / gcd(n1, n2)
+tailrec infix fun Int.gcd(other: Int): Int =
+    if (other == 0) this
+    else other.gcd(this % other)
+
+infix fun Long.lcm(other: Long): Long =
+    (this * other) / this.gcd(other)
+
+infix fun Int.lcm(other: Int): Int =
+    (this * other) / this.gcd(other)
 
 //fun lcm(longs: List<Long>): Long =
 //    longs.subList(1, longs.lastIndex).fold(longs.first())
