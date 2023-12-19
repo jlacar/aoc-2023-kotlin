@@ -19,7 +19,10 @@ fun main() {
     val runAllTests  = true    // TODO toggle this as needed
     val runSolutions = true    // TODO toggle this as needed
 
-    check(runAllTests) { "Temporary breakpoint to aid testing. Move this around as needed"}
+    // TODO temporary breakpoint to aid testing; edit and move around as needed
+    check(runAllTests) {
+        lazyMessage("Scenario: ", -1, -1, "Extra info")
+    }
 
     val sampleInput1 =
         """
