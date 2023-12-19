@@ -22,8 +22,29 @@ fun History.extrapolateNext(): Int {
 
 fun main() {
 
-    val runAllTests  = false    // TODO toggle this as needed
+    val runAllTests  = false   // TODO toggle this as needed
     val runSolutions = false   // TODO toggle this as needed
+
+    val history0 =
+        """
+        0 1 2 3 4 5
+        """.trimIndent().lines()
+
+    Day09.using(history0).apply {
+        with (part1()) {
+            "Part 1 (history 0) -> $this".println()
+
+            val expected = 6
+            check(this == expected) {
+                lazyMessage("Part 1 (example 0)", expected, this)
+            }
+        }
+
+        // TODO temporary breakpoint to aid testing; edit and move around as needed
+        check(runAllTests) {
+            lazyMessage("RED - ", "somevalue", "anothervalue", "Debug:\n${histories.joinToString("\n")}")
+        }
+    }
 
     val history1 =
         """
