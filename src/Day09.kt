@@ -23,13 +23,15 @@ fun main() {
     val history1 =
         """
         0 3 6 9 12 15
+        1 3 6 10 15 21
+        10 13 16 21 30 45            
         """.trimIndent().lines()
 
     Day09.using(history1).apply {
 
     // TODO temporary breakpoint to aid testing; edit and move around as needed
     check(runAllTests) {
-        lazyMessage("RED - ", "somevalue", "anothervalue", "Debug: $histories")
+        lazyMessage("RED - ", "somevalue", "anothervalue", "Debug:\n${histories.joinToString("\n")}")
     }
 
         with (part1()) {
