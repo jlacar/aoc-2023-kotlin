@@ -15,16 +15,17 @@ class Day08(val instructions: String, val nodes: Map<String, Node>) {
         .reduce { prev: Long, next: Long -> prev lcm next }
 
     // TODO try profiling as inline vs not inline since it takes a function argument
-    private fun stepsFrom(start: String, endLabelFound: NodePredicate) = mutableListOf(start)
-        .let { visited ->
-            generateSequence(0, Int::inc).indexOfFirst { i: Int ->
+    private fun stepsFrom(start: String, endLabelFound: NodePredicate) =
+        mutableListOf(start).let { visited ->
+            var steps = 0
+            while (!endLabelFound(visited.last())) {
                 visited.replaceAll { label ->
                     val nextNode = nodes[label] ?: error("Node[$label] does not exist!")
-                    nextNode.pick(instructions[i % instructions.length])
+                    nextNode.pick(instructions[steps++ % instructions.length])
                 }
-                endLabelFound(visited.last())
             }
-        } + 1
+            steps
+        }
 
     private fun Node.pick(side: Char) = if (side == 'L') first else second
 
