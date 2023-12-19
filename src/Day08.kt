@@ -6,38 +6,28 @@ typealias Node = Pair<String, String>
 
 class Day08(val instructions: String, val nodes: Map<String, Node>) {
 
-    fun part1(): Long = stepCountFor("AAA") { label -> label == "ZZZ" }.toLong()
+    fun part1(): Long = stepsFrom("AAA") { label -> label == "ZZZ" }.toLong()
 
-    fun part2(): Long {
-        val steps = nodesEndingWithA().map {
-            stepCountFor(it.key) { label -> label.endsWith('Z') }
-        }
-        return leastCommonMultiple(steps)
-    }
+    fun part2(): Long = leastCommonMultiple( nodes
+        .filter { it.key.endsWith('A') }
+        .map { stepsFrom(it.key) { label -> label.endsWith('Z') } }
+    )
 
-    private fun nodesEndingWithA() = nodes.filter { it.key.endsWith('A') }
+    private fun leastCommonMultiple(steps: List<Int>): Long =
+        steps.fold(1L) { a: Long, b: Int -> lcm(a, b.toLong()) }
 
-    private fun leastCommonMultiple(steps: List<Int>): Long {
-        return steps.fold(1L) { prod: Long, n: Int ->
-            lcm(prod, n.toLong())
-        }
-    }
-
-    private fun Node.pick(side: Char) = if (side == 'L') first else second
-
-    private val wrapLength = instructions.length
-    private fun side(index: Int) = instructions[index % wrapLength]
-
-    private fun stepCountFor(start: String, isEndLabel: (String) -> Boolean): Int {
+    private fun stepsFrom(start: String, isEndLabel: (String) -> Boolean): Int {
         val lastVisited =  mutableListOf(start)
         return generateSequence(0, Int::inc).indexOfFirst { index: Int ->
             lastVisited.replaceAll { label ->
                 val nextNode = nodes[label] ?: error("Node[$label] does not exist!")
-                nextNode.pick(side(index))
+                nextNode.pick(instructions[index % instructions.length])
             }
-            lastVisited.removeAll(isEndLabel)
+            lastVisited.any(isEndLabel)
         }.inc()
     }
+
+    private fun Node.pick(side: Char) = if (side == 'L') first else second
 
     companion object {
         fun using(input: List<String>) = Day08(
