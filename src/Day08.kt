@@ -12,7 +12,7 @@ class Day08(val instructions: String, val nodes: Map<String, Node>) {
     /* approach adapted from Todd Ginsberg (tginsberg) */
     fun part2(): Long = nodes.keys
         .filter { it.endsWith('A') }
-        .map { stepsFrom(it) { it.endsWith('Z') } .toLong() }
+        .map { stepsFrom(it) { it.endsWith('Z') }.toLong() }
         .reduce { prev: Long, next: Long -> prev lcm next }
 
     // TODO try profiling as inline vs not inline since it takes a function argument
@@ -21,7 +21,7 @@ class Day08(val instructions: String, val nodes: Map<String, Node>) {
         var current = start
         while (!endLabelFound(current)) {
             current = nodes[current]?.pick(instructions[steps++ % instructions.length])
-                        ?: error("Map entry with key=[$current] not found!")
+                ?: error("Map entry with key=[$current] not found!")
         }
         return steps
     }
@@ -29,14 +29,13 @@ class Day08(val instructions: String, val nodes: Map<String, Node>) {
     private fun Node.pick(side: Char) = if (side == 'L') first else second
 
     companion object {
-        private val label = 0..2
-        private val left = 7..9
-        private val rightq = 12..14
-
+        private val LABEL = 0..2
+        private val LEFT = 7..9
+        private val RIGHT = 12..14
         fun using(input: List<String>) = Day08(
             instructions = input.first(),
             nodes = input.drop(2).associate {
-                it.substring(label) to (it.substring(left) to it.substring(right))
+                it.substring(LABEL) to (it.substring(LEFT) to it.substring(RIGHT))
             }
         )
     }
