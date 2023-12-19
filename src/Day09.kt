@@ -1,36 +1,28 @@
-// TODO update this header
 /**
- * --- Day 0: Solution Template for Advent of Code ---
+ * --- Day 9: Mirage Maintenance ---
  */
 
-// TODO Ctrl + Cmd + G - selects all occurrences for editing
-class Day0() {
+class Day09() {
 
     fun part1(): Int = -1
 
     fun part2(): Int = -1
 
     companion object {
-        fun using(input: List<String>) = Day0()
+        fun using(input: List<String>) = Day09()
     }
 }
 
 fun main() {
-    val runAllTests  = true    // TODO toggle this as needed
-    val runSolutions = true    // TODO toggle this as needed
-
-    check(runAllTests) { "Temporary breakpoint to aid testing. Move this around as needed"}
 
     val sampleInput1 =
         """
-        *** PASTE SAMPLE HERE
         """.trimIndent().lines()
 
-    Day0.using(sampleInput1).apply {
+    Day09.using(sampleInput1).apply {
         with (part1()) {
             "Part 1 (example 1) -> $this".println()
 
-            // TODO update this
             val expected = -1
             check(this == expected) {
                 lazyMessage("Part 1 (example 1)", expected, this)
@@ -40,14 +32,12 @@ fun main() {
 
     val sampleInput2 =
         """
-        *** PASTE SAMPLE HERE
         """.trimIndent().lines()
 
-    Day0.using(sampleInput2).apply {
+    Day09.using(sampleInput2).apply {
         with (part1()) {
             "Part 1 (example 2) -> $this".println()
 
-            // TODO update this
             val expected = -1
             check(this == expected) {
                 lazyMessage("Part 1 (example 2)", expected, this)
@@ -57,14 +47,12 @@ fun main() {
 
     val sampleInputPart2 =
         """
-        *** PASTE SAMPLE HERE
         """.trimIndent().lines()
 
-    Day0.using(sampleInputPart2).apply {
+    Day09.using(sampleInputPart2).apply {
         with (part2()) {
             "Part 2 (sample) -> $this".println()
 
-            // TODO update this when Part 2 is revealed
             val expected = -1
             check(this == expected) {
                 lazyMessage("Part 2 (example)", expected, this)
@@ -72,25 +60,23 @@ fun main() {
         }
     }
 
-    check(runSolutions) {
+    check(true) {
         """
         |
         | All tests PASS! To see the answers:
-        | - Set the runSolutions flag to true
+        | - Set the flag in this gate check to true
         | - Remove or disable .also() debugs calls
         """.trimMargin()
     }
 
     "SOLUTION".println()
 
-    // TODO update the input file name
-    val myPuzzleInput = readInput("DayXX")
+    val myPuzzleInput = readInput("Day09")
 
-    Day0.using(myPuzzleInput).apply {
+    Day09.using(myPuzzleInput).apply {
         with (part1()) {
             "Part 1 -> $this".println()
 
-            // TODO update this when you find the correct answer
             val correctAnswer = -1
             check(this == correctAnswer) {
                 lazyMessage("You broke Part 1!", correctAnswer, this)
@@ -100,7 +86,6 @@ fun main() {
         with (part2()) {
             "Part 2 -> $this".println()
 
-            // TODO update this when you find the correct answer
             val correctAnswer = -1
             check(this == correctAnswer) {
                 lazyMessage("You broke Part 2!", correctAnswer, this)
