@@ -3,29 +3,28 @@
  */
 
 typealias Node = Pair<String, String>
+typealias NodePredicate = (String) -> Boolean
 
 class Day08(val instructions: String, val nodes: Map<String, Node>) {
 
-    fun part1(): Long = stepsFrom("AAA") { label -> label == "ZZZ" }.toLong()
+    fun part1(): Int = stepsFrom("AAA") { it == "ZZZ" }
 
-    fun part2(): Long = leastCommonMultiple( nodes
-        .filter { it.key.endsWith('A') }
-        .map { stepsFrom(it.key) { label -> label.endsWith('Z') } }
-    )
+    fun part2(): Long = nodes.keys
+        .filter { it.endsWith('A') }
+        .map { stepsFrom(it) { it.endsWith('Z') } .toLong() }
+        .reduce { prev: Long, next: Long -> prev lcm next }
 
-    private fun leastCommonMultiple(steps: List<Int>): Long =
-        steps.fold(1L) { a: Long, b: Int -> lcm(a, b.toLong()) }
-
-    private fun stepsFrom(start: String, isEndLabel: (String) -> Boolean): Int {
-        val lastVisited =  mutableListOf(start)
-        return generateSequence(0, Int::inc).indexOfFirst { index: Int ->
-            lastVisited.replaceAll { label ->
-                val nextNode = nodes[label] ?: error("Node[$label] does not exist!")
-                nextNode.pick(instructions[index % instructions.length])
+    // TODO try profiling as inline vs not inline since it takes a function argument
+    private fun stepsFrom(start: String, endLabelFound: NodePredicate) = mutableListOf(start)
+        .let { visited ->
+            generateSequence(0, Int::inc).indexOfFirst { i: Int ->
+                visited.replaceAll { label ->
+                    val nextNode = nodes[label] ?: error("Node[$label] does not exist!")
+                    nextNode.pick(instructions[i % instructions.length])
+                }
+                endLabelFound(visited.last())
             }
-            lastVisited.any(isEndLabel)
-        }.inc()
-    }
+        } + 1
 
     private fun Node.pick(side: Char) = if (side == 'L') first else second
 
@@ -64,7 +63,7 @@ fun main() {
         with (part1()) {
             "Part 1 (example 1) -> $this".println()
 
-            val expected: Long = 2
+            val expected = 2
             check(this == expected) {
                 lazyMessage("Part 1 (example 1)", expected, this)
             }
@@ -84,7 +83,7 @@ fun main() {
         with (part1()) {
             "Part 1 (example 2) -> $this".println()
 
-            val expected: Long = 6
+            val expected = 6
             check(this == expected) {
                 lazyMessage("Part 1 (example 2)", expected, this)
             }
@@ -133,7 +132,7 @@ fun main() {
         with (part1()) {
             "Part 1 -> $this".println()
 
-            val correctAnswer: Long = 19_241
+            val correctAnswer = 19_241
             check(this == correctAnswer) {
                 lazyMessage("You broke Part 1!", correctAnswer, this)
             }
