@@ -15,30 +15,74 @@ class Day09() {
 
 fun main() {
 
-    val sampleInput1 =
+    val runAllTests  = true    // TODO toggle this as needed
+    val runSolutions = true    // TODO toggle this as needed
+
+    val history1 =
         """
+        0 3 6 9 12 15
         """.trimIndent().lines()
 
-    Day09.using(sampleInput1).apply {
+    Day09.using(history1).apply {
         with (part1()) {
-            "Part 1 (example 1) -> $this".println()
+            "Part 1 (history 1) -> $this".println()
 
-            val expected = -1
+            val expected = 18
             check(this == expected) {
                 lazyMessage("Part 1 (example 1)", expected, this)
             }
         }
     }
 
-    val sampleInput2 =
+    // TODO temporary breakpoint to aid testing; edit and move around as needed
+    check(runAllTests) {
+        lazyMessage("Scenario: ", -1, -1, "Extra info")
+    }
+
+    val history2 =
         """
+        1 3 6 10 15 21
         """.trimIndent().lines()
 
-    Day09.using(sampleInput2).apply {
+    Day09.using(history2).apply {
         with (part1()) {
-            "Part 1 (example 2) -> $this".println()
+            "Part 1 (history 2) -> $this".println()
 
-            val expected = -1
+            val expected = 28
+            check(this == expected) {
+                lazyMessage("Part 1 (example 1)", expected, this)
+            }
+        }
+    }
+
+    val history3 =
+        """
+        10 13 16 21 30 45            
+        """.trimIndent().lines()
+
+    Day09.using(history3).apply {
+        with (part1()) {
+            "Part 1 (history 3) -> $this".println()
+
+            val expected = 68
+            check(this == expected) {
+                lazyMessage("Part 1 (example 1)", expected, this)
+            }
+        }
+    }
+
+    val mainExample =
+        """
+        0 3 6 9 12 15
+        1 3 6 10 15 21
+        10 13 16 21 30 45            
+        """.trimIndent().lines()
+
+    Day09.using(mainExample).apply {
+        with (part1()) {
+            "Part 1 (main example) -> $this".println()
+
+            val expected = 18 + 28 + 68
             check(this == expected) {
                 lazyMessage("Part 1 (example 2)", expected, this)
             }
@@ -60,11 +104,11 @@ fun main() {
         }
     }
 
-    check(true) {
+    check(runSolutions) {
         """
         |
         | All tests PASS! To see the answers:
-        | - Set the flag in this gate check to true
+        | - Set the flag to true
         | - Remove or disable .also() debugs calls
         """.trimMargin()
     }
