@@ -3,16 +3,21 @@
  */
 
 typealias Histories = List<List<Int>>
+typealias History = List<Int>
 
 class Day09(val histories: Histories) {
 
-    fun part1(): Int = -1
+    fun part1(): Int = histories.first().extrapolateNext()
 
     fun part2(): Int = -1
 
     companion object {
         fun using(input: List<String>) = Day09(input.map { it.toInts() })
     }
+}
+
+fun History.extrapolateNext(): Int {
+    return last() + 3
 }
 
 fun main() {
@@ -23,17 +28,9 @@ fun main() {
     val history1 =
         """
         0 3 6 9 12 15
-        1 3 6 10 15 21
-        10 13 16 21 30 45            
         """.trimIndent().lines()
 
     Day09.using(history1).apply {
-
-    // TODO temporary breakpoint to aid testing; edit and move around as needed
-    check(runAllTests) {
-        lazyMessage("RED - ", "somevalue", "anothervalue", "Debug:\n${histories.joinToString("\n")}")
-    }
-
         with (part1()) {
             "Part 1 (history 1) -> $this".println()
 
@@ -42,8 +39,12 @@ fun main() {
                 lazyMessage("Part 1 (example 1)", expected, this)
             }
         }
-    }
 
+        // TODO temporary breakpoint to aid testing; edit and move around as needed
+        check(runAllTests) {
+            lazyMessage("RED - ", "somevalue", "anothervalue", "Debug:\n${histories.joinToString("\n")}")
+        }
+    }
 
     val history2 =
         """
