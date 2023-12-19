@@ -15,17 +15,14 @@ class Day08(val instructions: String, val nodes: Map<String, Node>) {
         .reduce { prev: Long, next: Long -> prev lcm next }
 
     // TODO try profiling as inline vs not inline since it takes a function argument
-    private fun stepsFrom(start: String, endLabelFound: NodePredicate) =
-        mutableListOf(start).let { visited ->
-            var steps = 0
-            while (!endLabelFound(visited.last())) {
-                visited.replaceAll { label ->
-                    val nextNode = nodes[label] ?: error("Node[$label] does not exist!")
-                    nextNode.pick(instructions[steps++ % instructions.length])
-                }
-            }
-            steps
+    private fun stepsFrom(start: String, endLabelFound: NodePredicate): Int {
+        var steps = 0
+        var current = start
+        while (!endLabelFound(current)) {
+            current = nodes[current]?.pick(instructions[steps++ % instructions.length]) ?: error("key [$current] not found!")
         }
+        return steps
+    }
 
     private fun Node.pick(side: Char) = if (side == 'L') first else second
 
