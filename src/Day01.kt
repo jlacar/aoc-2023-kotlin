@@ -74,5 +74,15 @@ fun main() {
         part2(input).also { "Part 2 -> $it".println() }
     )
 
+    val gitHubInput = readInput("Day01gh")
+
+    check( 55_538 ==
+        part1(gitHubInput).also { "Part 1 github -> $it".println() }
+    )
+
+    check( 54_875 ==
+        part2(gitHubInput).also { "Part 2 -> $it".println() }
+    )
+
     "Solved it!".println()
 }

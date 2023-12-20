@@ -61,5 +61,9 @@ fun main() {
     check(part1(games) == 2600)
     check(part2(games) == 86036)
 
+    val gamesGitHub = readInput("Day02gh").toGames()
+    check(part1(gamesGitHub).also { "Part 1 github -> $it".println() } == 2204)
+    check(part2(gamesGitHub).also { "Part 2 github -> $it".println() } == 1)
+
     "Solved it!".println()
 }
