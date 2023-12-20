@@ -58,12 +58,12 @@ fun main() {
 
     "SOLUTION".println()
 
-    SolutionChecker(Day6.using(readInput("Day06")), "(Google)").apply {
+    SolutionChecker(Day6.using(readInput("Day06")), "Google").apply {
         checkAnswerForPartOneIs(316_800)
         checkAnswerForPartTwoIs(45_647_654)
     }
 
-    SolutionChecker(Day6.using(readInput("Day06gh")), "(GitHub)").apply {
+    SolutionChecker(Day6.using(readInput("Day06gh")), "GitHub").apply {
         checkAnswerForPartOneIs(393_120)
         checkAnswerForPartTwoIs(36_872_656)
     }
