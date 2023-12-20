@@ -51,13 +51,14 @@ fun main() {
     val stepwise =
         """
         0 3 6 9 12 15
+        1 3 6 10 15 21
         """.trimIndent().lines()
 
     Day09.using(stepwise).apply {
         with (part1()) {
             "Part 1 (stepwise) -> $this".println()
 
-            val expected = 18
+            val expected = 18 + 28
             check(this == expected) {
                 lazyMessage("Part 1 (example 1)", expected, this)
             }
@@ -75,7 +76,6 @@ fun main() {
 
     val history2 =
         """
-        1 3 6 10 15 21
         """.trimIndent().lines()
 
     Day09.using(history2).apply {
@@ -83,22 +83,6 @@ fun main() {
             "Part 1 (history 2) -> $this".println()
 
             val expected = 28
-            check(this == expected) {
-                lazyMessage("Part 1 (example 1)", expected, this)
-            }
-        }
-    }
-
-    val history3 =
-        """
-        10 13 16 21 30 45            
-        """.trimIndent().lines()
-
-    Day09.using(history3).apply {
-        with (part1()) {
-            "Part 1 (history 3) -> $this".println()
-
-            val expected = 68
             check(this == expected) {
                 lazyMessage("Part 1 (example 1)", expected, this)
             }
