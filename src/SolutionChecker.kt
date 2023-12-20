@@ -1,4 +1,4 @@
-class SolutionChecker(val solution: AoCSolution, private val description: String) {
+class SolutionChecker(val solution: AoCSolution, override val description: String) : Describable {
     fun checkAnswerForPartOneIs(expected: Any) {
         val desc = "${solution.description}, Part 1 ($description)"
         assertEqual(desc, expected) { solution -> solution.part1().also { "$desc --> $it".println() } }

@@ -3,8 +3,7 @@ typealias NodePredicate = (String) -> Boolean
 
 class Day08(val instructions: String, val nodes: Map<String, Node>) : AoCSolution() {
 
-    override val description: String
-        get() = "Day 8: Haunted Wasteland"
+    override val description = "Day 8: Haunted Wasteland"
 
     override fun part1(): Int = stepsFrom("AAA") { it == "ZZZ" }
 

@@ -1,7 +1,6 @@
 class Day07(private val plays: List<CamelCardPlay>) : AoCSolution() {
 
-    override val description: String
-        get() = "Day 7: Camel Cards"
+    override val description = "Day 7: Camel Cards"
 
     override fun part1(): Int = totalWinnings(plays.sortedWith( compareBy { it.normalStrength } ))
 

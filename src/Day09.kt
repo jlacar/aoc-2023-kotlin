@@ -2,8 +2,8 @@ typealias History = List<Int>
 typealias Histories = List<History>
 
 class Day09(private val histories: Histories) : AoCSolution() {
-    override val description: String
-        get() = "Day 9: Mirage Maintenance"
+
+    override val description = "Day 9: Mirage Maintenance"
 
     override fun part1(): Int = histories.sumOf { it.extrapolateNext() }
 
