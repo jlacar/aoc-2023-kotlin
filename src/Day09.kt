@@ -53,19 +53,24 @@ fun main() {
     }
 
     // TODO temporary breakpoint to aid testing; edit and move around as needed
-//    check(doneWithTDD) {
-//        lazyMessage("\n^^^^^^^^^ IGNORE ^^^^^^^^^\nTests PASSED!",
-//            "-",
-//            "-",
-//            "-"
-//        )
-//    }
+    check(doneWithTDD) {
+        lazyMessage("\n^^^^^^^^^ IGNORE ^^^^^^^^^\nTests PASSED!",
+            "RED",
+            "GREEN",
+            "Now Refactor!"
+        )
+    }
 
     "SOLUTION".println()
 
     SolutionChecker(Day09.using(readInput("Day09")), "Google").apply {
         checkAnswerForPartOneIs(1_974_232_246)
         checkAnswerForPartTwoIs(928)
+    }
+
+    SolutionChecker(Day09.using(readInput("Day09gh")), "GitHub").apply {
+        checkAnswerForPartOneIs(1_666_172_641)
+        checkAnswerForPartTwoIs(933)
     }
 
     "That's it!".println()
