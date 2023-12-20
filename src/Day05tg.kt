@@ -139,9 +139,9 @@ fun main() {
 
     "SOLUTION".println()
 
-    val myPuzzleInput = readInput("Day05")
+    val myGoogleInput = readInput("Day05")
 
-    Day05tg.using(myPuzzleInput).apply {
+    Day05tg.using(myGoogleInput).apply {
         // Part 1
         val actual1 = part1().also { "Part 1 -> $it".println() }
         val correctAnswer1: Long = 600279879
@@ -153,6 +153,26 @@ fun main() {
         // Part 2
         val actual2 = part2().also { "Part 2 -> $it".println() }
         val correctAnswer2: Long = 20191102
+
+        check(actual2 == correctAnswer2) {
+            lazyMessage("Broke Part 2!!!", correctAnswer2, actual2)
+        }
+    }
+
+    val myGitHubInput = readInput("Day05gh")
+
+    Day05tg.using(myGitHubInput).apply {
+        // Part 1
+        val actual1 = part1().also { "Part 1 (github) -> $it".println() }
+        val correctAnswer1: Long = 389056265
+
+        check(actual1 == correctAnswer1) {
+            lazyMessage("Broke Part 1!!!", correctAnswer1, actual1)
+        }
+
+        // Part 2
+        val actual2 = part2().also { "Part 2 (github) -> $it".println() }
+        val correctAnswer2: Long = 137516820
 
         check(actual2 == correctAnswer2) {
             lazyMessage("Broke Part 2!!!", correctAnswer2, actual2)

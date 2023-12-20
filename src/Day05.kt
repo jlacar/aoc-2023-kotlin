@@ -141,19 +141,6 @@ class Day05(val seeds: List<Long>, val almanac: List<AlmanacMapping>) {
 }
 
 fun main() {
-
-//    AlmanacMapping.parse(
-//        """
-//        seed-to-soil map:
-//        3788621315 24578909 268976974
-//        0 24569000 5000
-//        """.trimIndent().lines()
-//    ).apply {
-//        convertRange(LongRange(24568909, 24568909 + 5000000)).println()
-//    }
-//
-
-    // Test parsing to an AlmanacMapping
     AlmanacMapping.parse(
         """
         seed-to-soil map:
@@ -193,9 +180,6 @@ fun main() {
         }
     }
 
-//    check(false) { "Temp break!!!" }
-
-    // Test conversion of sample data from problem
     Day05.using(
         """
         seeds: 79 14 55 13
@@ -246,34 +230,48 @@ fun main() {
         }
     }
 
-    check(false) {
-        """
-        |
-        | All tests PASS! To see problem solution:
-        | - Set the flag in this check to true
-        | - Remove or disable .also() debugs calls
-        """.trimMargin()
-    }
-
     "SOLUTION".println()
 
-    // Part 1
-    Day05.using(readInput("Day05")).apply {
-        val correctAnswer: Long = 600279879
-        val actual = part1().also { "Part 1 -> $it".println() }
+    val myGoogleAccountInput = readInput("Day05")
+    Day05.using(myGoogleAccountInput).apply {
+        with(part1()) {
+            "Part 1 (google) -> $this".println()
 
-        check(actual == correctAnswer) {
-            lazyMessage("Broke Part 1!!!", correctAnswer, actual)
+            val correctAnswer: Long = 600279879
+            check(this == correctAnswer) {
+                lazyMessage("Broke Part 1!!!", correctAnswer, this)
+            }
+        }
+
+        with(part2()) {
+            "Part 2 (google) -> $this".println()
+
+            val correctAnswer: Long = 20191102
+            check(this == correctAnswer) {
+                lazyMessage("Broke Part 2!!!", correctAnswer, this)
+            }
         }
     }
 
     // Part 2
-    Day05.using(readInput("Day05")).apply {
-        val correctAnswer: Long = 20191102
-        val actual = part2().also { "Part 2 -> $it".println() }
+    val myGitHubAccountInput = readInput("Day05gh")
+    Day05.using(myGitHubAccountInput).apply {
+        with(part1()) {
+            "Part 1 (github) -> $this".println()
 
-        check(actual == correctAnswer) {
-            lazyMessage("Broke Part 2!!!", correctAnswer, actual)
+            val correctAnswer: Long = 600279879
+            check(this == correctAnswer) {
+                lazyMessage("Broke Part 1!!!", correctAnswer, this)
+            }
+        }
+
+        with(part2()) {
+            "Part 2 (github) -> $this".println()
+
+            val correctAnswer: Long = 20191102
+            check(this == correctAnswer) {
+                lazyMessage("Broke Part 2!!!", correctAnswer, this)
+            }
         }
     }
 
