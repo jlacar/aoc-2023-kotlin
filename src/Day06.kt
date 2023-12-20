@@ -1,8 +1,7 @@
-/**
- * Day 6: Wait For It
- */
+class Day6(val times: List<Int>, val recordDistances: List<Long>) : AoCSolution() {
+    override val description: String
+        get() = "Day 6: Wait For It"
 
-class Day6(val times: List<Int>, val recordDistances: List<Long>) {
     private data class Race(val timeAllowed: Int, val recordDistance: Long) {
         fun waysToWin(): Int = (1..<timeAllowed).count { time ->
             time.toLong() * (timeAllowed - time) > recordDistance
@@ -11,7 +10,7 @@ class Day6(val times: List<Int>, val recordDistances: List<Long>) {
 
     // PART 1
 
-    fun part1(): Int = part1Races.productOfAllWaysToWin()
+    override fun part1(): Int = part1Races.productOfAllWaysToWin()
 
     private val part1Races: List<Race> = times.zip(recordDistances) { t: Int, d: Long ->
         Race(timeAllowed = t, recordDistance = d)
@@ -20,14 +19,9 @@ class Day6(val times: List<Int>, val recordDistances: List<Long>) {
     private fun List<Race>.productOfAllWaysToWin(): Int =
         fold(1) { product, race -> product * race.waysToWin() }
 
-    // Could also be (but I like the above better: I think it's easier to read
-//    fun part1(): Int = times.zip(recordDistances) { t: Int, d: Long ->
-//            Race(timeAllowed = t, recordDistance = d)
-//        }.fold(1) { product, race -> product * race.waysToWin() }
-
     // PART 2
 
-    fun part2(): Int = part2Race.waysToWin()
+    override fun part2(): Int = part2Race.waysToWin()
 
     private val part2Race = Race(
         timeAllowed = times.joinToString("").toInt(),
@@ -48,24 +42,9 @@ fun main() {
             Distance:  9  40  200
             """.trimIndent().lines()
 
-    Day6.using(testInputFromAoC).apply {
-        with(part1()) {
-            "Part 1 (example) --> $this".println()
-
-            val expected = 288
-            check(this == expected) {
-                lazyMessage("Part 1 (example)", expected, this)
-            }
-        }
-
-        with(part2()) {
-            "Part 2 (example) --> $this".println()
-
-            val expected = 71503
-            check(this == expected) {
-                lazyMessage("Part 2 (example)", expected, this)
-            }
-        }
+    SolutionChecker(Day6.using(testInputFromAoC), "test input").apply {
+        checkAnswerForPartOneIs(288)
+        checkAnswerForPartTwoIs(71503)
     }
 
     check(true) {
@@ -79,49 +58,15 @@ fun main() {
 
     "SOLUTION".println()
 
-    val myPuzzleInput = readInput("Day06")
-
-    Day6.using(myPuzzleInput).apply {
-        with(part1()) {
-            "Part 1 --> $this".println()
-
-            val correctAnswer = 316_800
-            check(this == correctAnswer) {
-                lazyMessage("You broke Part 1!", correctAnswer, this)
-            }
-        }
-
-        with(part2()) {
-            "Part 2 --> $this".println()
-
-            val correctAnswer = 45647654
-            check(this == correctAnswer) {
-                lazyMessage("You broke Part 2!", correctAnswer, this)
-            }
-        }
+    SolutionChecker(Day6.using(readInput("Day06")), "(Google)").apply {
+        checkAnswerForPartOneIs(316_800)
+        checkAnswerForPartTwoIs(45_647_654)
     }
 
-    val myGitHubPuzzleInput = readInput("Day06gh")
-
-    Day6.using(myGitHubPuzzleInput).apply {
-        with(part1()) {
-            "Part 1 (github) --> $this".println()
-
-            val correctAnswer = 393_120
-            check(this == correctAnswer) {
-                lazyMessage("You broke Part 1!", correctAnswer, this)
-            }
-        }
-
-        with(part2()) {
-            "Part 2 (github) --> $this".println()
-
-            val correctAnswer = 36_872_656
-            check(this == correctAnswer) {
-                lazyMessage("You broke Part 2!", correctAnswer, this)
-            }
-        }
-
-        "That's it!".println()
+    SolutionChecker(Day6.using(readInput("Day06gh")), "(GitHub)").apply {
+        checkAnswerForPartOneIs(393_120)
+        checkAnswerForPartTwoIs(36_872_656)
     }
+
+    "That's it!".println()
 }
