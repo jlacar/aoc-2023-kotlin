@@ -7,7 +7,7 @@ typealias Histories = List<History>
 
 class Day09(val histories: Histories) {
 
-    fun part1(): Int = histories.first().extrapolateNext()
+    fun part1(): Int = histories.sumOf { it.extrapolateNext() }
 
     fun part2(): Int = -1
 
@@ -16,7 +16,12 @@ class Day09(val histories: Histories) {
     }
 
     private fun History.extrapolateNext(): Int {
-        return last() + 3
+        tailrec fun nextIn(sequence: History, acc: Int = 0): Int {
+            val newSequence = sequence.windowed(2).map { (left, right) -> right - left }
+            return if (newSequence.all { it == 0 }) acc + last()
+                   else nextIn(newSequence, acc + newSequence.last())
+        }
+        return nextIn(this)
     }
 }
 
@@ -26,16 +31,16 @@ fun main() {
     val doneWithTDD  = false   // TODO toggle this as needed
     val runSolutions = false   // TODO toggle this as needed
 
-    val history0 =
+    val simpleSequence =
         """
-        1 1 1 1 1
+        3 6 9 12
         """.trimIndent().lines()
 
-    Day09.using(history0).apply {
+    Day09.using(simpleSequence).apply {
         with (part1()) {
-            "Part 1 (history 0) -> $this".println()
+            "Part 1 (simple sequences) -> $this".println()
 
-            val expected = 1
+            val expected = 15
             check(this == expected) {
                 lazyMessage("Part 1 (example 0)", expected, this)
             }
@@ -43,7 +48,11 @@ fun main() {
 
         // TODO temporary breakpoint to aid testing; edit and move around as needed
         check(doneWithTDD) {
-            lazyMessage("RED - ", "somevalue", "anothervalue", "Debug:\n${histories.joinToString("\n")}")
+            lazyMessage("\n^^^^^^^^^ IGNORE ^^^^^^^^^\nTests PASSED!",
+                "-",
+                "-",
+                "-"
+            )
         }
     }
 
