@@ -27,8 +27,8 @@ class Day09(val histories: Histories) {
 
 fun main() {
 
-    val doneWithTDD  = false   // TODO toggle this as needed
-    val runSolutions = false   // TODO toggle this as needed
+    val doneWithTDD  = true   // TODO toggle this as needed
+    val runSolutions = true   // TODO toggle this as needed
 
     val simpleSequence =
         """
@@ -117,7 +117,7 @@ fun main() {
         with (part2()) {
             "Part 2 -> $this".println()
 
-            val correctAnswer = -1
+            val correctAnswer = 928
             check(this == correctAnswer) {
                 lazyMessage("You broke Part 2!", correctAnswer, this)
             }
