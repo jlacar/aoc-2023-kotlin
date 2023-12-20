@@ -2,8 +2,8 @@
  * --- Day 9: Mirage Maintenance ---
  */
 
-typealias Histories = List<List<Int>>
 typealias History = List<Int>
+typealias Histories = List<History>
 
 class Day09(val histories: Histories) {
 
@@ -14,34 +14,35 @@ class Day09(val histories: Histories) {
     companion object {
         fun using(input: List<String>) = Day09(input.map { it.toInts() })
     }
+
+    private fun History.extrapolateNext(): Int {
+        return last() + 3
+    }
 }
 
-fun History.extrapolateNext(): Int {
-    return last() + 3
-}
 
 fun main() {
 
-    val runAllTests  = false   // TODO toggle this as needed
+    val doneWithTDD  = false   // TODO toggle this as needed
     val runSolutions = false   // TODO toggle this as needed
 
     val history0 =
         """
-        0 1 2 3 4 5
+        1 1 1 1 1
         """.trimIndent().lines()
 
     Day09.using(history0).apply {
         with (part1()) {
             "Part 1 (history 0) -> $this".println()
 
-            val expected = 6
+            val expected = 1
             check(this == expected) {
                 lazyMessage("Part 1 (example 0)", expected, this)
             }
         }
 
         // TODO temporary breakpoint to aid testing; edit and move around as needed
-        check(runAllTests) {
+        check(doneWithTDD) {
             lazyMessage("RED - ", "somevalue", "anothervalue", "Debug:\n${histories.joinToString("\n")}")
         }
     }
@@ -62,7 +63,7 @@ fun main() {
         }
 
         // TODO temporary breakpoint to aid testing; edit and move around as needed
-        check(runAllTests) {
+        check(doneWithTDD) {
             lazyMessage("RED - ", "somevalue", "anothervalue", "Debug:\n${histories.joinToString("\n")}")
         }
     }
