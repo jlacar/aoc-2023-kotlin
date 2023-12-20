@@ -15,9 +15,11 @@ class Day09(val histories: Histories) {
         fun using(input: List<String>) = Day09(input.map { it.toInts() })
     }
 
+    private fun History.differencesBetweenSteps() = windowed(2).map { (left, right) -> right - left }
+
     private fun History.extrapolateNext(): Int {
         tailrec fun nextIn(sequence: History, acc: Int = 0): Int {
-            val newSequence = sequence.windowed(2).map { (left, right) -> right - left }
+            val newSequence = sequence.differencesBetweenSteps()
             return if (newSequence.all { it == 0 }) acc + last()
                    else nextIn(newSequence, acc + newSequence.last())
         }
