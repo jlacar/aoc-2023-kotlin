@@ -48,47 +48,6 @@ fun main() {
 
     }
 
-    val stepwise =
-        """
-        0 3 6 9 12 15
-        1 3 6 10 15 21
-        """.trimIndent().lines()
-
-    Day09.using(stepwise).apply {
-        with (part1()) {
-            "Part 1 (stepwise) -> $this".println()
-
-            val expected = 18 + 28
-            check(this == expected) {
-                lazyMessage("Part 1 (example 1)", expected, this)
-            }
-        }
-
-        // TODO temporary breakpoint to aid testing; edit and move around as needed
-        check(doneWithTDD) {
-            lazyMessage("\n^^^^^^^^^ IGNORE ^^^^^^^^^\nTests PASSED!",
-                "-",
-                "-",
-                "-"
-            )
-        }
-    }
-
-    val history2 =
-        """
-        """.trimIndent().lines()
-
-    Day09.using(history2).apply {
-        with (part1()) {
-            "Part 1 (history 2) -> $this".println()
-
-            val expected = 28
-            check(this == expected) {
-                lazyMessage("Part 1 (example 1)", expected, this)
-            }
-        }
-    }
-
     val mainExample =
         """
         0 3 6 9 12 15
@@ -107,19 +66,13 @@ fun main() {
         }
     }
 
-    val sampleInputPart2 =
-        """
-        """.trimIndent().lines()
-
-    Day09.using(sampleInputPart2).apply {
-        with (part2()) {
-            "Part 2 (sample) -> $this".println()
-
-            val expected = -1
-            check(this == expected) {
-                lazyMessage("Part 2 (example)", expected, this)
-            }
-        }
+    // TODO temporary breakpoint to aid testing; edit and move around as needed
+    check(doneWithTDD) {
+        lazyMessage("\n^^^^^^^^^ IGNORE ^^^^^^^^^\nTests PASSED!",
+            "-",
+            "-",
+            "-"
+        )
     }
 
     check(runSolutions) {
