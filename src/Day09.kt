@@ -9,7 +9,7 @@ class Day09(val histories: Histories) {
 
     fun part1(): Int = histories.sumOf { it.extrapolateNext() }
 
-    fun part2(): Int = -1
+    fun part2(): Int = histories.sumOf { it.reversed().extrapolateNext() }
 
     companion object {
         fun using(input: List<String>) = Day09(input.map { it.toInts() })
@@ -27,8 +27,8 @@ class Day09(val histories: Histories) {
 
 fun main() {
 
-    val doneWithTDD  = true   // TODO toggle this as needed
-    val runSolutions = true   // TODO toggle this as needed
+    val doneWithTDD  = false   // TODO toggle this as needed
+    val runSolutions = false   // TODO toggle this as needed
 
     val simpleSequence =
         """
@@ -41,10 +41,18 @@ fun main() {
 
             val expected = 15
             check(this == expected) {
-                lazyMessage("Part 1 (example 0)", expected, this)
+                lazyMessage("Part 1 (simple sequences)", expected, this)
             }
         }
 
+        with (part2()) {
+            "Part 2 (simple sequences) -> $this".println()
+
+            val expected = 0
+            check(this == expected) {
+                lazyMessage("Part 2 (simple sequences)", expected, this)
+            }
+        }
     }
 
     val mainExample =
@@ -60,7 +68,16 @@ fun main() {
 
             val expected = 18 + 28 + 68
             check(this == expected) {
-                lazyMessage("Part 1 (example 2)", expected, this)
+                lazyMessage("Part 1 (main example)", expected, this)
+            }
+        }
+
+        with (part2()) {
+            "Part 2 (main example) -> $this".println()
+
+            val expected = -3 + 0 + 5
+            check(this == expected) {
+                lazyMessage("Part 1 (main example)", expected, this)
             }
         }
     }
