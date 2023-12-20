@@ -105,5 +105,10 @@ fun main() {
         checkAnswerForPartTwoIs(9_606_140_307_013)
     }
 
+    SolutionChecker(Day08.using(readInput("Day08gh")), "GitHub").apply {
+        checkAnswerForPartOneIs(13_939)
+        checkAnswerForPartTwoIs(8_906_539_031_197)
+    }
+
     "That's it!".println()
 }
