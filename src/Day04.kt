@@ -131,6 +131,15 @@ fun main() {
         part2(input).also { "Part 2 --> $it".println() }
     ) { "You broke it!" }
 
+    val inputGitHub = readInput("Day04gh")
+    check(21_568 ==
+        part1(inputGitHub).also { "Part 1 GitHub --> $it".println() }
+    ) { "You broke it!" }
+
+    check(11_827_296 ==
+        part2(inputGitHub).also { "Part 2 GitHub --> $it".println() }
+    ) { "You broke it!" }
+
     "That's it!".println()
 }
 
