@@ -49,7 +49,7 @@ fun main() {
             """.trimIndent().lines()
 
     Day6.using(testInputFromAoC).apply {
-        with (part1()) {
+        with(part1()) {
             "Part 1 (example) --> $this".println()
 
             val expected = 288
@@ -58,7 +58,7 @@ fun main() {
             }
         }
 
-        with (part2()) {
+        with(part2()) {
             "Part 2 (example) --> $this".println()
 
             val expected = 71503
@@ -82,7 +82,7 @@ fun main() {
     val myPuzzleInput = readInput("Day06")
 
     Day6.using(myPuzzleInput).apply {
-        with (part1()) {
+        with(part1()) {
             "Part 1 --> $this".println()
 
             val correctAnswer = 316_800
@@ -91,7 +91,7 @@ fun main() {
             }
         }
 
-        with (part2()) {
+        with(part2()) {
             "Part 2 --> $this".println()
 
             val correctAnswer = 45647654
@@ -101,5 +101,27 @@ fun main() {
         }
     }
 
-    "That's it!".println()
+    val myGitHubPuzzleInput = readInput("Day06gh")
+
+    Day6.using(myGitHubPuzzleInput).apply {
+        with(part1()) {
+            "Part 1 (github) --> $this".println()
+
+            val correctAnswer = 393_120
+            check(this == correctAnswer) {
+                lazyMessage("You broke Part 1!", correctAnswer, this)
+            }
+        }
+
+        with(part2()) {
+            "Part 2 (github) --> $this".println()
+
+            val correctAnswer = 36_872_656
+            check(this == correctAnswer) {
+                lazyMessage("You broke Part 2!", correctAnswer, this)
+            }
+        }
+
+        "That's it!".println()
+    }
 }
