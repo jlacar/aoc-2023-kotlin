@@ -1,12 +1,11 @@
-/**
- * --- Day 7: Camel Cards ---
- */
+class Day07(private val plays: List<CamelCardPlay>) : AoCSolution() {
 
-class Day07(private val plays: List<CamelCardPlay>) {
+    override val description: String
+        get() = "Day 7: Camel Cards"
 
-    fun part1(): Int = totalWinnings(plays.sortedWith( compareBy { it.normalStrength } ))
+    override fun part1(): Int = totalWinnings(plays.sortedWith( compareBy { it.normalStrength } ))
 
-    fun part2(): Int = totalWinnings(plays.sortedWith( compareBy { it.jokerStrength } ))
+    override fun part2(): Int = totalWinnings(plays.sortedWith( compareBy { it.jokerStrength } ))
 
     private fun totalWinnings(rankedPlays: List<CamelCardPlay>): Int =
         rankedPlays.mapIndexed { rank, play -> (rank + 1) * play.bid }.sum()
@@ -76,25 +75,9 @@ fun main() {
         QQQJA 483
         """.trimIndent().lines()
 
-    Day07.using(sampleInput).apply {
-
-        with (part1()) {
-            "Part 1 (sample) -> $this".println()
-
-            val expected = 6440
-            check(this == expected) {
-                lazyMessage("Part 1 (example)", expected, this)
-            }
-        }
-
-        with (part2()) {
-            "Part 2 (sample) -> $this".println()
-
-            val expected = 5905
-            check(this == expected) {
-                lazyMessage("Part 2 (example)", expected, this)
-            }
-        }
+    SolutionChecker(Day07.using(sampleInput), "sample input").apply {
+        checkAnswerForPartOneIs(6440)
+        checkAnswerForPartTwoIs(5905)
     }
 
     check(true) {
@@ -108,26 +91,9 @@ fun main() {
 
     "SOLUTION".println()
 
-    val myPuzzleInput = readInput("Day07")
-
-    Day07.using(myPuzzleInput).apply {
-        with (part1()) {
-            "Part 1 -> $this".println()
-            val correctAnswer = 251216224
-
-            check(this == correctAnswer) {
-                lazyMessage("You broke Part 1!", correctAnswer, this)
-            }
-        }
-
-        with (part2()) {
-            "Part 2 -> $this".println()
-            val correctAnswer = 250825971
-
-            check(this == correctAnswer) {
-                lazyMessage("You broke Part 2!", correctAnswer, this)
-            }
-        }
+    SolutionChecker(Day07.using(readInput("Day07")), "Google").apply {
+        checkAnswerForPartOneIs(251_216_224)
+        checkAnswerForPartTwoIs(250_825_971)
     }
 
     "That's it!".println()

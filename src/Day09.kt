@@ -1,15 +1,13 @@
-/**
- * --- Day 9: Mirage Maintenance ---
- */
-
 typealias History = List<Int>
 typealias Histories = List<History>
 
-class Day09(private val histories: Histories) {
+class Day09(private val histories: Histories) : AoCSolution() {
+    override val description: String
+        get() = "Day 9: Mirage Maintenance"
 
-    fun part1(): Int = histories.sumOf { it.extrapolateNext() }
+    override fun part1(): Int = histories.sumOf { it.extrapolateNext() }
 
-    fun part2(): Int = histories.sumOf { it.reversed().extrapolateNext() }
+    override fun part2(): Int = histories.sumOf { it.reversed().extrapolateNext() }
 
     companion object {
         fun using(input: List<String>) = Day09(input.map { it.toInts() })
@@ -37,24 +35,9 @@ fun main() {
         6 9 12 15
         """.trimIndent().lines()
 
-    Day09.using(simpleSequence).apply {
-        with (part1()) {
-            "Part 1 (simple sequences) -> $this".println()
-
-            val expected = 18
-            check(this == expected) {
-                lazyMessage("Part 1 (simple sequences)", expected, this)
-            }
-        }
-
-        with (part2()) {
-            "Part 2 (simple sequences) -> $this".println()
-
-            val expected = 3
-            check(this == expected) {
-                lazyMessage("Part 2 (simple sequences)", expected, this)
-            }
-        }
+    SolutionChecker(Day09.using(simpleSequence), "simple sequence").apply {
+        checkAnswerForPartOneIs(18)
+        checkAnswerForPartTwoIs(3)
     }
 
     val mainExample =
@@ -64,57 +47,25 @@ fun main() {
         10 13 16 21 30 45            
         """.trimIndent().lines()
 
-    Day09.using(mainExample).apply {
-        with (part1()) {
-            "Part 1 (main example) -> $this".println()
-
-            val expected = 18 + 28 + 68
-            check(this == expected) {
-                lazyMessage("Part 1 (main example)", expected, this)
-            }
-        }
-
-        with (part2()) {
-            "Part 2 (main example) -> $this".println()
-
-            val expected = -3 + 0 + 5
-            check(this == expected) {
-                lazyMessage("Part 1 (main example)", expected, this)
-            }
-        }
+    SolutionChecker(Day09.using(mainExample), "main example").apply {
+        checkAnswerForPartOneIs(18 + 28 + 68)
+        checkAnswerForPartTwoIs(-3 + 0 + 5)
     }
 
     // TODO temporary breakpoint to aid testing; edit and move around as needed
-    check(doneWithTDD) {
-        lazyMessage("\n^^^^^^^^^ IGNORE ^^^^^^^^^\nTests PASSED!",
-            "-",
-            "-",
-            "-"
-        )
-    }
+//    check(doneWithTDD) {
+//        lazyMessage("\n^^^^^^^^^ IGNORE ^^^^^^^^^\nTests PASSED!",
+//            "-",
+//            "-",
+//            "-"
+//        )
+//    }
 
     "SOLUTION".println()
 
-    val myPuzzleInput = readInput("Day09")
-
-    Day09.using(myPuzzleInput).apply {
-        with (part1()) {
-            "Part 1 -> $this".println()
-
-            val correctAnswer = 1974232246
-            check(this == correctAnswer) {
-                lazyMessage("You broke Part 1!", correctAnswer, this)
-            }
-        }
-
-        with (part2()) {
-            "Part 2 -> $this".println()
-
-            val correctAnswer = 928
-            check(this == correctAnswer) {
-                lazyMessage("You broke Part 2!", correctAnswer, this)
-            }
-        }
+    SolutionChecker(Day09.using(readInput("Day09")), "Google").apply {
+        checkAnswerForPartOneIs(1_974_232_246)
+        checkAnswerForPartTwoIs(928)
     }
 
     "That's it!".println()

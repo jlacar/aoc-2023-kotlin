@@ -1,16 +1,15 @@
-/**
- * --- Day 8: Haunted Wasteland ---
- */
-
 typealias Node = Pair<String, String>
 typealias NodePredicate = (String) -> Boolean
 
-class Day08(val instructions: String, val nodes: Map<String, Node>) {
+class Day08(val instructions: String, val nodes: Map<String, Node>) : AoCSolution() {
 
-    fun part1(): Int = stepsFrom("AAA") { it == "ZZZ" }
+    override val description: String
+        get() = "Day 8: Haunted Wasteland"
+
+    override fun part1(): Int = stepsFrom("AAA") { it == "ZZZ" }
 
     /* approach adapted from Todd Ginsberg (tginsberg) */
-    fun part2(): Long = nodes.keys
+    override fun part2(): Long = nodes.keys
         .filter { it.endsWith('A') }
         .map { stepsFrom(it) { it.endsWith('Z') }.toLong() }
         .reduce { prev: Long, next: Long -> prev lcm next }
@@ -56,15 +55,8 @@ fun main() {
         ZZZ = (ZZZ, ZZZ)
         """.trimIndent().lines()
 
-    Day08.using(sampleInput1).apply {
-        with (part1()) {
-            "Part 1 (example 1) -> $this".println()
-
-            val expected = 2
-            check(this == expected) {
-                lazyMessage("Part 1 (example 1)", expected, this)
-            }
-        }
+    SolutionChecker(Day08.using(sampleInput1), "example 1").apply {
+        checkAnswerForPartOneIs(2)
     }
 
     val sampleInput2 =
@@ -76,18 +68,11 @@ fun main() {
         ZZZ = (ZZZ, ZZZ)
         """.trimIndent().lines()
 
-    Day08.using(sampleInput2).apply {
-        with (part1()) {
-            "Part 1 (example 2) -> $this".println()
-
-            val expected = 6
-            check(this == expected) {
-                lazyMessage("Part 1 (example 2)", expected, this)
-            }
-        }
+    SolutionChecker(Day08.using(sampleInput2), "example 2").apply {
+        checkAnswerForPartOneIs(6)
     }
 
-    val sampleInputPart2 =
+    val sampleInput3 =
         """
         LR
         
@@ -101,15 +86,8 @@ fun main() {
         XXX = (XXX, XXX)        
         """.trimIndent().lines()
 
-    Day08.using(sampleInputPart2).apply {
-        with (part2()) {
-            "Part 2 (sample) -> $this".println()
-
-            val expected: Long = 6
-            check(this == expected) {
-                lazyMessage("Part 2 (example)", expected, this)
-            }
-        }
+    SolutionChecker(Day08.using(sampleInput3), "example 3").apply {
+        checkAnswerForPartTwoIs(6L)
     }
 
     check(true) {
@@ -123,26 +101,9 @@ fun main() {
 
     "SOLUTION".println()
 
-    val myPuzzleInput = readInput("Day08")
-
-    Day08.using(myPuzzleInput).apply {
-        with (part1()) {
-            "Part 1 -> $this".println()
-
-            val correctAnswer = 19_241
-            check(this == correctAnswer) {
-                lazyMessage("You broke Part 1!", correctAnswer, this)
-            }
-        }
-
-        with (part2()) {
-            "Part 2 -> $this".println()
-
-            val correctAnswer = 9_606_140_307_013
-            check(this == correctAnswer) {
-                lazyMessage("You broke Part 2!", correctAnswer, this)
-            }
-        }
+    SolutionChecker(Day08.using(readInput("Day08")), "Google").apply {
+        checkAnswerForPartOneIs(19_241)
+        checkAnswerForPartTwoIs(9_606_140_307_013)
     }
 
     "That's it!".println()
