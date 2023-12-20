@@ -158,5 +158,9 @@ fun main() {
     check(part1(schematic) == 528_799)
     check(part2(schematic) == 84_907_174)
 
+    val schematicGitHub = readInput("Day03gh")
+    check(part1(schematicGitHub).also { "Part 1 GitHub -> $it".println() } == 527_144)
+    check(part2(schematicGitHub).also { "Part 2 GitHub -> $it".println() } == 81_463_996)
+
     "Solved it!".println()
 }
