@@ -46,24 +46,16 @@ fun main() {
             }
         }
 
-        // TODO temporary breakpoint to aid testing; edit and move around as needed
-        check(doneWithTDD) {
-            lazyMessage("\n^^^^^^^^^ IGNORE ^^^^^^^^^\nTests PASSED!",
-                "-",
-                "-",
-                "-"
-            )
-        }
     }
 
-    val history1 =
+    val stepwise =
         """
         0 3 6 9 12 15
         """.trimIndent().lines()
 
-    Day09.using(history1).apply {
+    Day09.using(stepwise).apply {
         with (part1()) {
-            "Part 1 (history 1) -> $this".println()
+            "Part 1 (stepwise) -> $this".println()
 
             val expected = 18
             check(this == expected) {
@@ -73,7 +65,11 @@ fun main() {
 
         // TODO temporary breakpoint to aid testing; edit and move around as needed
         check(doneWithTDD) {
-            lazyMessage("RED - ", "somevalue", "anothervalue", "Debug:\n${histories.joinToString("\n")}")
+            lazyMessage("\n^^^^^^^^^ IGNORE ^^^^^^^^^\nTests PASSED!",
+                "-",
+                "-",
+                "-"
+            )
         }
     }
 
