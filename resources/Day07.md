@@ -16,7 +16,7 @@ Whatever the reason may be that you'd choose to participate, the most important 
 
 ## Kotlin
 
-I've been solving the AoC puzzles with [Kotlin](https://kotlinlang.org) first as a way to learn Kotlin and later as a way to refresh and deepen my understanding of the language. I'm [basically a Java guy](https://coderanch.com/wiki/659748/ActiveStaff#junilulacar) but I find Kotlin such a wonderful language to code in, far more enjoyable than Java. Call me a Kotlin fanboy, I don't mind. 
+I've been solving the AoC puzzles with [Kotlin](https://kotlinlang.org), first as a way to learn Kotlin and later, as a way to refresh and deepen my understanding of the language. I'm [basically a Java guy](https://coderanch.com/wiki/659748/ActiveStaff#junilulacar) but I find Kotlin such a wonderful language to code in, far more enjoyable than Java. Call me a Kotlin fanboy, I don't mind. 
 
 The richness of the standard Kotlin library never ceases to surprise and delight me. It's almost like they ([the people at JetBrains](https://jetbrains.com)) built the language and its library specifically for solving AoC puzzles. Kotlin seems to have every convenient little tool I could ever think of use with the AoC puzzles, and then some. On a good day, I might even solve the puzzle quickly. But the best day for me is when I discover an elegant way to do it in Kotlin. Take the Day 7 puzzle, for example.
 
@@ -57,7 +57,7 @@ As far as I can tell from the Kotlin standard library commit history on GitHub, 
 
 After trying various approaches in solving previous days' puzzles, I've settled on a useful pattern: using a [companion object](https://kotlinlang.org/docs/object-declarations.html#companion-objects) to do the heavy lifting of parsing and serving as an [Object Factory](https://yet-to-be-written-article) for [solution objects](https://yet-to-be-written-article).
 
-Starting with code I wanted to write again, I created my first test based on the example given in the problem:
+Starting with code I wanted to write again, I based the first test the example given in the problem:
 
 ```kotlin
 SolutionChecker(Day07.using(exampleInput), "example input").apply {
@@ -66,17 +66,17 @@ SolutionChecker(Day07.using(exampleInput), "example input").apply {
 ```
 Let's walk through what these few lines of code do:
 
-1. Creates a `Day07` [solution object](https://yet-to-be-written-article) by calling the `using()` factory method, passing in the input data as a list of strings.
+1. Create a `Day07` [solution object](https://yet-to-be-written-article) by calling the `using()` factory method, passing in the input data as a list of strings.
 
-2. Passes the `Day07` object as a [constructor argument](https://kotlinlang.org/docs/classes.html#constructors) to `SolutionChecker`, along with a description of this particular solution. The description is used when displaying test results and says something about the input data being used. This solution object uses the example data.
+2. Pass the `Day07` object as a [constructor argument](https://kotlinlang.org/docs/classes.html#constructors) to `SolutionChecker`, along with a description of this particular solution. The description is used when displaying test results and says something about the input data being used. This solution object uses the example input data.
 
-3. Uses the `apply()` [scope function](https://kotlinlang.org/docs/scope-functions.html) to create a small block from which we can call `SolutionChecker` functions like `checkAnswerForPartOneIs()`. We pass in the value we expect to get from `part1()` of the solution. There's also `SolutionChecker.checkAnswerForPartTwoIs()` which we'll get to when we tackle Part 2 of the puzzle.
+3. Use the `apply()` [scope function](https://kotlinlang.org/docs/scope-functions.html) to create a small block from which we can call `SolutionChecker` functions like `checkAnswerForPartOneIs()`. We pass in the value we expect to get from `part1()` of the solution. There's also `SolutionChecker.checkAnswerForPartTwoIs()` which we'll get to when we tackle Part 2 of the puzzle in a follow-up article.
 
 That's a lot of functionality packed into a few lines of Kotlin, isn't it? Some things to note here:
 
 1. The `SolutionChecker` class is my own invention. It came out of a need to [reduce bloat](https://yet-to-be-written-article) in my solution code.
 
-2. I wrote that code first, or at least something like it, before I wrote its implementation. Writing the code I want to be able to write first gives me a mental model that guides my design decisions.
+2. I wrote the above code first, or at least something like it, before I wrote its implementation. Well, technically, I extracted the implementation from the bloat I was seeing and not liking. Writing the code I want to be able to write gaves me a mental model that guided my design and refactoring decisions, with design and refactoring being [six of one, half-dozen of the other](https://en.wiktionary.org/wiki/six_of_one,_half_a_dozen_of_the_other) in my mind.
 
 ### Design with the end in mind
 
@@ -104,7 +104,7 @@ If you've worked with code for a while, you've likely experienced the "joy" of l
 
 Or maybe someone has asked you about some code you wrote that they're struggling to understand. After several minutes of head scratching, squinting, and brow furrowing, you have to shrug and sheepishly admit that you can't remember what you were thinking when you wrote it either. Time to fire up that debugger!
 
-In all my years of working with [legacy code](https://yet-to-be-written-article#legacy-code), the biggest impediment and source of frustration and wasted time has invariably been code that's difficult to read and understand. Code without tests is the second worst of this kind. Hard-to-read-and-understand code with hard-to-read-and-understand tests are at the top of the worst list. Go ahead, change my mind.
+In all my years of working with [legacy code](https://yet-to-be-written-article#legacy-code), the biggest impediment and source of frustration and wasted time has invariably been code that's difficult to read and understand. Code without tests is the second worst of this kind of bad. Hard-to-read-and-understand code with hard-to-read-and-understand tests are at the top of the naughty list. Go ahead, change my mind.
 
 ### Code should tell a story
 
@@ -116,9 +116,9 @@ Readable code tells a story and good names are critical to a good story. Good na
 
 Meaningful names are the strands of ideas. We spin those strands together to create threads. We weave those threads into the cloth of our program, which we then cut and sew together to form vestments that clothe our understanding of the problem and its solution. 
 
-If we do a good job at clothing our story with relevant ideas, the end result is beautiful and pleasing to the senses, and makes us say "Yes! This is the way!" 
+If we do a good job at clothing our story with clear and relevant ideas, the end result is beautiful and pleasing to behold; it makes us say "Yes! This is the way!" 
 
-Poor storytelling in code results in something that's not pleasing, difficult to follow, uncomfortable to work with, and leaves us asking "Wait, what? Why... ???!" with perhaps a couple of choice words tacked on to the end, for emphasis.
+Poorly told stories in code results in something that's not pleasing, difficult to follow, uncomfortable, painful even, to work with, and leaves us asking "Wait, what? Why the... ???!" usually with a choice [NSFW](https://www.dictionary.com/browse/nsfw) word or two tacked on to the end, for emphasis.
 
 ### The code's story should fit the problem well
 
@@ -236,25 +236,26 @@ data class CamelCardPlay(val hand: String, val bid: Int) {
 
 ### The key to this solution: The Simplest Thing That Could Possibly Work
 
-To me, the main thing, the part that took the longest, was figuring out how to assign the strength to each hand played. One complication to this was that it was a relative value and depended on the strength of other hands.
+The main thing for in this puzzle, the part that took the longest, was figuring out how to assign the strength to each hand played. One complication to doing this was that a hand's strength is a relative value that depends on the strength of other hands.
 
-I spent quite some time playing around approaches for determining a hand's strength, like calculating a hash and other math-based strategies. I couldn't get any of them to work reliably enough. That's when DTSTTCPW came to the rescue.
+I spent quite some time playing around with approaches for calculating a hand's strength. I tried math-based strategies like calculating a hash based on the individual characters and their position in the hand. This only led to frustration when I couldn't get anything to work reliably enough. 
 
-It suddenly dawned on me that I could just use plain old Strings to sort the hands. If I mapped each char to "ABCDEFGHIJKLM", the first thirteen letters of the alphabet, that would be enough. I only needed thirteen letters because that's how many different card values there are to compare.
+Cue DTSTTCPW to the rescue.
 
-For the hand type strength, I used the same encoding, even though I'd only use the first seven letters.
+It suddenly occurred on me that a simpler way, no, the _simplest_ way, would be to just use a plain old string to assign a hand's strength. If I mapped each card to "ABCDEFGHIJKLM" according to their value, I could just use normal string sorting to rank them. That should definitely work!
 
-So, the hand type gets encoded as `'A' + this.ordinal` which would make `HIGH_CARD` get ranked below everything else and `FIVE_OF_A_KIND` ranked the highest of all the types.
+I only needed thirteen letters because that's how many different card values there are to compare. I'd use the same strategy for the hand type strength, but would only need the first seven letters, one for each hand type.
 
-Essentially, an alphabetical encoding was the simplest thing that could possible work.
+With this approach, the hand type gets encoded as `'A' + this.ordinal` which would make `HIGH_CARD` get ranked the lowest and `FIVE_OF_A_KIND` ranked the highest.
+
+An alphabetical encoding for hand strength was the simplest thing that could possible work, and it did so beautifully!
 
 Here's the `strength()` function again:
-
 ```kotlin
 fun strength(typeStrength: Char, hand: String, strengthOf: Map<Char, Char>) =
         hand.fold(typeStrength.toString()) { acc, ch -> acc + strengthOf[ch] }
 ```
-That reads as: Starting with the hand type strength, go through all the cards in the hand and add their individual strength to the end. The result gives you the hand's strength.
+That should read as: Starting with the hand type strength, go through all the cards in the hand and add their individual strength. The result is an encoding of the hand's strength that can be sorted alphabetically, from lowest to highest ranked hand.
 
 ### An opportunity to tell an even better story
 
@@ -272,11 +273,25 @@ data class CamelCardPlay(val hand: String, val bid: Int) {
         ...
 
         fun strength(handType: HandType, hand: String, strengthOf: StrengthMapping) =
-            hand.fold(handType.strength.toString()) { strengthSoFar, card ->
-                strengthSoFar + strengthOf[card]
+            hand.fold(handType.strength.toString()) { strengthSoFar, nextCard ->
+                strengthSoFar + strengthOf[nextCard]
             }
     }
 }
 ```
-If you check [my GitHub repo history](https://github.com/jlacar/aoc-2023-kotlin/commits/main/src/Day07.kt), you might see that I didn't come up with this refactoring until today (December 21, 2023).
+If you check [my GitHub repo history](https://github.com/jlacar/aoc-2023-kotlin/commits/main/src/Day07.kt), you'll see that I just did that refactoring today (December 21, 2023) as I'm wrapping up this article.
+
+## Summary
+
+Here are some of the things I hope you can take away today:
+1. Start with the end in mind. Use that vision as your guide when making design decisions
+2. Start simple, and strive to keep things simple. 
+3. When we start getting frustrated, think about why. It's often because we've made things more complicated and complex than they need to be. Go back to #2 and try to find a simple way.
+4. Tell the story to someone, even it's just a rubber duck or an imaginary audience reading your blog post, and try to make the code tell the same story using the same words and idea constructs.
+5. Make the story in the code line up with the story in our head. The more the two line up, the easier it will be to reason about what the code is doing. The easier it is to reason about what the code is doing, the more you'll understand how to work with it and not mess it up.
+
+That's pretty much it in a nutshell. Thanks for staying with me this far and I hope you can use some of this in your own work, and play.
+
+If you celebrate it, Merry Christmas! Otherwise, and as always, have a great day and happy coding!
+
 

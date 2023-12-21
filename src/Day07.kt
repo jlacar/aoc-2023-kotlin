@@ -61,8 +61,8 @@ data class CamelCardPlay(val hand: String, val bid: Int) {
             }
 
         fun strength(handType: HandType, hand: String, strengthOf: StrengthMapping) =
-            hand.fold(handType.strength.toString()) { strengthSoFar, card ->
-                strengthSoFar + strengthOf[card]
+            hand.fold(handType.strength.toString()) { strengthSoFar, nextCard ->
+                strengthSoFar + strengthOf[nextCard]
             }
     }
 }
