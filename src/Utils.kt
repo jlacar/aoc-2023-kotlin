@@ -45,28 +45,13 @@ fun String.asListOfLong(vararg delimiters: String): List<Long> =
 
 fun String.toLongs(): List<Long> = this.asListOfLong(" ")
 
-fun String.charFrequencies(): Map<Char, Int> = mutableMapOf<Char, Int>()
-    .let { frequencyOf ->
-        forEach { ch -> frequencyOf[ch] = frequencyOf.getOrDefault(ch, 0) + 1 }
-        frequencyOf
+fun String.charCounts(): Map<Char, Int> = mutableMapOf<Char, Int>()
+    .let { countOf ->
+        forEach { ch -> countOf[ch] = countOf.getOrDefault(ch, 0) + 1 }
+        countOf
     }
 
 /** Math stuff */
-//
-//fun gcd(a: Long, b: Long): Long {
-//    var n1 = a
-//    var n2 = b
-//    while (n2 != 0L) {
-//        val temp = n2
-//        n2 = n1 % n2
-//        n1 = temp
-//    }
-//    return n1
-//}
-//
-//fun gcd(a: Int, b: Int): Int = gcd(a.toLong(), b.toLong()).toInt()
-//
-//fun lcm(n1: Long, n2: Long) = n1 * n2 / gcd(n1, n2)
 
 /* from Todd Ginsberg */
 
@@ -83,10 +68,3 @@ infix fun Long.lcm(other: Long): Long =
 
 infix fun Int.lcm(other: Int): Int =
     (this * other) / this.gcd(other)
-
-//fun lcm(longs: List<Long>): Long =
-//    longs.subList(1, longs.lastIndex).fold(longs.first())
-//    {acc: Long, next: Long -> lcm(acc, next) }
-
-//fun lcm(ints: List<Int>): Long = lcm(ints.map(Int::toLong))
-

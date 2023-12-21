@@ -33,7 +33,7 @@ fun main() {
         lazyMessage("\n^^^^^^^^^ IGNORE ^^^^^^^^^\nTests PASSED!",
             "RED",
             "GREEN",
-            "Now Refactor!"
+            "Now REFACTOR!"
         )
     }
 

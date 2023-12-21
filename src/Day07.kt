@@ -26,7 +26,7 @@ enum class HandType {
 
     companion object {
         fun of(hand: String): HandType {
-            val distinctRanks = hand.charFrequencies()
+            val distinctRanks = hand.charCounts()
             return when (distinctRanks.count { it.value > 0 }) {
                 1 -> FIVE_OF_A_KIND
                 2 -> if (distinctRanks.any { it.value == 4 }) FOUR_OF_A_KIND else FULL_HOUSE
@@ -40,7 +40,7 @@ enum class HandType {
 
 data class CamelCardPlay(val hand: String, val bid: Int) {
 
-    private val countOf = hand.charFrequencies()
+    private val countOf = hand.charCounts()
 
     private val jokerHand = if ((countOf['J'] ?: 0) == 0) hand else hand.replace('J', mostNotJ())
 
