@@ -1,13 +1,12 @@
-// TODO Ctrl + Cmd + G - selects all occurrences for editing
-class Day0() : AoCSolution() {
-    override val description = "Solution Template for Advent of Code in Kotlin"
+class Day11() : AoCSolution() {
+    override val description = "Day 11: Cosmic Expansion"
 
     override fun part1(): Int = -1
 
     override fun part2(): Int = -1
 
     companion object {
-        fun using(input: List<String>) = Day0()
+        fun using(input: List<String>) = Day11()
     }
 }
 
@@ -28,7 +27,7 @@ fun main() {
         *** PASTE SAMPLE HERE
         """.trimIndent().lines()
 
-    SolutionChecker(Day0.using(sampleInput1), "sampleInput1").apply {
+    SolutionChecker(Day11.using(sampleInput1), "sampleInput1").apply {
         checkAnswerForPartOneIs(-1)
         checkAnswerForPartTwoIs(-1)
     }
@@ -38,19 +37,19 @@ fun main() {
         *** PASTE SAMPLE HERE
         """.trimIndent().lines()
 
-    SolutionChecker(Day0.using(sampleInput2), "sampleInput2").apply {
+    SolutionChecker(Day11.using(sampleInput2), "sampleInput2").apply {
         checkAnswerForPartOneIs(-1)
         checkAnswerForPartTwoIs(-1)
     }
 
     "SOLUTION".println()
 
-    SolutionChecker(Day0.using(readInput("Day0")), "Google").apply {
+    SolutionChecker(Day11.using(readInput("Day11")), "Google").apply {
         checkAnswerForPartOneIs(-1)
         checkAnswerForPartTwoIs(-1)
     }
 
-    SolutionChecker(Day0.using(readInput("Day0gh")), "GitHub").apply {
+    SolutionChecker(Day11.using(readInput("Day11gh")), "GitHub").apply {
         checkAnswerForPartOneIs(-1)
         checkAnswerForPartTwoIs(-1)
     }
