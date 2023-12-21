@@ -18,12 +18,12 @@ class Day09(private val histories: Histories) : AoCSolution() {
     private fun History.isAllZero() = all { it == 0 }
 
     private fun History.extrapolateNext(): Int {
-        tailrec fun nextIn(sequence: History, acc: Int = 0): Int {
+        tailrec fun next(sequence: History, acc: Int = 0): Int {
+            val nextNumber = acc + sequence.last()
             val newSequence = sequence.differencesBetweenSteps()
-            return if (newSequence.isAllZero()) acc + last()
-                   else nextIn(newSequence, acc + newSequence.last())
+            return if (newSequence.isAllZero()) nextNumber else next(newSequence, nextNumber)
         }
-        return nextIn(this)
+        return next(this)
     }
 }
 
