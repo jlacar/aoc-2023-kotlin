@@ -55,9 +55,9 @@ data class CamelCardPlay(val hand: String, val bid: Int) {
         val normalRules = strengthOrder("23456789TJQKA")
         val jokerRules = strengthOrder("J23456789TQKA")
 
-        private fun strengthOrder(rankOrder: String): Map<Char, Char> =
+        private fun strengthOrder(ranksInStrengthOrder: String): StrengthMapping =
             mutableMapOf<Char, Char>().apply {
-                rankOrder.zip("ABCDEFGHIJKLM") { ch, strength -> this[ch] = strength }
+                ranksInStrengthOrder.zip("ABCDEFGHIJKLM") { ch, strength -> this[ch] = strength }
             }
 
         fun strength(handType: HandType, hand: String, strengthOf: StrengthMapping) =
