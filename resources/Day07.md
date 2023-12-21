@@ -18,7 +18,7 @@ Whatever the reason may be that you'd choose to participate, the most important 
 
 I've been solving the AoC puzzles with [Kotlin](https://kotlinlang.org), first as a way to learn Kotlin and later, as a way to refresh and deepen my understanding of the language. I'm [basically a Java guy](https://coderanch.com/wiki/659748/ActiveStaff#junilulacar) but I find Kotlin such a wonderful language to code in, far more enjoyable than Java. Call me a Kotlin fanboy, I don't mind. 
 
-The richness of the standard Kotlin library never ceases to surprise and delight me. It's almost like they ([the people at JetBrains](https://jetbrains.com)) built the language and its library specifically for solving AoC puzzles. Kotlin seems to have every convenient little tool I could ever think of use with the AoC puzzles, and then some. On a good day, I might even solve the puzzle quickly. But the best day for me is when I discover an elegant way to do it in Kotlin. Take the Day 7 puzzle, for example.
+The richness of the standard Kotlin library never ceases to surprise and delight me. It's almost like they ([the people at JetBrains](https://jetbrains.com)) built the language and its library [specifically for solving AoC puzzles](https://kotlinlang.org/docs/advent-of-code.html). Kotlin seems to have every convenient little tool I could ever think of use with the AoC puzzles, and then some. On a good day, I might even solve the puzzle quickly. But the best day for me is when I discover an elegant way to do it in Kotlin. Take the Day 7 puzzle, for example.
 
 ## Camel Cards - Part 1
 
@@ -122,7 +122,7 @@ Poorly told stories in code results in something that's not pleasing, difficult 
 
 ### The code's story should fit the problem well
 
-Code that reads like a well-written story is like a well-tailored suit that fits its wearer well and makes them easy on the eyes. Code that doesn't is usually difficult, if not morbidly fascinating, to look at.
+Code that reads like a well-written story is like a well-tailored suit that fits its wearer well and makes them easy on the eyes. Code that doesn't is usually difficult, if not morbidly fascinating like a train wreck, to look at.
 
 Here's how I ended up telling the story of Day 7, Part 1, in Kotlin:
 ```kotlin
@@ -153,28 +153,30 @@ fun main() {
     "SOLUTION".println()
 
     SolutionChecker(Day07.using(readInput("Day07")), "my puzzle input").apply {
-        checkAnswerForPartOneIs(251_216_224)
+        // confirmed answer from initial run, awarded a gold star
+        checkAnswerForPartOneIs(251_216_224) 
     }    
 }
 
 ```
 These are the names I used to make the code tell a story consistent with the problem description:
-1. `CamelCards`
-2. `plays`
-3. `totalWinnings`
-3. `normalStrength`
-4. `rankedPlays`
-5. `hand` and `bid`
+1. `CamelCards` - the Name of the Game
+2. `plays` - a list of plays parsed from the puzzle input
+3. `totalWinnings` - self-explanatory
+3. `normalStrength` - as opposed to a different set of rules for Part 2
+4. `rankedPlays` - the plays sorted and ranked accordingly to rules 
+5. `hand` and `bid` - as referred to in the puzzle description
+6. `correctAnswer` - to indicate submission that was award a gold star
 
-These strands were eventually woven into the cloth of the solution:
-1. `totalWinnings`, which works on a list of `rankedPlays`
-2. `SolutionChecker`, works with an `AoCSolution` which can give the answer to `part1()` of the puzzle
+These above names eventually were woven into the cloth of the solution:
+1. `totalWinnings(rankedPlays)` - get the total winnings for the given ranked plays
+2. `SolutionChecker`, works with an `AoCSolution` that provides the answer to `part1()` of the puzzle
 
-The rest of the story was built on the foundation that the Kotlin language and its standard library provides:
-1. Extension functions to create expressive semantics like `plays.sortedWith()` and `comparedBy { it.normalStrength }`
-2. Scope functions that help create small, context-containment areas like with `.apply { ... }`
-3. Implied context like the call to `checkAnswerForPartOneIs()` which has the implied receive of `SolutionChecker`
-4. Companion objects that allow you to write fluent code like `Day07.using(readInput("Day07"))`
+The rest of the story is built on the foundation that the Kotlin language and its standard library provides:
+1. [Extension functions](https://kotlinlang.org/docs/extensions.html#extension-functions) to create fluent semantic constructs like `plays.sortedWith()` and `comparedBy { it.normalStrength }`
+2. [Scope functions](https://kotlinlang.org/docs/scope-functions.html) that help create small, context-limiting areas as with `.apply { ... }`
+3. Inferred context like the call to `checkAnswerForPartOneIs()` whose receiver is inferred by Kotlin to be the enclosing `SolutionChecker` object.
+4. [Companion objects](https://kotlinlang.org/docs/object-declarations.html#companion-objects) that allow you to write fluent code like `Day07.using(readInput("Day07"))`
 5. Constructs like lambdas, `.mapIndexed {}`, and `.sum()` that allow you to write functional-style programs.
 
 This is what the output looks like:
@@ -185,7 +187,7 @@ SOLUTION
 Day 7: Camel Cards, Part 1 (my puzzle input) --> 251216224
 ```
 
-All author's and non-author's bias aside, don't you think that's a beauty to behold?
+Such a beauty to behold, don't you think?
 
 ### Under the Hood
 
@@ -284,14 +286,12 @@ If you check [my GitHub repo history](https://github.com/jlacar/aoc-2023-kotlin/
 ## Summary
 
 Here are some of the things I hope you can take away today:
-1. Start with the end in mind. Use that vision as your guide when making design decisions
-2. Start simple, and strive to keep things simple. 
-3. When we start getting frustrated, think about why. It's often because we've made things more complicated and complex than they need to be. Go back to #2 and try to find a simple way.
-4. Tell the story to someone, even it's just a rubber duck or an imaginary audience reading your blog post, and try to make the code tell the same story using the same words and idea constructs.
-5. Make the story in the code line up with the story in our head. The more the two line up, the easier it will be to reason about what the code is doing. The easier it is to reason about what the code is doing, the more you'll understand how to work with it and not mess it up.
+1. Start with the end in mind. Use that vision as your guide when making design and refactoring decisions.
+2. Start simple, and strive to keep things simple. Keep refactoring your code to keep it simple, easy to read, and easy to understand.
+3. Whenever you start getting frustrated with code, think about why that is. It's often because things are more complicated and complex than they need to be. Go back to #2 and try to find a simpler way.
+4. Tell the story to someone, even if it's just a rubber duck or an imaginary audience reading your blog post. Try to make the code tell the same story using the same words and idea constructs.
+5. Make the story in the code line up with the story in our head. The more the two line up, the easier it will be to reason about what's going on in the code. The easier it is to reason about what's going on, the more you'll understand how to work with it and not mess it up.
 
-That's pretty much it in a nutshell. Thanks for staying with me this far and I hope you can use some of this in your own work, and play.
+That's pretty much it in a (giant) nutshell. Thanks for staying with me this far and I hope some of these ideas come in hand in your own work, and play.
 
-If you celebrate it, Merry Christmas! Otherwise, and as always, have a great day and happy coding!
-
-
+If you celebrate it, Merry Christmas! Otherwise and as always, have a great day and happy coding!
