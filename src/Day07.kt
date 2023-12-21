@@ -38,6 +38,8 @@ enum class HandType {
     }
 }
 
+typealias StrengthMapping = Map<Char, Char>
+
 data class CamelCardPlay(val hand: String, val bid: Int) {
 
     private val countOf = hand.charCounts()
@@ -46,8 +48,8 @@ data class CamelCardPlay(val hand: String, val bid: Int) {
 
     private fun mostNotJ() = countOf.filterNot { it.key == 'J' }.maxByOrNull { it.value }?.key ?: 'A'
 
-    val normalStrength = strength(HandType.of(hand).strength, hand, normalRules)
-    val jokerStrength = strength(HandType.of(jokerHand).strength, hand, jokerRules)
+    val normalStrength = strength(HandType.of(hand), hand, normalRules)
+    val jokerStrength = strength(HandType.of(jokerHand), hand, jokerRules)
 
     companion object {
         val normalRules = strengthOrder("23456789TJQKA")
@@ -58,8 +60,8 @@ data class CamelCardPlay(val hand: String, val bid: Int) {
                 rankOrder.zip("ABCDEFGHIJKLM") { ch, strength -> this[ch] = strength }
             }
 
-        fun strength(typeStrength: Char, hand: String, strengthOf: Map<Char, Char>) =
-            hand.fold(typeStrength.toString()) { acc, ch -> acc + strengthOf[ch] }
+        fun strength(handType: HandType, hand: String, strengthOf: StrengthMapping) =
+            hand.fold(handType.strength.toString()) { strengthSoFar, card -> strengthSoFar + strengthOf[card] }
     }
 }
 
