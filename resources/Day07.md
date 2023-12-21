@@ -258,8 +258,9 @@ That reads as: Starting with the hand type strength, go through all the cards in
 
 ### An opportunity to tell an even better story
 
-Remember how I said that names are the strands of the ideas we weave into stories? Well, the names `acc` and `ch` don't really resonate with the story we just told, do they? How about we try this:
+Remember how I said that names are the strands of the ideas we weave into stories? Well, the names `acc` and `ch` don't really resonate with the story we just told, do they? 
 
+How about we try this instead:
 ```kotlin
 typealias StrengthMapping = Map<Char, Char>
 
@@ -269,11 +270,13 @@ data class CamelCardPlay(val hand: String, val bid: Int) {
     
     companion object {
         ...
-        
-        fun strength(typeStrength: Char, hand: String, strengthOf: Map<Char, Char>) =
-            hand.fold(typeStrength.toString()) { acc, ch -> acc + strengthOf[ch] }
+
+        fun strength(handType: HandType, hand: String, strengthOf: StrengthMapping) =
+            hand.fold(handType.strength.toString()) { strengthSoFar, card ->
+                strengthSoFar + strengthOf[card]
+            }
     }
 }
 ```
-If you check [my GitHub repo's history](), you might see that I didn't come up with this refactoring until today (December 21, 2023).
+If you check [my GitHub repo history](https://github.com/jlacar/aoc-2023-kotlin/commits/main/src/Day07.kt), you might see that I didn't come up with this refactoring until today (December 21, 2023).
 
