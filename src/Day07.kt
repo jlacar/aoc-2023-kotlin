@@ -26,11 +26,11 @@ enum class HandType {
 
     companion object {
         fun of(hand: String): HandType {
-            val distinctRanks = hand.charCounts()
-            return when (distinctRanks.count { it.value > 0 }) {
+            val distinctKinds = hand.charCounts()
+            return when (distinctKinds.count { it.value > 0 }) {
                 1 -> FIVE_OF_A_KIND
-                2 -> if (distinctRanks.any { it.value == 4 }) FOUR_OF_A_KIND else FULL_HOUSE
-                3 -> if (distinctRanks.any { it.value == 3 }) THREE_OF_A_KIND else TWO_PAIRS
+                2 -> if (distinctKinds.any { it.value == 4 }) FOUR_OF_A_KIND else FULL_HOUSE
+                3 -> if (distinctKinds.any { it.value == 3 }) THREE_OF_A_KIND else TWO_PAIRS
                 4 -> ONE_PAIR
                 else -> HIGH_CARD
             }
