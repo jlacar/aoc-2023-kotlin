@@ -39,10 +39,12 @@ enum class HandType {
 }
 
 typealias StrengthMapping = Map<Char, Char>
+typealias KindFrequencies = Map<Char, Int>
 
 data class CamelCardPlay(val hand: String, val bid: Int) {
+    private fun String.cardCounts(): KindFrequencies = this.charCounts()
 
-    private val countOf = hand.charCounts()
+    private val countOf: KindFrequencies = hand.cardCounts()
 
     private val jokerHand = if ((countOf['J'] ?: 0) == 0) hand else hand.replace('J', mostNotJ())
 
