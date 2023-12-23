@@ -2,15 +2,12 @@ class Day07(private val plays: List<CamelCardPlay>) : AoCSolution() {
 
     override val description = "Day 7: Camel Cards"
 
-    override fun part1(): Int = totalWinningsREPLACE(plays.sortedWith( compareBy { it.normalStrength } ))
+    override fun part1(): Int = plays.sortedWith( compareBy { it.normalStrength } ).totalWinnings()
 
-    override fun part2(): Int = totalWinningsREPLACE(plays.sortedWith( compareBy { it.jokerStrength } ))
+    override fun part2(): Int = plays.sortedWith( compareBy { it.jokerStrength } ).totalWinnings()
 
     private fun List<CamelCardPlay>.totalWinnings(): Int =
         mapIndexed { rank, play -> (rank + 1) * play.bid }.sum()
-
-    private fun totalWinningsREPLACEg(rankedPlays: List<CamelCardPlay>): Int =
-        rankedPlays.mapIndexed { rank, play -> (rank + 1) * play.bid }.sum()
 
     companion object {
         fun using(input: List<String>) = Day07(
