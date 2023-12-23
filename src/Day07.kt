@@ -6,6 +6,9 @@ class Day07(private val plays: List<CamelCardPlay>) : AoCSolution() {
 
     override fun part2(): Int = totalWinningsREPLACE(plays.sortedWith( compareBy { it.jokerStrength } ))
 
+    private fun List<CamelCardPlay>.totalWinnings(): Int =
+        mapIndexed { rank, play -> (rank + 1) * play.bid }.sum()
+
     private fun totalWinningsREPLACEg(rankedPlays: List<CamelCardPlay>): Int =
         rankedPlays.mapIndexed { rank, play -> (rank + 1) * play.bid }.sum()
 
