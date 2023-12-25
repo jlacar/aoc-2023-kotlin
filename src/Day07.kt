@@ -2,9 +2,21 @@ class Day07(private val plays: List<CamelCardPlay>) : AoCSolution() {
 
     override val description = "Day 7: Camel Cards"
 
-    override fun part1(): Int = plays.sortedWith( compareBy { it.normalStrength } ).totalWinnings()
+    override fun part1(): Int {
+        val normalRules: Comparator<CamelCardPlay> = compareBy { it.normalStrength }
 
-    override fun part2(): Int = plays.sortedWith( compareBy { it.jokerStrength } ).totalWinnings()
+        return plays.rankedWith(normalRules).totalWinnings()
+    }
+                           
+    override fun part2(): Int {
+        val jokerRules: Comparator<CamelCardPlay> = compareBy { it.jokerStrength }
+
+        return plays.rankedWith( jokerRules ).totalWinnings()  
+    } 
+
+    private fun List<CamelCardPlay>.rankedWith(
+        comparator: Comparator<in CamelCardPlay>
+    ): List<CamelCardPlay> = sortedWith(comparator)
 
     private fun List<CamelCardPlay>.totalWinnings(): Int =
         mapIndexed { rank, play -> (rank + 1) * play.bid }.sum()
