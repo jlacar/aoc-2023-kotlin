@@ -1,3 +1,5 @@
+import PipeConnection.*
+
 class Day10() : AoCSolution() {
     override val description = "Day 10: Pipe Maze"
 
@@ -14,37 +16,104 @@ enum class Direction {
     NONE, NORTH, SOUTH, EAST, WEST;
 }
 
-enum class PipeType(val symbol: Char) {
-    NS('|') {
-        override fun connections() = listOf(Direction.NORTH, Direction.SOUTH)
+enum class PipeConnection(val symbol: Char) {
+    TOP_BOTTOM('|') {
+        override fun bottomConnections() = setOf(TOP_BOTTOM, TOP_LEFT, TOP_RIGHT)
+        override fun rightConnections() = emptySet<PipeConnection>()
     },
-    EW('-') {
-        override fun connections() = listOf(Direction.EAST, Direction.WEST)
+    LEFT_RIGHT('-') {
+        override fun bottomConnections() = emptySet<PipeConnection>()
+        override fun rightConnections() = setOf(LEFT_RIGHT, TOP_LEFT, BOTTOM_LEFT)
     },
-    NE('L') {
-        override fun connections() = listOf(Direction.NORTH, Direction.EAST)
+    TOP_RIGHT('L') {
+        override fun bottomConnections() = emptySet<PipeConnection>()
+        override fun rightConnections() = setOf(LEFT_RIGHT, TOP_LEFT, BOTTOM_LEFT)
     },
-    NW('J') {
-        override fun connections() = listOf(Direction.NORTH, Direction.WEST)
+    TOP_LEFT('J') {
+        override fun bottomConnections() = emptySet<PipeConnection>()
+        override fun rightConnections() = emptySet<PipeConnection>()
     },
-    SW('7') {
-        override fun connections() = listOf(Direction.SOUTH, Direction.WEST)
+    BOTTOM_LEFT('7') {
+        override fun bottomConnections() = setOf(TOP_BOTTOM, TOP_LEFT, TOP_RIGHT)
+        override fun rightConnections() = emptySet<PipeConnection>()
     },
-    SE('F') {
-        override fun connections() = listOf(Direction.SOUTH, Direction.EAST)
+    BOTTOM_RIGHT('F') {
+        override fun bottomConnections() = setOf(TOP_BOTTOM, TOP_LEFT, TOP_RIGHT)
+        override fun rightConnections() = setOf(LEFT_RIGHT, TOP_LEFT, BOTTOM_LEFT)
     },
     GROUND('.') {
-        override fun connections() = emptyList<Direction>()
+        override fun bottomConnections() = emptySet<PipeConnection>()
+        override fun rightConnections() = emptySet<PipeConnection>()
     },
     START('S') {
-        override fun connections() = emptyList<Direction>()
+        override fun bottomConnections() = emptySet<PipeConnection>()
+        override fun rightConnections() = emptySet<PipeConnection>()
     };
 
-    abstract fun connections(): List<Direction>
+    abstract fun bottomConnections(): Set<PipeConnection>
+    abstract fun rightConnections(): Set<PipeConnection>
+
+    infix fun connectsAtBottomTo(other: PipeConnection) = other in bottomConnections()
+    infix fun connectsAtRightTo(other: PipeConnection) = other in rightConnections()
+
+    companion object {
+        fun of(symbol: Char) = entries.firstOrNull { it.symbol == symbol } ?: error("Invalid PipeConnection")
+    }
 }
 
 fun main() {
+
     val doneWithTDD = false     // TODO toggle this as needed
+
+    with(TOP_BOTTOM) {
+        check(listOf(TOP_BOTTOM, TOP_LEFT, TOP_RIGHT).all { this connectsAtBottomTo it })
+        check(entries.toTypedArray().none { this connectsAtRightTo it })
+    }
+
+    with(LEFT_RIGHT) {
+        check(entries.toTypedArray().none { this connectsAtBottomTo it })
+        check(listOf(LEFT_RIGHT, TOP_LEFT, BOTTOM_LEFT).all { this connectsAtRightTo it })
+    }
+
+    with(TOP_LEFT) {
+        check(entries.toTypedArray().none { this connectsAtBottomTo it })
+        check(entries.toTypedArray().none { this connectsAtRightTo it })
+    }
+
+    with(TOP_RIGHT) {
+        check(entries.toTypedArray().none { this connectsAtBottomTo it })
+        check(listOf(LEFT_RIGHT, TOP_LEFT, BOTTOM_LEFT).all { this connectsAtRightTo it })
+    }
+
+    with(BOTTOM_LEFT) {
+        check(listOf(TOP_BOTTOM, TOP_LEFT, TOP_RIGHT).all { this connectsAtBottomTo it })
+        check(entries.toTypedArray().none { this connectsAtRightTo it })
+    }
+
+    with(BOTTOM_RIGHT) {
+        check(listOf(TOP_BOTTOM, TOP_LEFT, TOP_RIGHT).all { this connectsAtBottomTo it })
+        check(listOf(LEFT_RIGHT, TOP_LEFT, BOTTOM_LEFT).all { this connectsAtRightTo it })
+    }
+
+    with(GROUND) {
+        check(entries.toTypedArray().none { this connectsAtBottomTo it })
+        check(entries.toTypedArray().none { this connectsAtRightTo it })
+    }
+
+    listOf('|' to TOP_BOTTOM, '-' to LEFT_RIGHT, 'L' to TOP_RIGHT, 'J' to TOP_LEFT,
+           'F' to BOTTOM_RIGHT, '7' to BOTTOM_LEFT, '.' to GROUND, 'S' to START)
+    .forEach { (symbol, pipe) ->
+        check(PipeConnection.of(symbol) == pipe)
+    }
+
+    // TODO temporary breakpoint to aid testing; edit and move around as needed
+    check(doneWithTDD) {
+        lazyMessage("\n^^^^^^^^^ IGNORE ^^^^^^^^^\nTests PASSED!",
+            "RED",
+            "GREEN",
+            "Now REFACTOR!"
+        )
+    }
 
     val sampleInput1 =
         """
@@ -60,14 +129,6 @@ fun main() {
         checkAnswerForPartTwoIs(-1)
     }
 
-    // TODO temporary breakpoint to aid testing; edit and move around as needed
-    check(doneWithTDD) {
-        lazyMessage("\n^^^^^^^^^ IGNORE ^^^^^^^^^\nTests PASSED!",
-            "RED",
-            "GREEN",
-            "Now REFACTOR!"
-        )
-    }
 
     val sampleInput2 =
         """
