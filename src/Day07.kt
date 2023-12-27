@@ -18,8 +18,11 @@ class Day07(private val plays: List<CamelCardPlay>) : AoCSolution() {
         comparator: Comparator<in CamelCardPlay>
     ): List<CamelCardPlay> = sortedWith(comparator)
 
-    private fun List<CamelCardPlay>.totalWinnings(): Int =
-        mapIndexed { rank, play -> (rank + 1) * play.bid }.sum()
+    private fun List<CamelCardPlay>.totalWinnings(): Int = let {
+        mapIndexed { index, play -> Pair(index + 1, play.bid) }
+            .map { (rank, bid) -> rank * bid }
+            .sum()
+    }
 
     companion object {
         fun using(input: List<String>) = Day07(
