@@ -1,6 +1,9 @@
 import PipeConnection.*
 
-class Day10() : AoCSolution() {
+typealias MazeRow = List<MazeTile>
+typealias Maze = List<MazeRow>
+
+class Day10(val maze: Maze) : AoCSolution() {
     override val description = "Day 10: Pipe Maze"
 
     override fun part1(): Int = -1
@@ -8,9 +11,22 @@ class Day10() : AoCSolution() {
     override fun part2(): Int = -1
 
     companion object {
-        fun using(input: List<String>) = Day10()
+        fun using(input: List<String>) = Day10(
+            maze = input.mapIndexed { row, line ->
+                line.mapIndexed { col, symbol ->
+                    MazeTile(
+                        pipe = PipeConnection.of(symbol),
+                        location = MazeLocation(row, col)
+                    )
+                }
+            }
+        )
     }
 }
+
+data class MazeLocation(val row: Int, val col: Int)
+
+data class MazeTile(val pipe: PipeConnection, val location: MazeLocation)
 
 enum class Direction {
     NONE, NORTH, SOUTH, EAST, WEST;
@@ -106,14 +122,6 @@ fun main() {
         check(PipeConnection.of(symbol) == pipe)
     }
 
-    // TODO temporary breakpoint to aid testing; edit and move around as needed
-    check(doneWithTDD) {
-        lazyMessage("\n^^^^^^^^^ IGNORE ^^^^^^^^^\nTests PASSED!",
-            "RED",
-            "GREEN",
-            "Now REFACTOR!"
-        )
-    }
 
     val sampleInput1 =
         """
@@ -123,6 +131,21 @@ fun main() {
         .L-J.
         .....
         """.trimIndent().lines()
+
+    with(Day10.using(sampleInput1)) {
+        this.maze.forEach { row ->
+            row.joinToString("") { it.pipe.symbol.toString() }.println()
+        }
+    }
+
+    // TODO temporary breakpoint to aid testing; edit and move around as needed
+    check(doneWithTDD) {
+        lazyMessage("\n^^^^^^^^^ IGNORE ^^^^^^^^^\nTests PASSED!",
+            "RED",
+            "GREEN",
+            "Now REFACTOR!"
+        )
+    }
 
     SolutionChecker(Day10.using(sampleInput1), "sampleInput1").apply {
         checkAnswerForPartOneIs(4)
