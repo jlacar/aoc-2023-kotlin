@@ -1,4 +1,4 @@
-import PipeConnection.*
+import MazePipe.*
 
 typealias MazeRow = List<MazeTile>
 typealias Maze = List<MazeRow>
@@ -15,7 +15,7 @@ class Day10(val maze: Maze) : AoCSolution() {
             maze = input.mapIndexed { row, line ->
                 line.mapIndexed { col, symbol ->
                     MazeTile(
-                        pipe = PipeConnection.of(symbol),
+                        pipe = MazePipe.of(symbol),
                         location = MazeLocation(row, col)
                     )
                 }
@@ -26,51 +26,51 @@ class Day10(val maze: Maze) : AoCSolution() {
 
 data class MazeLocation(val row: Int, val col: Int)
 
-data class MazeTile(val pipe: PipeConnection, val location: MazeLocation)
+data class MazeTile(val pipe: MazePipe, val location: MazeLocation)
 
 enum class Direction {
     NONE, NORTH, SOUTH, EAST, WEST;
 }
 
-enum class PipeConnection(val symbol: Char) {
+enum class MazePipe(val symbol: Char) {
     TOP_BOTTOM('|') {
         override fun bottomConnections() = setOf(TOP_BOTTOM, TOP_LEFT, TOP_RIGHT)
-        override fun rightConnections() = emptySet<PipeConnection>()
+        override fun rightConnections() = emptySet<MazePipe>()
     },
     LEFT_RIGHT('-') {
-        override fun bottomConnections() = emptySet<PipeConnection>()
+        override fun bottomConnections() = emptySet<MazePipe>()
         override fun rightConnections() = setOf(LEFT_RIGHT, TOP_LEFT, BOTTOM_LEFT)
     },
     TOP_RIGHT('L') {
-        override fun bottomConnections() = emptySet<PipeConnection>()
+        override fun bottomConnections() = emptySet<MazePipe>()
         override fun rightConnections() = setOf(LEFT_RIGHT, TOP_LEFT, BOTTOM_LEFT)
     },
     TOP_LEFT('J') {
-        override fun bottomConnections() = emptySet<PipeConnection>()
-        override fun rightConnections() = emptySet<PipeConnection>()
+        override fun bottomConnections() = emptySet<MazePipe>()
+        override fun rightConnections() = emptySet<MazePipe>()
     },
     BOTTOM_LEFT('7') {
         override fun bottomConnections() = setOf(TOP_BOTTOM, TOP_LEFT, TOP_RIGHT)
-        override fun rightConnections() = emptySet<PipeConnection>()
+        override fun rightConnections() = emptySet<MazePipe>()
     },
     BOTTOM_RIGHT('F') {
         override fun bottomConnections() = setOf(TOP_BOTTOM, TOP_LEFT, TOP_RIGHT)
         override fun rightConnections() = setOf(LEFT_RIGHT, TOP_LEFT, BOTTOM_LEFT)
     },
     GROUND('.') {
-        override fun bottomConnections() = emptySet<PipeConnection>()
-        override fun rightConnections() = emptySet<PipeConnection>()
+        override fun bottomConnections() = emptySet<MazePipe>()
+        override fun rightConnections() = emptySet<MazePipe>()
     },
     START('S') {
-        override fun bottomConnections() = emptySet<PipeConnection>()
-        override fun rightConnections() = emptySet<PipeConnection>()
+        override fun bottomConnections() = emptySet<MazePipe>()
+        override fun rightConnections() = emptySet<MazePipe>()
     };
 
-    abstract fun bottomConnections(): Set<PipeConnection>
-    abstract fun rightConnections(): Set<PipeConnection>
+    abstract fun bottomConnections(): Set<MazePipe>
+    abstract fun rightConnections(): Set<MazePipe>
 
-    infix fun connectsAtBottomTo(other: PipeConnection) = other in bottomConnections()
-    infix fun connectsAtRightTo(other: PipeConnection) = other in rightConnections()
+    infix fun connectsAtBottomTo(other: MazePipe) = other in bottomConnections()
+    infix fun connectsAtRightTo(other: MazePipe) = other in rightConnections()
 
     companion object {
         fun of(symbol: Char) = entries.firstOrNull { it.symbol == symbol } ?: error("Invalid PipeConnection")
@@ -119,17 +119,26 @@ fun main() {
     listOf('|' to TOP_BOTTOM, '-' to LEFT_RIGHT, 'L' to TOP_RIGHT, 'J' to TOP_LEFT,
            'F' to BOTTOM_RIGHT, '7' to BOTTOM_LEFT, '.' to GROUND, 'S' to START)
     .forEach { (symbol, pipe) ->
-        check(PipeConnection.of(symbol) == pipe)
+        check(MazePipe.of(symbol) == pipe)
     }
 
+//
+//    val sampleInput1 =
+//        """
+//        .....
+//        .S-7.
+//        .|.|.
+//        .L-J.
+//        .....
+//        """.trimIndent().lines()
 
     val sampleInput1 =
         """
-        .....
-        .S-7.
-        .|.|.
-        .L-J.
-        .....
+        ..F7.
+        .FJ|.
+        SJ.L7
+        |F--J
+        LJ...
         """.trimIndent().lines()
 
     with(Day10.using(sampleInput1)) {
