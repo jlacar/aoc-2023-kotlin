@@ -28,10 +28,6 @@ data class MazeLocation(val row: Int, val col: Int)
 
 data class MazeTile(val pipe: MazePipe, val location: MazeLocation)
 
-enum class Direction {
-    NONE, NORTH, SOUTH, EAST, WEST;
-}
-
 enum class MazePipe(val symbol: Char) {
     TOP_BOTTOM('|') {
         override fun bottomConnections() = setOf(TOP_BOTTOM, TOP_LEFT, TOP_RIGHT)
